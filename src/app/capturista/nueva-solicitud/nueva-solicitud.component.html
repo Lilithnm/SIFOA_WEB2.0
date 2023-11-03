@@ -1,0 +1,187 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2>Registrar nueva solicitud</h2>
+
+          </div>
+          <div class="body">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Grupo de artículos</mat-label>
+                    <input type="text" matInput [formControl]="grupoControl" [matAutocomplete]="auto" (click)="clear()">
+                      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayGrupoFn" (optionSelected)='obtieneMateriales($event.option.value)'>
+                      <mat-option *ngFor="let option of gruposFiltrados | async" [value]="option">
+                        {{option.Nombre}} - {{option.Descripcion}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Materiales</mat-label>
+                    <input type="text" matInput [formControl]="materialesControl" [matAutocomplete]="autoMateriales">
+                    <mat-autocomplete #autoMateriales="matAutocomplete" [displayWith]="displayMaterialesFn" (optionSelected)='seleccionaMat($event.option.value)'>
+                      <mat-option *ngFor="let option of materialesFiltrados | async" [value]="option">
+                        {{option.Material}} - {{option.TextoMaterial}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12 mb-2">
+                  <div class="centrog">
+                      <span>{{unidad}}</span> 
+                  </div>     
+                </div>
+                <div class="col-xl-2 col-lg-1 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Cantidad</mat-label>
+                    <input matInput type="number" [(ngModel)]="cantidad" [disabled]="false">
+                  </mat-form-field>
+                </div> 
+              </div>
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <button class="btn-space" mat-raised-button
+                  style="float: right !important; "
+                    color="primary" (click)="agregaMaterial()">
+                    <mat-icon>library_add</mat-icon>
+                      Agregar a mi pedido</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="ngxTableHeader">
+                  <ul class="header-buttons-left ms-0 mb-0">
+                    <li class="dropdown">
+                      <h2>Mi Pedido</h2>
+                    </li>
+                    <li class="dropdown m-l-20">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input placeholder="Buscar" type="text" class="browser-default search-field"
+                        (keyup)='filterDatatable($event)' aria-label="Search box">
+                    </li>
+                  </ul>
+                  <ul class="header-buttons">
+                  </ul>
+                </div>
+                <ngx-datatable #table class="ngx-datatable" [rows]="data" 
+                [headerHeight]="30"
+                [footerHeight]="30"                
+                [rowHeight]="'auto'"
+                [reorderable]="true"
+                columnMode="force"
+                [limit]="5">
+  
+  
+               <ngx-datatable-column name="Clave"  [width]="100">
+                <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                  <td class="table-img padding-0">
+                   {{row.Material.Material}}
+                  </td>
+                </ng-template>
+               </ngx-datatable-column>
+               <ngx-datatable-column name="Material">
+                <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                  <td class="table-img padding-0">
+                   {{row.Material.TextoMaterial}}
+                  </td>
+                </ng-template>
+               </ngx-datatable-column>
+               <ngx-datatable-column name="Unidad">
+                <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                  <td class="table-img padding-0">
+                   {{row.Material.Unidad}}
+                  </td>
+                </ng-template>
+                
+              </ngx-datatable-column>
+                <ngx-datatable-column name="Cantidad Solicitada">
+                  <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                    <td class="table-img padding-0">
+                     {{row.CantidadSolicitada}}
+                    </td>
+                  </ng-template>
+                 </ngx-datatable-column>
+             
+                <ngx-datatable-column name="Acciones" [sortable]="false" [width]="120">
+                  <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <span>
+                      <button class="btn tblActnBtn h-auto rojo-icon" (click)='eliminarMaterial(row)'>
+                       <i class="fas fa-trash fa-lg"></i>
+                      </button>
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                
+                <ngx-datatable-footer>
+                  <ng-template 
+                    let-curPage="curPage" 
+                    let-offset="offset" 
+                    let-pageSize="pageSize" 
+                    let-rowCount="rowCount" 
+                    let-selectedCount="selectedCount" 
+                    ngx-datatable-footer-template>
+                  <datatable-pager
+                    [pagerLeftArrowIcon]="'datatable-icon-left'"
+                    [pagerRightArrowIcon]="'datatable-icon-right'"
+                    [pagerPreviousIcon]="'datatable-icon-prev'"
+                    [pagerNextIcon]="'datatable-icon-skip'"
+                    [page]="curPage"
+                    [size]="pageSize"
+                    [count]="rowCount"
+                    [hidden]="!((rowCount / pageSize) > 1)"
+                    (change)="table.onFooterPage($event)">
+                  </datatable-pager>
+                  </ng-template>
+ 
+                </ngx-datatable-footer>
+              </ngx-datatable>                
+              </div>
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Observaciones</mat-label>
+                    <textarea matInput placeholder="Observaciones" [formControl]="observacionesControl"></textarea>
+                  </mat-form-field>
+                </div>
+                </div>
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <button class="btn-space" mat-raised-button
+                  style="float: right !important; "
+                    color="primary" (click)="generaSolicitud()">
+                    <mat-icon>save</mat-icon>
+                      Guardar Solicitud</button>
+                </div>
+              </div>
+
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<swal #ConfirmaPedidoSw title="CONFIRME LOS MATERIALES CAPTURADOS EN LA SOLICITUD" width="80vw" 
+  [confirmButtonText]="'Guardar Solicitud'"
+  [cancelButtonText]="'Regresar'"
+  [showCancelButton]="true"
+  (confirm)="guardaSolicitud()"
+>
+  <div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined"  >
+      <app-confirmar-pedido  [materiales]="data"></app-confirmar-pedido>
+  </div>
+</swal>

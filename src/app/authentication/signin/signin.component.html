@@ -1,0 +1,74 @@
+<div class="auth-container">
+  <div class="row auth-main">
+    <div class="col-sm-6 px-0 d-none d-sm-block">
+      <div class="left-img" style="background-image: url(assets/images/portal/pj-bg.png);">
+      </div>
+    </div>
+    <div class="col-sm-6 auth-form-section">
+      <div class="form-section">
+        <div class="auth-wrapper">
+          <div class="d-flex justify-content-between lbl-alert mb-3">
+            <div class="text-center">
+              <img alt="homepage" style="width: 80%;" src="assets/images/portal/LOGO.png">
+              <h4 class="m-t-0">Bienvenido</h4>
+          </div>
+          </div>
+          <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Usuario</mat-label>
+                  <input matInput formControlName="username" />
+                  <mat-icon class="material-icons-two-tone color-icon p-3" matSuffix>face</mat-icon>
+                  <mat-error *ngIf="authForm.get('username')?.hasError('required')">
+                    El usuario es obligatorio
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Contraseña</mat-label>
+                  <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                  <a href="#" onClick="return false;" matSuffix (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon class="material-icons-two-tone color-icon m-3" matSuffix>
+                      {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </a>
+                  <mat-error *ngIf="authForm.get('password')?.hasError('required')">
+                    La contraseña es obligatoria
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+            <div class="container-auth-form-btn">
+              <div style="text-align:center">
+                <button mat-raised-button color="primary" [class.auth-spinner]="loading" [disabled]="loading"
+                  class="auth-form-btn" [disabled]="!authForm.valid " type="submit">Login</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<swal #test title="Plataformas" [showConfirmButton]="false" [showCancelButton]="true" [cancelButtonText]="'Cancelar'"
+    width="50vw" class="zpers">
+    <div style="max-height: 50vh; overflow: hidden;" *swalPortal="undefined" class="alert">
+        <mat-list style="border-bottom: #bcc7d2; border-bottom-style: solid;" >
+            <div *ngFor="let ticket of Tickets">
+                <mat-list-item class="seleccion" style="height: 100px; border: #bcc7d2; border-style: solid; border-bottom-style: unset;"  (click)="centroSeleccionado(ticket)" >
+                    <div style="display: flex; align-items: center; flex-wrap: wrap; flex-direction: row;">
+                        <span>{{ticket.Plataforma.Nombre}}</span>
+                    </div>
+                </mat-list-item>
+            </div>
+        </mat-list>
+
+    </div>
+</swal>

@@ -1,0 +1,156 @@
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#26c6da" type="ball-fall" [fullScreen]="false">
+      <p style="font-size: 20px; color: white">Cargando...</p>
+  </ngx-spinner>
+
+<section class="content">
+  <div class="content-block">
+    <div class="block-header" *ngFor="let breadscrum of breadscrums">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    <!-- Basic Examples -->
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="body">
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="ngxTableHeader">
+                  <ul class="header-buttons-left ms-0 mb-0">
+                    <li class="dropdown">
+                      <h2>Materiales</h2>
+                    </li>
+                    <li class="dropdown m-l-20">
+                      <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                      <input placeholder="Buscar" type="text" class="browser-default search-field"
+                        (keyup)='filterDatatable($event)' aria-label="Search box">
+                    </li>
+                  </ul>
+                  <ul class="header-buttons">
+                    <li>
+                      <button mat-mini-fab color="primary" (click)="agregarMaterial()">
+                        <mat-icon class="col-white">add</mat-icon>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                <ngx-datatable #table class="ngx-datatable" [rows]="data" 
+                [headerHeight]="30"
+                [footerHeight]="30"                
+                [rowHeight]="'auto'"
+                [reorderable]="true"
+                columnMode="force"
+                [limit]="5">
+                  
+                <ngx-datatable-column name="Grupo">
+                  <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                    <td class="table-img padding-0">
+                     {{row.Grupo.Nombre}}
+                    </td>
+                  </ng-template>
+                 </ngx-datatable-column>
+                 <ngx-datatable-column name="Material" [width]="100">
+                  <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                    <td class="table-img padding-0">
+                     {{row.Material}}
+                    </td>
+                  </ng-template>
+                 </ngx-datatable-column>
+                 <ngx-datatable-column name="Texto Material">
+                  <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                    <td class="table-img padding-0">
+                     {{row.TextoMaterial}}
+                    </td>
+                  </ng-template>
+                 </ngx-datatable-column>
+                 <ngx-datatable-column name="Unidad">
+                  <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                    <td class="table-img padding-0">
+                     {{row.Unidad}}
+                    </td>
+                  </ng-template>
+                 </ngx-datatable-column>
+           
+
+                  <ngx-datatable-column name="Acciones" [sortable]="false" [width]="120">
+                    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <span>
+                    
+                        <button class="btn tblActnBtn h-auto azul-icon" (click)='editaMaterial(row)' matTooltip="Editar"  >
+                          <mat-icon>edit</mat-icon>
+                        </button> 
+                        <button class="btn tblActnBtn h-auto rojo-icon" (click)='desactivaMaterial(row)' matTooltip="Desactivar"  >
+                       <mat-icon>remove_circle_outline</mat-icon>
+                        </button> 
+                      
+                
+                        
+
+                      </span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  
+                  <ngx-datatable-footer>
+                    <ng-template 
+                      let-curPage="curPage" 
+                      let-offset="offset" 
+                      let-pageSize="pageSize" 
+                      let-rowCount="rowCount" 
+                      let-selectedCount="selectedCount" 
+                      ngx-datatable-footer-template>
+                    <datatable-pager
+                      [pagerLeftArrowIcon]="'datatable-icon-left'"
+                      [pagerRightArrowIcon]="'datatable-icon-right'"
+                      [pagerPreviousIcon]="'datatable-icon-prev'"
+                      [pagerNextIcon]="'datatable-icon-skip'"
+                      [page]="curPage"
+                      [size]="pageSize"
+                      [count]="rowCount"
+                      [hidden]="!((rowCount / pageSize) > 1)"
+                      (change)="table.onFooterPage($event)">
+                    </datatable-pager>
+                    </ng-template>
+   
+                  </ngx-datatable-footer>
+                </ngx-datatable>
+              </div>
+            </div>
+<!--             <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                  <div class="header">
+                    <h2>Subir archivo de Materiales</h2>
+                  </div>
+                  <div class="body">
+                    <div class="example-container">
+                      <form [formGroup]="fileUploadForm">
+                        <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5">
+                            <app-file-upload formControlName="uploadFile"></app-file-upload>
+                          </div>
+                        </div>
+                        <button class="btn-space" mat-raised-button  style="float: right !important;"  color="primary" (click)="cargarArchivo()">
+                          <mat-icon>attach_file</mat-icon>  Cargar Archivo</button>                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <swal #MaterialSw title="Material" width="85vw" 
+      [confirmButtonText]="'Guardar'"
+      [cancelButtonText]="'Cancelar'"
+      [showCancelButton]="true"
+      (confirm)="guardaMaterial()">
+      <div style="max-height: 80vh; overflow: auto;" *swalPortal="undefined" >
+        <app-form-material [material]="materialForm"></app-form-material>
+      </div>
+</swal>
