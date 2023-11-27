@@ -4,8 +4,7 @@ import { MainLayoutComponent } from './layout/app-layout/main-layout/main-layout
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './core/guard/auth.guard';
-import { Rol } from 'src/models/catalogos';
-
+import { Rol } from 'src/models/modelos';
 const routes: Routes = [
   {
     path: '',
@@ -17,30 +16,12 @@ const routes: Routes = [
         path: 'admin',
         canActivate: [AuthGuard],
         data: {
-          role: Rol.Admin,
+          role: Rol.Administrador,
         },
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
       },
-      {
-        path: 'coordinador',
-        canActivate: [AuthGuard],
-        data: {
-          role: Rol.Coordinador,
-        },
-        loadChildren: () =>
-          import('./coordinador/coordinador.module').then((m) => m.CoordinadorModule),
-      },
-      {
-        path: 'almacenista',
-        canActivate: [AuthGuard],
-        data: {
-          role: Rol.Almacenista,
-        },
-        loadChildren: () =>
-          import('./almacenista/almacenista.module').then((m) => m.AlmacenistaModule),
-      },
-      {
+    /*   {
         path: 'solicitante',
         canActivate: [AuthGuard],
         data: {
@@ -59,7 +40,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./capturista/capturista.module').then((m) => m.CapturistaModule),
       },
-
+ */
       // Extra components
       {
         path: 'extra-pages',

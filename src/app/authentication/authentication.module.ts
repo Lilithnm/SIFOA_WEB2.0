@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import {MatListModule} from '@angular/material/list';
+import { LoginInteraccionComponent } from './login-interaccion/login-interaccion.component';
 
 
 
@@ -25,6 +26,7 @@ import {MatListModule} from '@angular/material/list';
     SigninComponent,
     SignupComponent,
     LockedComponent,
+    LoginInteraccionComponent,
     ForgotPasswordComponent,
   ],
   imports: [

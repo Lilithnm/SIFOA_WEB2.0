@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Server } from '../../environments/global';
-import { BaseModel } from '../../models/catalogos';
 
 const HTTPOPTIONS = {
   headers: new HttpHeaders({
@@ -15,39 +13,21 @@ const HTTPOPTIONS = {
 export class CatalogoService {
 
   strApi = '/api/Catalogos';
-  constructor(private http: HttpClient) { }
+  urlServer:string|null = "";
 
-    ObtenerCatalogo(obj: BaseModel, tipo: number): Observable<any> {
-      return this.http.post<any>(Server + this.strApi + '/Obtener/' + tipo, obj , HTTPOPTIONS);
+  constructor(private http: HttpClient) { 
+  }
+
+
+    ObtenerCatalogo(obj: string, tipo: number): Observable<any> {
+      this.urlServer = localStorage.getItem('Server');
+      return this.http.post<any>(this.urlServer + this.strApi + '/Obtener/' + tipo, JSON.stringify(obj) , HTTPOPTIONS);
     }
 
     GuardarCatalogo(obj: string,  tipo: number): Observable<number> {
-      return this.http.post<number>(Server + this.strApi + '/Crear/' + tipo, JSON.stringify(obj) ,HTTPOPTIONS);
+      this.urlServer = localStorage.getItem('Server');
+      return this.http.post<number>(this.urlServer + this.strApi + '/Crear/' + tipo, JSON.stringify(obj) ,HTTPOPTIONS);
     }
-
-    
-   /*public enum CatalogoEnum
-    {
-        Elemento,
-        Pais,
-        Estado,
-        Municipio,
-        Centro,
-        TipoExpediente,
-        TipoJuicio,
-        TipoPersonaje,
-        TipoAnexo,
-        Banco,
-        Materia,
-        Sistema,
-        CentrosCosto,
-        CentrosDgti,
-        CentrosRH,
-        Acreedor,
-        RamosIndustriales,
-        TiposTransferencia,
-        Concepto --18*/
-    
 
 }
 

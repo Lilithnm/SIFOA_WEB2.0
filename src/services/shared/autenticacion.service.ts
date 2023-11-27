@@ -5,8 +5,8 @@ import { map } from 'rxjs/operators';
 
 import { Router } from '@angular/router';
 import { Server } from '../../environments/global';
-import { TicketModel, UsuarioMinModel, UsuarioModel } from '../../models/catalogos';
 import { Functions } from 'src/tools/functions';
+import { TicketModel, UsuarioMinModel, UsuarioModel } from 'src/models/modelos';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',    
@@ -44,7 +44,7 @@ export class AutenticacionService {
 
 
   Login(obj: UsuarioMinModel): Observable<UsuarioModel> {
-    return this.http.post<UsuarioModel>(Server + '/api/Auth/Login', obj, httpOptions)
+    return this.http.post<UsuarioModel>(Server + '/api/Usuario/Login', obj, httpOptions)
       .pipe(map( resp => {
         if (resp['Token']) {
            this.GuardarToken( resp);
@@ -57,12 +57,6 @@ export class AutenticacionService {
     const dthoy = new Date();
     dthoy.setSeconds( 3600 );
     localStorage.setItem('E', dthoy.getTime().toString());
-  /*  this.strToken = resp.Token;
-    localStorage.setItem('I', JSON.stringify(resp.Identificador));
-    localStorage.setItem('UsrHy', resp.Nombre);
-    localStorage.setItem('T', resp.Token);
-    localStorage.setItem('Ti', JSON.stringify(resp.Tickets));*/
-    //resp.Rol = this.fnFunctions.clasificaRol(resp.Tickets);
     localStorage.setItem('currentUser', JSON.stringify(resp));
     this.currentUserSubject.next(resp);
   }

@@ -57,18 +57,18 @@
 
   </div>
 </div>
-
 <swal #test title="Plataformas" [showConfirmButton]="false" [showCancelButton]="true" [cancelButtonText]="'Cancelar'"
-width="50vw" class="zpers">
-  <div style="max-height: 50vh; overflow: hidden;" *swalPortal="undefined" class="alert">
-      <mat-list style="border-bottom: #bcc7d2; border-bottom-style: solid;" >
-          <div *ngFor="let ticket of Tickets">
-              <mat-list-item class="seleccion" style="height: 100px; border: #bcc7d2; border-style: solid; border-bottom-style: unset;"  (click)="centroSeleccionado(ticket.Oficina.Identificador)" >
-                  <div style="display: flex; align-items: center; flex-wrap: wrap; flex-direction: row;">
-                      <span>{{ticket.Oficina.Nombre}}</span>
-                  </div>
-              </mat-list-item>
-          </div>
-      </mat-list>
-  </div>
+    width="50vw" class="zpers">
+    <div style="max-height: 50vh; overflow: hidden;" *swalPortal="undefined" class="alert">
+        <mat-list style="border-bottom: #bcc7d2; border-bottom-style: solid;" >
+            <div *ngFor="let ticket of Tickets">
+                <mat-list-item class="seleccion" style="height: 100px; border: #bcc7d2; border-style: solid; border-bottom-style: unset;"  (click)="centroSeleccionado(ticket.Oficina.Identificador)" >
+                    <div style="display: flex; align-items: center; flex-wrap: wrap; flex-direction: row;">
+                        <span>{{ticket.Oficina.Nombre}}</span>
+                    </div>
+                </mat-list-item>
+            </div>
+        </mat-list>
+
+    </div>
 </swal>

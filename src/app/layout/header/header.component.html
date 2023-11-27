@@ -19,52 +19,7 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <!-- #START# Notifications-->
-        <li>
-          <button mat-button [matMenuTriggerFor]="notificationMenu" class="nav-notification-icons"  >
-              <mat-icon class="iconoblanco" [matBadge]="notifications.length"  matBadgeSize="small" matBadgeColor="warn">notifications_active</mat-icon>
-            </button>
-          <mat-menu #notificationMenu="matMenu" class="nfc-menu">
-            <div class="nfc-header">
-              <h5 class="mb-0">Notificaciones</h5>
-<!--               <a class="nfc-mark-as-read">Mark all as read</a>
- -->            </div>
-            <div class="nfc-dropdown">
-              <ng-scrollbar style="height: 350px" visibility="hover">
-                <div class="noti-list header-menu">
-                  <div class="menu">
 
-                    <div>
-                      <button mat-menu-item *ngFor="let notification of notifications"  class="msg-unread">
-                        
-                          <span class="table-img msg-user ">
-                            <i class="material-icons-two-tone nfc-type-icon nfc-blue"
-                             >{{notification.Icono}}</i>
-                          </span>
-                          <a [routerLink] = "[notification.Url]">
-                          <span class="menu-info texto">
-                            <span class="menu-title">{{notification.Texto}}</span>
-                            <span class="menu-desc mt-2">
-                              <i class="material-icons">access_time</i> {{formatFecha(notification.FechaHora)}}
-                            </span>
-                          </span>
-                        </a>
-                          <span class="nfc-close"  (click)="leida(notification)">
-                            <app-feather-icons [icon]="'x'" [class]="'user-menu-icons cerrar'" ></app-feather-icons>
-                          </span>
-
-          
-                      </button>
-
-                      
-
-                    </div>
-                  </div>
-                </div>
-              </ng-scrollbar>
-            </div>
-          </mat-menu>
-        </li>
         <!-- #END# Notifications-->
   <!--          <li class="nav-item">
 

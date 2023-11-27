@@ -7,13 +7,12 @@ import {
 } from '@angular/forms';
 import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroyAdapter';
 import { AutenticacionService } from 'src/services/shared/autenticacion.service';
-import { Rol, TicketModel, UsuarioMinModel, UsuarioModel } from 'src/models/catalogos';
 import Swal from 'sweetalert2';
 import { Functions } from 'src/tools/functions';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { CentrosService } from 'src/services/shared/centros.service';
-import { CentrosModel } from 'src/models/generales';
 import { tick } from '@angular/core/testing';
+import { Rol, TicketModel, UsuarioMinModel, UsuarioModel } from 'src/models/modelos';
+import { CentrosService } from 'src/services/sifoa/centros.service';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -42,6 +41,8 @@ export class SigninComponent
     private fnFunctions: Functions
   ) {
     super();
+    
+    localStorage.clear();
   }
 
   ngOnInit() {
@@ -141,9 +142,9 @@ export class SigninComponent
 
 
           console.log(this.svcAuth.currentUserValue)
-          if (role == Rol.Admin ) {
+          if (role == Rol.Administrador ) {
             this.router.navigate(['/admin/dashboard/main']);
-          } else if (role == Rol.Coordinador) {
+          }/* else if (role == Rol.Coordinador) {
             this.router.navigate(['/coordinador/dashboard']);
           } else if (role == Rol.Solicitante ) {
             this.router.navigate(['/solicitante/dashboard']);
@@ -153,7 +154,7 @@ export class SigninComponent
             this.router.navigate(['/almacenista/dashboard']);
           } else {
             this.router.navigate(['/authentication/signin']);
-          }  
+          }  */
      /*   }
         else{        
           localStorage.setItem("session", JSON.stringify(this.svcAuth.currentUserValue));

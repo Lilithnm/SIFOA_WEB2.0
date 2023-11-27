@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { Rol, TicketModel } from 'src/models/catalogos';
+import { Rol, TicketModel } from 'src/models/modelos';
 @Injectable({
   providedIn: 'root'
 })
@@ -112,11 +112,33 @@ export class Functions {
 
   public clasificaRol(tickets: TicketModel): Rol{
 
-    let rolesSolicitud = [4]; //1
-    let rolesCaptura = [5]; //1
-    let rolesCoordina = [2];//2
-    let rolesAdmin=[1];//3
-    let rolesAlmacenista=[3];//3
+   /* export enum Rol {
+      Administrador = "Administrador",
+      Juez =  "Juez", 
+      Secretario = "Secretario",
+      Oficial = "Oficial Judicial",
+      Actuarios = "Central de Actuarios",
+      Oficialia = "Oficialia de Partes",
+      Auditor = "Auditor",
+      Visitador = "Visitador",
+      JefeUnidad = "Jefe de Unidad de Causa y Gestión",
+      Gestion = "Gestión",
+      ESala = "Encargado de Sala"    
+    }*/
+
+
+    let rolesAdmin=[6];
+    let rolesJuez = [7];
+    let rolesSecretario = [13];
+    let rolesOficial = [5];
+    let rolesActuarios = [65];
+    let rolesOficialia =[67];
+    let rolesAuditor=[64];
+    let rolesVisitador =[52];
+    let rolesJefeUnidad =[15];
+    let rolesGestion =[17];
+    let rolesESala =[8];
+
 
     let roles: number[]=[];
 
@@ -124,21 +146,36 @@ export class Functions {
 
 
     if(rolesAdmin.some(r=> (roles.includes(r)))){
-      return Rol.Admin;
+      return Rol.Administrador;
     }
-    else if(rolesCoordina.some(r=> (roles.includes(r)))){
-      return Rol.Coordinador
+    else if(rolesJuez.some(r=> (roles.includes(r)))){
+      return Rol.Juez
     }
-    else if(rolesSolicitud.some(r=> (roles.includes(r))) ){
-      return Rol.Solicitante
+    else if(rolesSecretario.some(r=> (roles.includes(r))) ){
+      return Rol.Secretario
     }
-    else if(rolesAlmacenista.some(r=> (roles.includes(r))) ){
-      return Rol.Almacenista
+    else if(rolesOficial.some(r=> (roles.includes(r))) ){
+      return Rol.Oficial
     }
-    else if(rolesCaptura.some(r=> (roles.includes(r))) ){
-      return Rol.Capturista
+    else if(rolesActuarios.some(r=> (roles.includes(r))) ){
+      return Rol.Actuarios
     }
-    return Rol.Todos;
+    else if(rolesOficialia.some(r=> (roles.includes(r))) ){
+      return Rol.Oficialia
+    }
+    else if(rolesAuditor.some(r=> (roles.includes(r))) ){
+      return Rol.Auditor
+    }
+    else if(rolesVisitador.some(r=> (roles.includes(r))) ){
+      return Rol.Visitador
+    }
+    else if(rolesJefeUnidad.some(r=> (roles.includes(r))) ){
+      return Rol.JefeUnidad
+    }
+    else if(rolesGestion.some(r=> (roles.includes(r))) ){
+      return Rol.Gestion
+    }
+    return Rol.Oficial
   }
 
 }

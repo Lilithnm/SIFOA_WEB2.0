@@ -15,9 +15,7 @@ import { LanguageService } from 'src/app/core/service/language.service';
 import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroyAdapter';
 import { InConfiguration } from 'src/app/core/models/config.interface';
 import { AutenticacionService } from 'src/services/shared/autenticacion.service';
-import { Rol } from 'src/models/catalogos';
-import { NotificacionesService } from 'src/services/materiales/notificaciones.service';
-import { NotificacionModel } from 'src/models/main';
+import { Rol } from 'src/models/modelos';
 
 @Component({
   selector: 'app-header',
@@ -42,7 +40,6 @@ export class HeaderComponent
   oficina="";
   
 
-  notifications: NotificacionModel[] =[]
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -52,31 +49,10 @@ export class HeaderComponent
     private authService: AutenticacionService,
     private router: Router,
     public languageService: LanguageService,
-    private datePipe: DatePipe,
-    private svcNotificaciones: NotificacionesService
+    private datePipe: DatePipe
   ) {
     super();
 
-    let nuevaNoti = new NotificacionModel(0);
-    nuevaNoti.UsuarioID = this.authService.currentUserValue.Identificador;
-    if(this.authService.currentUserValue.Rol == Rol.Solicitante){
-      nuevaNoti.Tipo=1
-    }
-    if(this.authService.currentUserValue.Rol == Rol.Coordinador || this.authService.currentUserValue.Rol == Rol.Admin){
-      nuevaNoti.Tipo=2
-    }
-
-
-    this.svcNotificaciones.ObtenerNoti(nuevaNoti).subscribe({
-      next: (res) => {
-        if(res){
-          this.notifications= res;
-        }
-      },
-      error: (error) => {
-      },
-    });
-    
 
 
 
@@ -91,39 +67,17 @@ export class HeaderComponent
       return "";
     }
   }
-  leida(notificacion: NotificacionModel){
-    console.log(notificacion)
-   
-    this.svcNotificaciones.Leida(notificacion).subscribe({
-      next: (res) => {
-        if(res){
-          this.notifications= res;
-          console.log(this.notifications)
-        }else{
-          this.notifications =[]
-        }
-      },
-      error: (error) => {
-      },
-    });
-    
-
-
-
-
-  }
-
   ngOnInit() {
     this.config = this.configService.configData;
 
     const userRole = this.authService.currentUserValue.Rol;
     this.oficina = this.authService.currentUserValue.Tickets[0].Descripcion
 
-    if (userRole === Rol.Admin) {
+    if (userRole === Rol.Administrador) {
       this.homePage = 'admin/dashboard/main';
-    } else if (userRole === Rol.Coordinador) {
+    } else if (userRole === Rol.Juez) {
       this.homePage = 'coordinador/dashboard';
-    } else if (userRole === Rol.Solicitante) {
+    } else if (userRole === Rol.Secretario) {/////////modificaroles///
       this.homePage = 'solicitante/dashboard';
     } else {
       this.homePage = 'admin/dashboard/main';
