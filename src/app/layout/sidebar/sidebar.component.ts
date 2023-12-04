@@ -12,8 +12,8 @@ import {
 } from '@angular/core';
 import { ROUTES } from './sidebar-items';
 import { RouteInfo } from './sidebar.metadata';
-import { Rol } from 'src/models/catalogos';
 import { AutenticacionService } from 'src/services/shared/autenticacion.service';
+import { Rol } from 'src/models/modelos';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -80,16 +80,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.sidebarItems = ROUTES.filter(
         (x) => x.role.indexOf(userRole) !== -1 || x.role.indexOf('All') !== -1
       );
-      if (userRole === Rol.Admin) {
-        this.userType = Rol.Admin;        
-        this.oficina =     "Sistema de Solicitud de Materiales"
-      } else if (userRole === Rol.Coordinador) {
-        this.userType = Rol.Coordinador;        
+      if (userRole === Rol.Administrador) {
+        this.userType = Rol.Administrador;        
+        this.oficina =     "Sistema Integral de Fondo Auxiliar"
+      } else if (userRole === Rol.Juez) {
+        this.userType = Rol.Juez;        
         this.oficina =    "Zona "+ localStorage.getItem("Zona");
-      } else if (userRole === Rol.Solicitante) {
-        this.userType = Rol.Solicitante;        
+      } else if (userRole === Rol.Secretario) {
+        this.userType = Rol.Secretario;        
         this.oficina =     this.authService.currentUserValue.Tickets[0].Centro.CentroMateriales.Descripcion
-      }  else if (userRole === Rol.Capturista) {
+      } /*  else if (userRole === Rol.Capturista) {
         this.userType = Rol.Capturista;        
         this.oficina =     this.authService.currentUserValue.Tickets[0].Centro.CentroMateriales.Descripcion
       } else if (userRole === Rol.Almacenista) {
@@ -97,7 +97,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         this.oficina =    "Zona "+ localStorage.getItem("Zona");
       }else {
         this.userType = Rol.Admin;
-      }
+      } */
     }
 
     this.initLeftSidebar();

@@ -5,9 +5,8 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { Role } from 'src/app/core/models/role';
-import { Rol } from 'src/models/catalogos';
 import { AutenticacionService } from 'src/services/shared/autenticacion.service';
+import { Rol } from 'src/models/modelos';
 @Component({
   selector: 'app-locked',
   templateUrl: './locked.component.html',
@@ -43,11 +42,11 @@ export class LockedComponent implements OnInit {
       return;
     } else {
       const role = this.authService.currentUserValue.Rol;
-      if (role === Rol.Todos || role === Rol.Admin) {
+      if (role === Rol.Administrador) {
         this.router.navigate(['/admin/dashboard/main']);
-      } else if (role === Rol.Coordinador) {
+      } else if (role === Rol.Juez) {
         this.router.navigate(['/coordinador/dashboard']);
-      } else if (role === Rol.Solicitante) {
+      } else if (role === Rol.Secretario) {
         this.router.navigate(['/solicitante/dashboard']);
       } else {
         this.router.navigate(['/authentication/signin']);

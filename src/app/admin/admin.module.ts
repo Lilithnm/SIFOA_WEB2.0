@@ -2,14 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
-import { AdministraMaterialesComponent } from './administra-materiales/administra-materiales.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ComponentsModule } from '../shared/components/components.module';
-import { AdministraSolicitudesComponent } from './administra-solicitudes/administra-solicitudes.component';
-import { AdministraPeriodosComponent } from './administra-periodos/administra-periodos.component';
-import { SurtePedidoComponent } from './surte-pedido/surte-pedido.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgScrollbarModule } from 'ngx-scrollbar';
@@ -32,15 +28,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SharedModule } from '../shared/shared.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { FormMaterialComponent } from './administra-materiales/form-material/form-material.component';
 
 @NgModule({
-  declarations: [AdministraMaterialesComponent,  
-    AdministraSolicitudesComponent,
+  declarations: [
+/*     //AdministraMaterialesComponent,  
+   // AdministraSolicitudesComponent,
     SurtePedidoComponent,
-    AdministraPeriodosComponent,
+  //  AdministraPeriodosComponent,
     FormMaterialComponent,
-    AdministraMaterialesComponent],
+   // AdministraMaterialesComponent */
+  ],
   imports: [
     CommonModule, 
     SweetAlert2Module.forRoot(),

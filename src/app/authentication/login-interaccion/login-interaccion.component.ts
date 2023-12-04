@@ -158,7 +158,7 @@ export class LoginInteraccionComponent
   armarBusqueda(Centro: CentrosModel): ExpedienteBaseModel {
     const busquedaExpediente = new ExpedienteBaseModel();
     if((+atob(this.fnFunctions.verficarLargo(this.Sistema))) == 17){
-
+       var require: any
       const bigintConversion = require('bigint-conversion')
 
       busquedaExpediente.Centro = Centro;

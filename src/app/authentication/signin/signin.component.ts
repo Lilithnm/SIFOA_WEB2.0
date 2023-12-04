@@ -129,15 +129,14 @@ export class SigninComponent
 
   centroSeleccionado(ticket: TicketModel): void {
 
-        let centro = ticket.Centro;        
+        let oficina = ticket.Oficina;        
         this.testSwal.close()
         this.svcAuth.asignaToken(ticket);
+        console.log(ticket)
 
      //   if(ticket.Plataforma.Identificador == 1){
-          localStorage.setItem('Oficina',centro.CentroMateriales.Descripcion);
-          localStorage.setItem('Centro',centro.Identificador.toString());
-          localStorage.setItem('Periodo',centro.Periodo.toString());
-          localStorage.setItem('Zona',centro.CentroMateriales.Zona.toString());
+          localStorage.setItem('Oficina',oficina.Nombre.toString());
+          localStorage.setItem('Centro', oficina.Identificador.toString());
           const role = this.svcAuth.currentUserValue.Rol;
 
 
