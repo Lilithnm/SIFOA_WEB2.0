@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { MultaModel } from 'src/app/models/main';
+import { MultaModel } from 'src/models/main';
 
 const HTTPOPTIONS = {
   headers: new HttpHeaders({

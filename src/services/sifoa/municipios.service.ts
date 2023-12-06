@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { MunicipioModel } from 'src/app/models/catalogos';
+import { MunicipioModel } from 'src/models/catalogos';
 
 const HTTPOPTIONS = {
   headers: new HttpHeaders({
@@ -22,6 +21,7 @@ export class MunicipiosService {
 
   obtenerMuncipios(): Observable<MunicipioModel[]> {
     const body = '{"Identificador": 0}';
+    this.urlServer = localStorage.getItem('Server');
     return this.http.post<MunicipioModel[]>(this.urlServer + '/api/Catalogos/Obtener/3', JSON.stringify(body), HTTPOPTIONS);
   }
 

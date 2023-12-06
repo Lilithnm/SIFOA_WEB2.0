@@ -10,13 +10,23 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { ComponentsModule } from './../../shared/components/components.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { SpinnerComponent } from 'src/app/shared/spinner.component';
+import { MatOption, MatOptionModule } from '@angular/material/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
+import {  MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
-    MainComponent
+    MainComponent,
+    SpinnerComponent,
   ],
   imports: [
+    MatAutocompleteModule,
+    MatCheckboxModule,
     CommonModule,
+    NgxSpinnerModule,
     DashboardRoutingModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
@@ -28,6 +38,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatMenuModule,
     ComponentsModule,
     SharedModule,
+    MatOptionModule
   ],
 })
 export class DashboardModule {}

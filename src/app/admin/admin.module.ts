@@ -28,9 +28,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SharedModule } from '../shared/shared.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { SpinnerComponent } from '../shared/spinner.component';
 
 @NgModule({
   declarations: [
+    
 /*     //AdministraMaterialesComponent,  
    // AdministraSolicitudesComponent,
     SurtePedidoComponent,
@@ -40,6 +42,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   ],
   imports: [
     CommonModule, 
+    MatAutocompleteModule,
+    NgxSpinnerModule,
     SweetAlert2Module.forRoot(),
     ComponentsModule,
     AdminRoutingModule, 

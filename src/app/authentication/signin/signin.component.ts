@@ -13,6 +13,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { tick } from '@angular/core/testing';
 import { Rol, TicketModel, UsuarioMinModel, UsuarioModel } from 'src/models/modelos';
 import { CentrosService } from 'src/services/sifoa/centros.service';
+import { Server, ServerPruebas } from 'src/environments/global';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -133,6 +134,15 @@ export class SigninComponent
         this.testSwal.close()
         this.svcAuth.asignaToken(ticket);
         console.log(ticket)
+        
+        if(oficina.Produccion==1){
+          localStorage.setItem('Server',Server);
+          localStorage.setItem('Ambiente','Productivo');
+        }else{
+          localStorage.setItem('Server',ServerPruebas);
+          localStorage.setItem('Ambiente','Pruebas');
+        }
+
 
      //   if(ticket.Plataforma.Identificador == 1){
           localStorage.setItem('Oficina',oficina.Nombre.toString());

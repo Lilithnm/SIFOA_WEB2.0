@@ -1,4 +1,4 @@
-import { BaseModel, TipoExpedienteModel, CentrosModel, EstadoModel, MunicipioModel } from './catalogos';
+import { BaseModel, TipoExpedienteModel, CentrosModel, EstadoModel, MunicipioModel, SistemasModel } from './catalogos';
 
 export class ExpedienteBaseModel {
     Identificador!: number;
@@ -8,7 +8,8 @@ export class ExpedienteBaseModel {
     Anio!: number;
     TipoExpediente!: TipoExpedienteModel;
     Centro!: CentrosModel;
-    Sistema!: ESistemas;
+    Sistema!: any;
+    //ESistema!: ESistemas;
     Acusado!:string;
     Ofendido!: string;    
     Nomenclatura!: string;

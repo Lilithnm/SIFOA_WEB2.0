@@ -140,5 +140,5 @@ export class PaisModel extends BaseModel
 
 export class SistemasModel extends BaseModel
 {
-
+    IdCentroTrabajo!:number;
 }
