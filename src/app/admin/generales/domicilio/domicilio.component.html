@@ -1,0 +1,112 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#26c6da" type="ball-fall" [fullScreen]="false">
+    <p style="font-size: 20px; color: white">Buscando...</p>
+  </ngx-spinner>
+  
+<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="plus-card">
+    <br>
+    <div>
+        <form [formGroup]="form">
+            
+            <div fxLayout="row" fxLayoutAlign="space-around" >
+
+                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>
+                            Estado
+                        </mat-label>
+                        <input type="text" #estado matInput [matAutocomplete]="autoEstado" formControlName="Estado">
+                        <mat-autocomplete [panelWidth]="'500px'" #autoEstado="matAutocomplete" [displayWith]="getOptionTextEstado">
+                            <mat-option *ngFor="let estado of estadosSync | async; index as i" [value]="estado">
+                                {{estado.Nombre}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                
+                <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Municipio
+                            </mat-label>
+                            <input type="text" #municipio matInput [matAutocomplete]="auto" formControlName="Municipio">
+                            <mat-autocomplete [panelWidth]="'500px'" #auto="matAutocomplete" [displayWith]="getOptionText">
+                                <mat-option *ngFor="let municipio of municipiosSync | async; index as i" [value]="municipio">
+                                    {{municipio.Descripcion}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+            </div>
+
+
+            <div fxLayout="row" fxLayoutAlign="space-around">
+                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Calle
+                            </mat-label>
+                            <input  matInput name="Calle"  formControlName="Calle">
+                        </mat-form-field>
+                    </div>   
+                    <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                    <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                        <mat-form-field appearance="outline" >
+                            <mat-label>
+                                Colonia
+                            </mat-label>
+                            <input  matInput name="Colonia"  formControlName="Colonia">
+                        </mat-form-field>
+                    </div> 
+            </div>
+            
+            <div fxLayout="row" fxLayoutAlign="space-around">
+     
+                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                    <mat-form-field appearance="outline">
+                        <mat-label>
+                            NumeroExterno
+                        </mat-label>
+                        <input  matInput name="NumeroExterno"  formControlName="NumeroExterno">
+                    </mat-form-field>
+                </div> 
+                    <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                     <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Numero Interno
+                            </mat-label>
+                            <input  matInput name="NumeroInterno"  formControlName="NumeroInterno">
+                        </mat-form-field>
+                    </div> 
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around">
+     
+            <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                    <mat-checkbox formControlName="Procesal">
+                    Procesal
+                  </mat-checkbox>
+
+                </div> 
+                <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                 <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                    <mat-checkbox formControlName="Comun">
+                        Común
+                      </mat-checkbox>
+                 </div>
+            </div>
+
+
+
+            
+        </form>
+    </div>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button  cdkFocusInitial color="primary" (click)="agregar()" >Guardar</button>
+    <button mat-button mat-dialog-close (click)="cancelar()" >Cancelar</button>
+</div>
+
+
+
+

@@ -45,6 +45,12 @@ export class GeneralesService {
         this.urlServer = localStorage.getItem('Server');
         return this.http.post<BeneficiarioMinModel[]>(this.urlServer + '/api/Nomina/ObtenerBeneficiariosMin/'+nombre, JSON.stringify(body), HTTPOPTIONS);
     }
+
+    ObtenerListadoExpedientes(BusquedaExpediente: ExpedienteBaseModel): Observable<GeneralesModel[]> {
+      this.urlServer = localStorage.getItem('Server');
+      return this.http.post<GeneralesModel[]>(this.urlServer+ this.strApi + '/ObtenerTodos', BusquedaExpediente , HTTPOPTIONS);
+  }
+
   
 
 }

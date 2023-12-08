@@ -3,6 +3,7 @@ export interface RouteInfo {
   path: string;
   title: string;
   iconType: string;
+  expediente: boolean;
   icon: string;
   class: string;
   groupTitle: boolean;

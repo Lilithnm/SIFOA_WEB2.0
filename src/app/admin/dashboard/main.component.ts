@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Subject, map, startWith, takeUntil } from 'rxjs';
 import { BaseModel, CentrosModel, MunicipioModel, SistemasModel, TipoExpedienteModel } from 'src/models/catalogos';
-import { ExpedienteBaseModel } from 'src/models/generales';
+import { ExpedienteBaseModel, GeneralesModel } from 'src/models/generales';
 import { CatalogoService } from 'src/services/shared/catalogo.service';
 import { CentrosService } from 'src/services/sifoa/centros.service';
 import { GeneralesService } from 'src/services/sifoa/generales.service';
@@ -48,9 +49,12 @@ tipoExpedienteFiltrados: Observable<BaseModel[]> | undefined;
 ////**/ */
 
 expedienteBusqueda: ExpedienteBaseModel = new ExpedienteBaseModel();
+expedienteBusquedaTemp: ExpedienteBaseModel = new ExpedienteBaseModel();
 
+listaCoincidencias : GeneralesModel[] =[]
   constructor( private svcCentros: CentrosService,
                 private fb: FormBuilder, 
+                private router: Router,
                 private svcCatalogos: CatalogoService,
                 private svcGenerales: GeneralesService,
                 private svcSpinner: NgxSpinnerService,                
@@ -139,7 +143,9 @@ expedienteBusqueda: ExpedienteBaseModel = new ExpedienteBaseModel();
             return juzgadoDesc ? this._filterJuzgado(value as string) : this.juzgados.slice();
           }),
         );
-      
+
+        this.form.patchValue({'Centro':this.juzgados? this.juzgados[0] : null});
+        this.filtraSistemas(this.juzgados[0])        
   }
 
 
@@ -173,6 +179,9 @@ filtraSistemas(centro: CentrosModel){
         }),
       );
    
+
+      this.form.patchValue({'Sistema':this.sistema? this.sistema[0] : null});
+      this.filtraTiposExp(this.sistema[0]);
 }
 
 displaySistemaFn(model: SistemasModel): string {
@@ -205,6 +214,8 @@ filtraTiposExp(sistema: BaseModel){
         }),
       );
    
+
+      this.form.patchValue({'TipoExpediente':this.tipoExpediente? this.tipoExpediente[0] : null});
 }
 displayTipoExpFn(model: BaseModel): string {
   return model && model.Descripcion ? model.Descripcion : '';
@@ -222,10 +233,27 @@ omitirFn(){
 }
 
 
-  ValidarBusquedaExpediente(){
+Buscar(){
+  if(this.ValidarBusquedaExpediente()){//si es valido
+    if(this.form.get('omitirTipoExp')?.value){//s
+        this.ObtenerListadoExpedientes()
+    }
+    else{
+      this.ObtenerValidarExpediente()
+    }
+  }
+}
 
-      this.expedienteBusqueda = <ExpedienteBaseModel>this.form.getRawValue();   
-      console.log(this.expedienteBusqueda)
+  ValidarBusquedaExpediente():boolean{
+    this.svcSpinner.show( )
+      this.expedienteBusquedaTemp = <ExpedienteBaseModel>this.form.getRawValue();   
+
+      this.expedienteBusqueda.Centro = this.expedienteBusquedaTemp.Centro;
+      this.expedienteBusqueda.Identificador = 0;
+      this.expedienteBusqueda.Sistema = this.expedienteBusquedaTemp.Sistema.Identificador;
+      this.expedienteBusqueda.TipoExpediente = this.expedienteBusquedaTemp.TipoExpediente
+      this.expedienteBusqueda.Nomenclatura = this.expedienteBusquedaTemp.Nomenclatura;
+
       //Variables para validación
       let v_PasoValidacion = true;
       let sistemasPenal=[10,11,14,18];
@@ -233,7 +261,6 @@ omitirFn(){
       //Validar el expediente
       if (sistemasPenal.includes(this.expedienteBusqueda.Sistema.Identificador))
       {
-        console.log("entra")
           if (this.expedienteBusqueda.Nomenclatura.includes("-"))
           {
               //Validar por el número del expediente
@@ -276,16 +303,24 @@ omitirFn(){
                       v_PasoValidacion = false;
                   }
           }
-          else
+         /* else
           {
               this.MostrarMensaje("El formato del expediente no es correcto, verificar por favor.");
               v_PasoValidacion = false;
           }
-
+          if (txt_GB_Expediente.Text.Split("/")[1].Length < 4)
+          {
+              MostrarMensaje("El año del expediente debe incluir 4 dígitos");
+          }
+          if (cbo_GB_Sistema.SelectedValue.ToString() == "10" || cbo_GB_Sistema.SelectedValue.ToString() == "11" || cbo_GB_Sistema.SelectedValue.ToString() == "14" || cbo_GB_Sistema.SelectedValue.ToString() == "18")
+          {
+              int.TryParse(txt_GB_Expediente.Text.Split("-")[1], out v_Numero);
+              int.TryParse(txt_GB_Expediente.Text.Split("-")[0].Substring(txt_GB_Expediente.Text.Split("-")[0].Length - 2, 2), out v_Anio);
+              v_Anio = v_Anio + 2000;
+          }*/
         }
 
-        
-      console.log(this.expedienteBusqueda)
+        return v_PasoValidacion
       //Variables para validación
       }
 
@@ -298,18 +333,52 @@ omitirFn(){
         
         }
 
+        ObtenerValidarExpediente(): void {
 
-        ObtenerValidarExpediente(busquedaExpediente: ExpedienteBaseModel): void {
-
-          this.svcGenerales.ObtenerValidar(busquedaExpediente).subscribe({
+          this.svcGenerales.ObtenerValidar(this.expedienteBusqueda).subscribe({
             next: (res) => {
               if (res) {
-                 console.log(res)
               } else {
                Swal.fire({
                   text: 'Verifique, no se encuentra el expediente',
                   icon: 'info'
                 });
+                this.svcSpinner.hide()
+              }
+            },
+            error: (error) => {
+              Swal.fire({
+                text: "No se encontró",
+                icon: 'info'
+              });
+              this.svcSpinner.hide()
+            },
+          });          
+          this.svcSpinner.hide()
+          
+        }
+        
+        ObtenerListadoExpedientes(): void {
+
+          this.svcGenerales.ObtenerListadoExpedientes(this.expedienteBusqueda).subscribe({
+            next: (res) => {
+              if (res) {
+                 if(res.length==0){
+                  Swal.fire({
+                    text: 'No se encontraron coincidencias',
+                    icon: 'info'
+                  });
+                 }else{
+                  this.listaCoincidencias = res
+                  console.log(this.listaCoincidencias)
+                  this.svcSpinner.hide()
+                 }
+              } else {
+               Swal.fire({
+                  text: 'Verifique, no se encuentra el expediente',
+                  icon: 'info'
+                });
+                this.svcSpinner.hide()
               }
             },
             error: (error) => {
@@ -317,12 +386,18 @@ omitirFn(){
                 text: error,
                 icon: 'info'
               });
+              this.svcSpinner.hide()
             },
-          });
-          
+          });          
           
           
         }
-      
+
+        abrirExpediente(expediente: GeneralesModel){
+          localStorage.setItem("Generales", JSON.stringify(expediente));
+          localStorage.setItem("expAbierto", "1");
+          this.router.navigate(['admin/generales']);
+
+        }
 
 }

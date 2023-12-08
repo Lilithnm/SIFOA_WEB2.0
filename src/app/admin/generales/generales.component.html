@@ -1,0 +1,112 @@
+<div fxLayout="row wrap" >
+    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="plus-card">
+        <mat-card>
+            <mat-card-content>                        
+            <form>
+                <div fxLayout="row" fxLayoutAlign="space-around baseline">
+                    <div fxFlex.sm="70" fxFlex.lg="70" fxFlex="70">
+                        <mat-form-field appearance="outline">
+                            <mat-label style="color: #555555;">
+                                Juzgado
+                            </mat-label>
+                            <input style="color: #2d4e66;" [(ngModel)]="modGenerales.Expediente.Centro.Descripcion" disabled matInput name="inputCentroNombre">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                    <div fxFlex.sm="25" fxFlex.lg="25" fxFlex="25">
+                        <mat-form-field appearance="outline">
+                            <mat-label style="color: #555555;">
+                                Numero expediente
+                            </mat-label>
+                            <input style="color: #2d4e66;" [(ngModel)]="modGenerales.Expediente.Nomenclatura" disabled matInput name="inputClaveExpediente">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-around center">
+                    <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                        <mat-form-field appearance="outline">
+                            <mat-label style="color: #555555;">
+                                Tipo expediente
+                            </mat-label>
+                            <input style="color: #2d4e66;" [(ngModel)]="modGenerales.Expediente.TipoExpediente.Descripcion" disabled matInput name="inputTipoExpediente">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                    <div fxFlex.sm="50" fxFlex.lg="50" fxFlex="50">
+                        <mat-form-field appearance="outline">
+                            <mat-label style="color: #555555;">
+                                Fecha
+                            </mat-label>
+                            <input style="color: #2d4e66;" [(ngModel)]="modGenerales.Expediente.FechaCreacion" disabled matInput name="inputFecha">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" fxLayoutAlign="space-around flex-start">
+
+                    <div fxFlex.sm="50" fxFlex.lg="50" fxFlex="50">
+                        
+                   
+                        <h4>Personajes</h4> 
+                         <!-- 
+                        <div class="example-button-container agregarbtn" style="margin-left: 78%">
+                            <button mat-raised-button color="accent" aria-label="Agregar Personaje" (click)="agregar()">
+                            <mat-icon>person_add</mat-icon> Personaje
+                            </button>
+                        </div>
+                        <mat-selection-list style="border-bottom: #bcc7d2; border-bottom-style: solid;" #shoes [multiple]="false">
+                           <mat-list-option style="height: 70px; border: #bcc7d2; border-style: solid; border-bottom-style: unset;" 
+                            *ngFor="let personaje of modGenerales.Personajes" [value]="personaje.Identificador">
+                                <div style="display: flex; align-items: flex-start; flex-wrap: wrap; flex-direction: row;">
+                                    <mat-icon style="color: #2d4e66;">gavel</mat-icon>
+                                    <span>
+                                    {{personaje.Nombre + ' ' + personaje.Paterno + ' ' + personaje.Materno}} - 
+                                    {{personaje.TipoPersonaje.Descripcion}}
+                                </span>
+                                </div>
+                            </mat-list-option>
+                        </mat-selection-list>
+ -->
+       <!--                  <app-tabla-generica 
+                            (evnAccion)="controlarAcciones($event)" 
+                            [dataElements]="arrData" 
+                            [blnAcuse]=true
+                            [blnEditar]=false 
+                            [blnEliminar]=false
+                            [blnEditarEliminar]=true 
+                            [multasCol]=true   
+                            [anularCol]=true 
+                            [exportarDatos]=false  
+                            [displayedColumns]="modEncabezados" 
+                            textoAgregar="Agregar">
+                        </app-tabla-generica> -->
+
+                    </div>
+
+                    <div fxFlex.sm="2" fxFlex.lg="2" fxFlex="2"></div>
+                    <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+
+                        <h4>{{Delitos}}</h4>
+                        <mat-selection-list style="border-bottom: #bcc7d2; border-bottom-style: solid;" #shoes [multiple]="false">
+                            <mat-list-option style="height: 70px; border: #bcc7d2; border-style: solid; border-bottom-style: unset;" 
+                                *ngFor="let delito of modGenerales.Delitos" [value]="delito.Identificador">
+                                <div style="display: flex; align-items: flex-start; flex-wrap: wrap; flex-direction: row;">
+                                    <mat-icon style="color: #2d4e66;">gavel</mat-icon>
+                                    <span>{{delito.Nombre}}</span>
+                                </div>
+                            </mat-list-option>
+                        </mat-selection-list>
+                    </div>
+                </div>
+            </form>
+
+             </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<swal #Personajes title="Personaje" width="70vw" [showConfirmButton]="false">
+    <div style="max-height: 70vh; overflow: auto;"  class="alert alert-info">
+        <app-personajes></app-personajes>
+    </div>
+</swal>

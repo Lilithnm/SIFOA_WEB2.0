@@ -1,0 +1,8 @@
+<h1 mat-dialog-title style="text-align-last: center">{{data.Title}}</h1>
+<div mat-dialog-content style="text-align: justify;">{{data.Text}}</div>
+<div mat-dialog-actions style="place-content: center">
+  <button mat-raised-button color="warn" (click)="confirmado()" cdkFocusInitial>SI</button>
+  <button mat-raised-button color="primary" (click)="cerrarDialogo()">NO</button>
+</div>
+
+

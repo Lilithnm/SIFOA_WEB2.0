@@ -1,0 +1,126 @@
+<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="plus-card">
+    <div>
+        <form [formGroup]="form">
+
+            <div fxLayout="row" fxLayoutAlign="space-around">
+                    <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Nombre
+                            </mat-label>
+                            <input  matInput name="Nombre"  formControlName="Nombre">
+                        </mat-form-field>
+                    </div>   
+                    <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                    <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Paterno
+                            </mat-label>
+                            <input  matInput name="Paterno"  formControlName="Paterno">
+                        </mat-form-field>
+                    </div> 
+            </div>
+            
+            <div fxLayout="row" fxLayoutAlign="space-around">
+                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>
+                            Materno
+                        </mat-label>
+                        <input  matInput name="Materno"  formControlName="Materno">
+                    </mat-form-field>
+                </div> 
+                <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+
+                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                        <mat-form-field appearance="outline" >
+                            <mat-label>
+                                Tipo de Personaje
+                            </mat-label>
+                            <mat-select name="selectTipo" formControlName="TipoPersonaje" (selectionChange)="select($event.value)"  [compareWith]="compareCategoryObjects">
+                                <mat-option *ngFor="let tipo of tiposPersonaje" [value]="tipo">
+                                    {{tipo.Descripcion}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+            </div>
+            </form>
+            <div class="example-button-container agregarbtn" >
+                    <button mat-raised-button color="accent" aria-label="Agregar Domicilio" (click)="agregarDomicilio()" >
+                    <mat-icon>home</mat-icon>+ Domicilios
+                    </button>
+                </div>
+            </div>
+        
+            <mat-card>
+                <mat-card-content>
+                    <div class="row" >
+                        DOMICILIOS DEL PERSONAJE
+                        <div class="col-sm-12">    
+                            <div class="">
+                            <mat-nav-list>
+                                <mat-list-item >
+                                    <div class="etiqueta">
+                                       Municipio
+                                    </div>
+                                <div class="etiqueta" >
+                                    Calle
+                                </div>
+                                <div class="etiqueta">
+                                    Número exterior
+                                </div>
+                                <div class="eliminabtn">
+                                    Editar/eliminar
+                                </div>
+                                </mat-list-item>
+                            </mat-nav-list>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row" >
+                        <div class="col-sm-12">
+                            <mat-nav-list class="gradient-list">
+                                <mat-list-item *ngFor="let domicilio of domiciliosList">
+                                
+                                    <div class="etiqueta">
+                                        {{ domicilio.Municipio.Descripcion}}
+                                        </div>
+                                <div class="etiqueta">
+                                    {{domicilio.Calle}}
+                                </div>
+                                <div class="etiqueta">
+                                    {{ domicilio.NumeroExterno }}
+                                </div>
+                                <div class="eliminabtn">
+                                    <button mat-icon-button (click)="editarDomicilio(domicilio)">
+                                      <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button (click)="eliminarDomicilio(domicilio)">
+                                        <mat-icon>delete_forever</mat-icon>
+                                      </button>
+                                </div>
+
+
+                                </mat-list-item>
+                            </mat-nav-list>
+                            </div>
+                        </div>
+                </mat-card-content>
+              
+            </mat-card>
+            <div mat-dialog-actions align="end">
+                <button mat-button  cdkFocusInitial color="primary" (click)="agregar()" >Guardar</button>
+                <button mat-button mat-dialog-close (click)="cancelar()" >Cancelar</button>
+            </div>
+
+</div>
+<!-- <div mat-dialog-actions align="end">
+    <button mat-button  cdkFocusInitial color="primary" (click)="agregar()" >Guardar</button>
+    <button mat-button mat-dialog-close (click)="cancelar()" >Cancelar</button>
+</div>
+ -->
+
+
+

@@ -1,23 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { MainComponent } from './dashboard/main.component';
+import { GeneralesComponent } from './generales/generales.component';
 
 const routes: Routes = [
+  
   {
     path: 'dashboard',
-    loadChildren: () =>
-      import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
-  },/* 
-  {
-    path: 'admin-materiales',
+    component: MainComponent,
   },
   {
-    path: 'admin-solicitudes',
-    component: AdministraSolicitudesComponent,
+    path: 'generales',
+    component: GeneralesComponent,
   },
-  {
-    path: 'admin-centros',
-    component: AdministraPeriodosComponent,
-  }, */
 ];
 
 @NgModule({

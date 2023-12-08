@@ -1,6 +1,7 @@
 import { BaseModel, TipoExpedienteModel, CentrosModel, EstadoModel, MunicipioModel, SistemasModel } from './catalogos';
 
 export class ExpedienteBaseModel {
+    [x: string]: any;
     Identificador!: number;
     IdentificadorOrigen!: number;
     IdentificadorOrigenString!: string;
@@ -52,6 +53,9 @@ export class ExpedienteModel extends ExpedienteBaseModel {
     Materia!: string;
     Juicio!: JuicioModel;
     Salida!: SalidaModel;
+    TotalAnexos!: number;
+    TotalGarantias!: number;
+    TotalMultas!: number;
 }
 
 export class PersonajeModel {
@@ -97,12 +101,11 @@ export class GeneralesModel
     Expediente!: ExpedienteModel;
     Personajes!: PersonajeModel[];
     Delitos!: DelitosModel[];
-    Estatus!: number;
-}
+    Estatus!: number
+};
 
-export class DelitosModel
+export class DelitosModel extends BaseModel
 {
     IdentificadorOrigen!: number;
     IdExpediente!: number;
-    Nombre!: string;
 }

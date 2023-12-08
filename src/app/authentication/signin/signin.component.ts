@@ -152,7 +152,7 @@ export class SigninComponent
 
           console.log(this.svcAuth.currentUserValue)
           if (role == Rol.Administrador ) {
-            this.router.navigate(['/admin/dashboard/main']);
+            this.router.navigate(['/admin/dashboard']);
           }/* else if (role == Rol.Coordinador) {
             this.router.navigate(['/coordinador/dashboard']);
           } else if (role == Rol.Solicitante ) {

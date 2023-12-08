@@ -1,0 +1,28 @@
+<h1 mat-dialog-title style="text-align-last: center">
+    Liberar
+</h1>
+<br>
+
+<div mat-dialog-content style="text-align: justify;">
+  <strong>Coincidencias y Beneficiario Seleccionado</strong>
+  <mat-nav-list class="gradient-list">
+    <mat-list-item *ngFor="let bene of Beneficiarios" [ngClass]="{'seleccionado': bene.Estatus}" >
+      {{bene.NombreCompleto}}
+    </mat-list-item>
+    </mat-nav-list>
+  </div>
+
+
+
+<div mat-dialog-actions style="place-content: center">
+  <br>
+  <div>
+    <strong>¿Ratifica al beneficiario seleccionado?</strong>
+  </div>
+  <br>
+  <br>
+  <button mat-raised-button color="warn" (click)="confirmado()" cdkFocusInitial>SI</button>
+  <button mat-raised-button color="primary" (click)="cerrarDialogo()">NO</button>
+</div>
+
+

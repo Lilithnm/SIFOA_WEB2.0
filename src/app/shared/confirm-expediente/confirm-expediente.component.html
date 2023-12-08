@@ -1,0 +1,16 @@
+<h1 mat-dialog-title style="text-align-last: center">{{data.Title}}</h1>
+<div mat-dialog-content style="text-align: justify;">
+  <div>{{data.Text}}</div>
+  <br>
+  <div ><strong> Ambiente:  </strong>  {{ambiente}}</div>
+  <div ><strong> Tipo de Expediente: </strong>  {{data.Text2}}</div>
+
+  <div><strong> Número de Expediente: </strong> {{data.Text3}}</div>  
+
+</div>
+<div mat-dialog-actions style="place-content: center">
+  <button mat-raised-button color="warn" (click)="confirmado()" cdkFocusInitial>ACEPTAR</button>
+  <button mat-raised-button color="primary" (click)="cerrarDialogo()">CANCELAR</button>
+</div>
+
+
