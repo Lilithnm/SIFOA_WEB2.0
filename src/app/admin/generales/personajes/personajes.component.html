@@ -1,126 +1,134 @@
-<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="plus-card">
-    <div>
-        <form [formGroup]="form">
-
-            <div fxLayout="row" fxLayoutAlign="space-around">
-                    <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
-                        <mat-form-field appearance="outline">
-                            <mat-label>
-                                Nombre
-                            </mat-label>
-                            <input  matInput name="Nombre"  formControlName="Nombre">
-                        </mat-form-field>
-                    </div>   
-                    <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
-                    <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
-                        <mat-form-field appearance="outline">
-                            <mat-label>
-                                Paterno
-                            </mat-label>
-                            <input  matInput name="Paterno"  formControlName="Paterno">
-                        </mat-form-field>
-                    </div> 
+ <section class="content">
+      <div class="row clearfix">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+          <div class="card">
+            <div class="header">
+              <h2>Add Teacher</h2>
+  
             </div>
-            
-            <div fxLayout="row" fxLayoutAlign="space-around">
-                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
-                    <mat-form-field appearance="outline" >
-                        <mat-label>
-                            Materno
-                        </mat-label>
-                        <input  matInput name="Materno"  formControlName="Materno">
+            <div class="body">
+              <form class="m-4" [formGroup]="form" (ngSubmit)="agregar()">
+                <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                      <mat-label>Nombre</mat-label>
+                      <input matInput formControlName="Nombre" required>
+                      <mat-error *ngIf="form.get('Nombre')?.hasError('required')">
+                        Campo obligatorio
+                      </mat-error>
                     </mat-form-field>
-                </div> 
-                <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                  </div>
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                      <mat-label>Paterno</mat-label>
+                      <input matInput formControlName="Paterno">
+                    </mat-form-field>
+                  </div>   
+                   <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                      <mat-label>Materno</mat-label>
+                      <input matInput formControlName="Materno">
+                    </mat-form-field>
+                  </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
 
-                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
-                        <mat-form-field appearance="outline" >
-                            <mat-label>
-                                Tipo de Personaje
-                            </mat-label>
-                            <mat-select name="selectTipo" formControlName="TipoPersonaje" (selectionChange)="select($event.value)"  [compareWith]="compareCategoryObjects">
-                                <mat-option *ngFor="let tipo of tiposPersonaje" [value]="tipo">
-                                    {{tipo.Descripcion}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+                        <mat-label>
+                            Tipo de Personaje
+                        </mat-label>
+                        <mat-select name="selectTipo" formControlName="TipoPersonaje" (selectionChange)="select($event.value)"  [compareWith]="compareCategoryObjects">
+                            <mat-option *ngFor="let tipo of tiposPersonaje" [value]="tipo">
+                                {{tipo.Descripcion}}
+                            </mat-option>
+                        </mat-select>
+                   
+                    </mat-form-field>
+                  </div>
             </div>
-            </form>
+                </form>
+             </div>
+      
+        <div class="row">
+                 
             <div class="example-button-container agregarbtn" >
                     <button mat-raised-button color="accent" aria-label="Agregar Domicilio" (click)="agregarDomicilio()" >
                     <mat-icon>home</mat-icon>+ Domicilios
                     </button>
                 </div>
-            </div>
         
             <mat-card>
                 <mat-card-content>
                     <div class="row" >
-                        DOMICILIOS DEL PERSONAJE
-                        <div class="col-sm-12">    
-                            <div class="">
-                            <mat-nav-list>
-                                <mat-list-item >
-                                    <div class="etiqueta">
-                                       Municipio
-                                    </div>
-                                <div class="etiqueta" >
+                        <h3>  DOMICILIOS DEL PERSONAJE</h3>
+                      
+
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 mb-2">
+                                <div class="etiqueta">
+                                   Municipio
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
+                                <div class="etiqueta">                                   
                                     Calle
                                 </div>
-                                <div class="etiqueta">
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 mb-2">
+                                <div class="etiqueta">                                   
                                     Número exterior
                                 </div>
-                                <div class="eliminabtn">
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 mb-2">
+                                <div class="etiqueta">
                                     Editar/eliminar
                                 </div>
-                                </mat-list-item>
-                            </mat-nav-list>
                             </div>
                         </div>
+  
                         </div>
                         <div class="row" >
                         <div class="col-sm-12">
-                            <mat-nav-list class="gradient-list">
-                                <mat-list-item *ngFor="let domicilio of domiciliosList">
-                                
-                                    <div class="etiqueta">
+                            <div class="row" *ngFor="let domicilio of domiciliosList">
+                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 mb-2">
+                                    <div class="">
                                         {{ domicilio.Municipio.Descripcion}}
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-2">
+                                    <div class="">        
+                                        {{domicilio.Calle}}
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 mb-2">
+                                    <div class="">   
+                                        {{ domicilio.NumeroExterno }}
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 mb-2">
+                                    <div class="">
+                                        <div class="eliminabtn">
+                                            <button mat-icon-button (click)="editarDomicilio(domicilio)">
+                                              <mat-icon>edit</mat-icon>
+                                            </button>
+                                            <button mat-icon-button (click)="eliminarDomicilio(domicilio)">
+                                                <mat-icon>delete_forever</mat-icon>
+                                              </button>
                                         </div>
-                                <div class="etiqueta">
-                                    {{domicilio.Calle}}
+                                        </div>
+        
                                 </div>
-                                <div class="etiqueta">
-                                    {{ domicilio.NumeroExterno }}
-                                </div>
-                                <div class="eliminabtn">
-                                    <button mat-icon-button (click)="editarDomicilio(domicilio)">
-                                      <mat-icon>edit</mat-icon>
-                                    </button>
-                                    <button mat-icon-button (click)="eliminarDomicilio(domicilio)">
-                                        <mat-icon>delete_forever</mat-icon>
-                                      </button>
-                                </div>
-
-
-                                </mat-list-item>
-                            </mat-nav-list>
+                            </div>
                             </div>
                         </div>
                 </mat-card-content>
-              
-            </mat-card>
-            <div mat-dialog-actions align="end">
-                <button mat-button  cdkFocusInitial color="primary" (click)="agregar()" >Guardar</button>
-                <button mat-button mat-dialog-close (click)="cancelar()" >Cancelar</button>
+                </mat-card>
             </div>
-
-</div>
-<!-- <div mat-dialog-actions align="end">
-    <button mat-button  cdkFocusInitial color="primary" (click)="agregar()" >Guardar</button>
-    <button mat-button mat-dialog-close (click)="cancelar()" >Cancelar</button>
-</div>
- -->
-
-
-
+      </div>
+    </div>
+    </div>
+    <div mat-dialog-actions align="end">
+      <button mat-button  cdkFocusInitial color="primary" (click)="agregar()" >Guardar</button>
+      <button mat-button mat-dialog-close (click)="cancelar()" >Cancelar</button>
+  </div>
+  </section>
+  

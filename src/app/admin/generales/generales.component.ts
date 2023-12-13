@@ -77,6 +77,7 @@ export class GeneralesComponent implements  OnInit, OnChanges {
                 subscribe(generales => {
                   localStorage.setItem('Generales', JSON.stringify(generales));
                   localStorage.setItem('IdExpediente', generales.Expediente.Identificador.toString());
+
                   
                   this.modGenerales = JSON.parse(localStorage.getItem('Generales')|| '{}');
                   this.arrData = this.modGenerales.Personajes.map(current => {
@@ -85,6 +86,8 @@ export class GeneralesComponent implements  OnInit, OnChanges {
                         data.RFC = current.Nombre+" "+data.Paterno+" "+data.Materno
                     return data;
                   });
+                  
+                  console.log(this.arrData)
               });
     this.informacionExpediente();
   }
