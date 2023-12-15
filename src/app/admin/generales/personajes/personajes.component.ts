@@ -4,7 +4,7 @@ import { MatInput } from '@angular/material/input';
 import swal from 'sweetalert2';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DomicilioComponent } from '../domicilio/domicilio.component';
 import { Router } from '@angular/router';
 import { ModalConfirmComponent } from 'src/app/shared/modal-confirm/modal-confirm.component';
@@ -42,6 +42,7 @@ export class PersonajesComponent  implements OnInit {
     constructor( private fb: FormBuilder,  private svcGenerales: GeneralesService,
       @Optional() @Inject(MAT_DIALOG_DATA) public  data: PersonajeModel,
       private router: Router,
+      public dialogRef: MatDialogRef<PersonajesComponent>,
       private svcCatalogos: CatalogoService, 
       private svcPersonaje: PersonajesService, 
       private dialog: MatDialog) {
@@ -213,7 +214,7 @@ console.log(this.form.getRawValue())
 
 
   cancelar(){   
-   this.router.navigate(['/Generales']);
+   window.location.reload()
   }
   compareCategoryObjects(object1: any, object2: any) {
     return object1 && object2 && object1.Identificador == object2.Identificador;
@@ -240,6 +241,8 @@ console.log(this.form.getRawValue())
       }
     });
   }
-
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }
 

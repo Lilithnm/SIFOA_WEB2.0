@@ -1,55 +1,75 @@
- <section class="content">
-      <div class="row clearfix">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-          <div class="card">
-            <div class="header">
-              <h2>Add Teacher</h2>
-  
-            </div>
-            <div class="body">
-              <form class="m-4" [formGroup]="form" (ngSubmit)="agregar()">
-                <div class="row">
-                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Nombre</mat-label>
-                      <input matInput formControlName="Nombre" required>
-                      <mat-error *ngIf="form.get('Nombre')?.hasError('required')">
-                        Campo obligatorio
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Paterno</mat-label>
-                      <input matInput formControlName="Paterno">
-                    </mat-form-field>
-                  </div>   
-                   <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Materno</mat-label>
-                      <input matInput formControlName="Materno">
-                    </mat-form-field>
-                  </div>
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
 
-                        <mat-label>
-                            Tipo de Personaje
-                        </mat-label>
-                        <mat-select name="selectTipo" formControlName="TipoPersonaje" (selectionChange)="select($event.value)"  [compareWith]="compareCategoryObjects">
-                            <mat-option *ngFor="let tipo of tiposPersonaje" [value]="tipo">
-                                {{tipo.Descripcion}}
-                            </mat-option>
-                        </mat-select>
-                   
-                    </mat-form-field>
-                  </div>
+  <div class="addContainer">
+  <div class="modalHeader">
+    <div class="editRowModal">
+      <div class="modalHeader clearfix">
+        <i class="fas fa-user-friends"></i>
+        <div class="modal-about">
+            Personaje
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-3 mb-2">
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mb-2">
+        <div class="example-button-row modal-save-button">
+            <button mat-raised-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="1"
+            (click)="agregar()">Guardar</button>
+        </div>
+        </div>
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content>
+    <div class="body">
+        <form class="m-4" [formGroup]="form">
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="Nombre" required>
+                <mat-error *ngIf="form.get('Nombre')?.hasError('required')">
+                  Campo obligatorio
+                </mat-error>
+              </mat-form-field>
             </div>
-                </form>
-             </div>
-      
-        <div class="row">
-                 
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <mat-label>Paterno</mat-label>
+                <input matInput formControlName="Paterno">
+              </mat-form-field>
+            </div>   
+             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+                <mat-label>Materno</mat-label>
+                <input matInput formControlName="Materno">
+              </mat-form-field>
+            </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width mb-3" appearance="outline">
+
+                  <mat-label>
+                      Tipo de Personaje
+                  </mat-label>
+                  <mat-select name="selectTipo" formControlName="TipoPersonaje" (selectionChange)="select($event.value)"  [compareWith]="compareCategoryObjects">
+                      <mat-option *ngFor="let tipo of tiposPersonaje" [value]="tipo">
+                          {{tipo.Descripcion}}
+                      </mat-option>
+                  </mat-select>
+             
+              </mat-form-field>
+            </div>
+      </div>
+          </form>
+
+
+
+          <div class="row">
+           
             <div class="example-button-container agregarbtn" >
                     <button mat-raised-button color="accent" aria-label="Agregar Domicilio" (click)="agregarDomicilio()" >
                     <mat-icon>home</mat-icon>+ Domicilios
@@ -61,7 +81,7 @@
                     <div class="row" >
                         <h3>  DOMICILIOS DEL PERSONAJE</h3>
                       
-
+      
                         <div class="row">
                             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 mb-2">
                                 <div class="etiqueta">
@@ -84,7 +104,7 @@
                                 </div>
                             </div>
                         </div>
-  
+      
                         </div>
                         <div class="row" >
                         <div class="col-sm-12">
@@ -122,13 +142,18 @@
                         </div>
                 </mat-card-content>
                 </mat-card>
+
+      
+      
+      
+      
             </div>
-      </div>
-    </div>
-    </div>
-    <div mat-dialog-actions align="end">
-      <button mat-button  cdkFocusInitial color="primary" (click)="agregar()" >Guardar</button>
-      <button mat-button mat-dialog-close (click)="cancelar()" >Cancelar</button>
+      
+      
+          
+       </div>
+
+
+
   </div>
-  </section>
-  
+</div>

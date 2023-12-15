@@ -17,8 +17,6 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import {MatListModule} from '@angular/material/list';
 import { LoginInteraccionComponent } from './login-interaccion/login-interaccion.component';
 
-
-
 @NgModule({
   declarations: [
     Page500Component,
@@ -39,7 +37,7 @@ import { LoginInteraccionComponent } from './login-interaccion/login-interaccion
     MatIconModule,
     MatButtonModule,
     SweetAlert2Module.forRoot(),
-    MatListModule
+    MatListModule,
   ],
 })
 export class AuthenticationModule {}

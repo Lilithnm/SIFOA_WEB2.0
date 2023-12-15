@@ -338,6 +338,10 @@ Buscar(){
           this.svcGenerales.ObtenerValidar(this.expedienteBusqueda).subscribe({
             next: (res) => {
               if (res) {
+
+                localStorage.setItem("Generales", JSON.stringify(res));
+                localStorage.setItem("expAbierto", "1");
+                this.router.navigate(['admin/generales']);
               } else {
                Swal.fire({
                   text: 'Verifique, no se encuentra el expediente',
@@ -370,7 +374,6 @@ Buscar(){
                   });
                  }else{
                   this.listaCoincidencias = res
-                  console.log(this.listaCoincidencias)
                   this.svcSpinner.hide()
                  }
               } else {

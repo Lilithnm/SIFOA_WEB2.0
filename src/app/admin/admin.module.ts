@@ -11,7 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -46,6 +46,7 @@ import { DomicilioComponent } from './generales/domicilio/domicilio.component';
 
   ],
   imports: [
+    MatDialogModule,
     CommonModule, 
     MatCheckboxModule,
     MatAutocompleteModule,
@@ -108,6 +109,10 @@ import { DomicilioComponent } from './generales/domicilio/domicilio.component';
     ComponentsModule,
     SharedModule,
     MatOptionModule
-  ],
+  ],     
+   providers: [
+    {provide: MatDialogRef, useValue: {}},
+    {provide: MAT_DIALOG_DATA, useValue: []},
+]
 })
 export class AdminModule {}

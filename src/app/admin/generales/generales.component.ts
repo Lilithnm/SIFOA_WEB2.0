@@ -15,6 +15,7 @@ import { GeneralesService } from 'src/services/sifoa/generales.service';
 import { TransferenciaService } from 'src/services/sifoa/transferencia.service';
 import { CentrosModel, TipoExpedienteModel } from 'src/models/catalogos';
 import { ConfirmExpedienteComponent } from 'src/app/shared/confirm-expediente/confirm-expediente.component';
+import { Direction } from '@angular/cdk/bidi';
 @Component({
   selector: 'app-generales',
   templateUrl: './generales.component.html',
@@ -116,23 +117,31 @@ export class GeneralesComponent implements  OnInit, OnChanges {
   }
 
   agregar(){
-    const dialogRef = this.dialog.open(PersonajesComponent, 
-      {width: '90vw',
-        maxWidth: '150vw',
-        disableClose: true
+    let tempDirection: Direction;
+    if (localStorage.getItem('isRtl') === 'true') {
+      tempDirection = 'rtl';
+    } else {
+      tempDirection = 'ltr';
+    }
+    const dialogRef = this.dialog.open(PersonajesComponent, {
+      direction: tempDirection,
+      disableClose: true
     });
     
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe((result) => {
       this.inicializaPers()
-     });  
+    });
+
+
+
 
   }
 
   editar(personaje: PersonajeModel){
 
     const dialogRef = this.dialog.open(PersonajesComponent, 
-      {width: '90vw',
-        maxWidth: '150vw',
+      {width: '80vw',
+        maxWidth: '80vw',
         disableClose: true,
         data: personaje
     });
