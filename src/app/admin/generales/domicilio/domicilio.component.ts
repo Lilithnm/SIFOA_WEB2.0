@@ -39,7 +39,7 @@ export class DomicilioComponent  implements OnInit {
               @Optional() @Inject(MAT_DIALOG_DATA) public  data: DomicilioModel,
               private svcGenerales: GeneralesService, 
               private svcCatalogos: CatalogoService,
-              private dialogRef: MatDialogRef<DomicilioComponent>) {
+              public dialogRef: MatDialogRef<DomicilioComponent>) {
       this.form = this.fb.group({
         NumeroInterno: [null],
         NumeroExterno: [null, [Validators.required]],

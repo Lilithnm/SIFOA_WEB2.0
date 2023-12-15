@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BeneficiarioMinModel, DialogData } from 'src/app/models/modelos';
+import { BeneficiarioMinModel } from 'src/models/modelos';
 
 @Component({
   selector: 'app-liberar-confirm',

@@ -1,16 +1,30 @@
-<h1 mat-dialog-title style="text-align-last: center">{{data.Title}}</h1>
-<div mat-dialog-content style="text-align: justify;">
-  <div>{{data.Text}}</div>
-  <br>
-  <div ><strong> Ambiente:  </strong>  {{ambiente}}</div>
-  <div ><strong> Tipo de Expediente: </strong>  {{data.Text2}}</div>
 
-  <div><strong> Número de Expediente: </strong> {{data.Text3}}</div>  
-
-</div>
-<div mat-dialog-actions style="place-content: center">
-  <button mat-raised-button color="warn" (click)="confirmado()" cdkFocusInitial>ACEPTAR</button>
-  <button mat-raised-button color="primary" (click)="cerrarDialogo()">CANCELAR</button>
+<div class="addContainer">
+  <div class="modalHeader">
+    <div class="editRowModal">
+      <div class="modalHeader clearfix">
+        <div class="modal-about">
+          <h1 mat-dialog-title style="text-align-last: center">{{data.Title}}</h1>
+        </div>
+      </div>
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content style="text-align: justify;">
+    <div>{{data.Text}}</div>
+    <br>
+    <div ><strong> Ambiente:  </strong>  {{ambiente}}</div>
+    <div ><strong> Tipo de Expediente: </strong>  {{data.Text2}}</div>
+  
+    <div><strong> Número de Expediente: </strong> {{data.Text3}}</div>  
+  
+  </div>
+  <div mat-dialog-actions style="place-content: center">
+    <button mat-raised-button color="warn" (click)="confirmado()" cdkFocusInitial>ACEPTAR</button>
+    <button mat-raised-button color="primary" (click)="cerrarDialogo()">CANCELAR</button>
+  </div>
 </div>
 
 

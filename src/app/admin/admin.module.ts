@@ -35,6 +35,7 @@ import { ComponentsModule } from '../shared/components/components.module';
 import { GeneralesComponent } from './generales/generales.component';
 import { PersonajesComponent } from './generales/personajes/personajes.component';
 import { DomicilioComponent } from './generales/domicilio/domicilio.component';
+import { ConfirmExpedienteComponent } from '../shared/confirm-expediente/confirm-expediente.component';
 
 @NgModule({
   declarations: [   
@@ -43,6 +44,7 @@ import { DomicilioComponent } from './generales/domicilio/domicilio.component';
     PersonajesComponent,
     DomicilioComponent,
     SpinnerComponent,
+    ConfirmExpedienteComponent
 
   ],
   imports: [

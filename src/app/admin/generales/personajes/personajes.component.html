@@ -15,7 +15,7 @@
         </div>
         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mb-2">
         <div class="example-button-row modal-save-button">
-            <button mat-raised-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="1"
+            <button mat-raised-button color="primary" [disabled]="!form.valid||domiciliosList.length==0" [mat-dialog-close]="1"
             (click)="agregar()">Guardar</button>
         </div>
         </div>
@@ -69,14 +69,23 @@
 
 
           <div class="row">
-           
-            <div class="example-button-container agregarbtn" >
-                    <button mat-raised-button color="accent" aria-label="Agregar Domicilio" (click)="agregarDomicilio()" >
-                    <mat-icon>home</mat-icon>+ Domicilios
-                    </button>
-                </div>
+
         
             <mat-card>
+              <mat-card-header>
+              <div class="row">
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-3 mb-2">
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mb-2">
+                
+                    <div class="example-button-row modal-save-button">
+                      <button mat-raised-button color="accent" [disabled]="!form.valid" [mat-dialog-close]="1"
+                      (click)="agregarDomicilio()">  <mat-icon>home</mat-icon>+ Domicilios</button>
+                  </div>
+                </div>
+                <br>
+              </div>
+            </mat-card-header>
                 <mat-card-content>
                     <div class="row" >
                         <h3>  DOMICILIOS DEL PERSONAJE</h3>

@@ -1,15 +1,37 @@
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#26c6da" type="ball-fall" [fullScreen]="false">
-    <p style="font-size: 20px; color: white">Buscando...</p>
-  </ngx-spinner>
+
+<div class="">
+    <div class="modalHeader">
+      <div class="editRowModal">
+        <div class="modalHeader clearfix">
+            <i class="fas fa-house-user"></i>
+          <div class="modal-about">
+              Domicilios
+          </div>
   
-<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="plus-card">
-    <br>
-    <div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-xl-9 col-lg-9 col-md-9 col-sm-3 mb-2">
+          </div>
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mb-2">
+          <div class="example-button-row modal-save-button">
+              <button mat-raised-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="1"
+              (click)="agregar()">Guardar</button>
+          </div>
+          </div>
+      </div>
+      <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div mat-dialog-content>
+      <div class="body">
+
         <form [formGroup]="form">
             
-            <div fxLayout="row" fxLayoutAlign="space-around" >
+            <div class="row" fxLayoutAlign="space-around" >
 
-                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                     <mat-form-field appearance="outline" >
                         <mat-label>
                             Estado
@@ -22,9 +44,7 @@
                         </mat-autocomplete>
                     </mat-form-field>
                 </div>
-                
-                <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
-                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                         <mat-form-field appearance="outline">
                             <mat-label>
                                 Municipio
@@ -40,8 +60,8 @@
             </div>
 
 
-            <div fxLayout="row" fxLayoutAlign="space-around">
-                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+            <div class="row" fxLayoutAlign="space-around">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                         <mat-form-field appearance="outline">
                             <mat-label>
                                 Calle
@@ -49,8 +69,7 @@
                             <input  matInput name="Calle"  formControlName="Calle">
                         </mat-form-field>
                     </div>   
-                    <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
-                    <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                         <mat-form-field appearance="outline" >
                             <mat-label>
                                 Colonia
@@ -58,11 +77,8 @@
                             <input  matInput name="Colonia"  formControlName="Colonia">
                         </mat-form-field>
                     </div> 
-            </div>
-            
-            <div fxLayout="row" fxLayoutAlign="space-around">
      
-                <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                     <mat-form-field appearance="outline">
                         <mat-label>
                             NumeroExterno
@@ -70,8 +86,8 @@
                         <input  matInput name="NumeroExterno"  formControlName="NumeroExterno">
                     </mat-form-field>
                 </div> 
-                    <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
-                     <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                         <mat-form-field appearance="outline">
                             <mat-label>
                                 Numero Interno
@@ -82,31 +98,27 @@
             </div>
             <div fxLayout="row" fxLayoutAlign="space-around">
      
-            <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                     <mat-checkbox formControlName="Procesal">
                     Procesal
                   </mat-checkbox>
 
                 </div> 
-                <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
-                 <div fxFlex.sm="45" fxFlex.lg="45" fxFlex="45">
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                     <mat-checkbox formControlName="Comun">
                         Común
                       </mat-checkbox>
                  </div>
             </div>
-
-
-
             
         </form>
+
+            
+         </div>
+  
+  
+  
     </div>
-</div>
-<div mat-dialog-actions align="end">
-    <button mat-button  cdkFocusInitial color="primary" (click)="agregar()" >Guardar</button>
-    <button mat-button mat-dialog-close (click)="cancelar()" >Cancelar</button>
-</div>
-
-
-
-
+  </div>
+  
