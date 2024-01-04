@@ -132,6 +132,7 @@ export class PersonajesComponent  implements OnInit {
     const domicilio = new DomicilioModel();
 
     domicilio.IdPersonaje = this.personajeEdita?.Identificador;
+
     const dialogRef = this.dialog.open(DomicilioComponent, 
       {width: '80vw',
         maxWidth: '150vw',
@@ -141,14 +142,13 @@ export class PersonajesComponent  implements OnInit {
 
     dialogRef.afterClosed().subscribe(() => {      
       if(dialogRef.componentInstance.guardar){
-
         let domicilio = dialogRef.componentInstance.domicilio;
-          this.domiciliosList.push(dialogRef.componentInstance.domicilio);
+          this.domiciliosList.push(domicilio);
       }      
      });  
   }
   editarDomicilio(domicilio: DomicilioModel){
-    const dialogRef = this.dialog.open(DomicilioComponent, 
+    const dialogRefAg = this.dialog.open(DomicilioComponent, 
       {width: '80vw',
         maxWidth: '150vw',
         disableClose: true,
@@ -156,9 +156,9 @@ export class PersonajesComponent  implements OnInit {
     });
     let domicilioCambia: DomicilioModel;
 
-    dialogRef.afterClosed().subscribe(() => {      
-      if(dialogRef.componentInstance.guardar){
-        domicilioCambia = dialogRef.componentInstance.domicilio;
+    dialogRefAg.afterClosed().subscribe(() => {      
+      if(dialogRefAg.componentInstance.guardar){
+        domicilioCambia = dialogRefAg.componentInstance.domicilio;
         domicilioCambia.Estatus = 2;
         var foundIndex = this.domiciliosList.findIndex(x => x.Identificador == domicilio.Identificador);
           this.domiciliosList[foundIndex] = domicilioCambia;
@@ -214,7 +214,7 @@ console.log(this.form.getRawValue())
 
 
   cancelar(){   
-   window.location.reload()
+   //window.location.reload()
   }
   compareCategoryObjects(object1: any, object2: any) {
     return object1 && object2 && object1.Identificador == object2.Identificador;

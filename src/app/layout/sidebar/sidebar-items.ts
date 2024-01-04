@@ -88,7 +88,7 @@ export const ROUTES: RouteInfo[] = [
     title: 'Generales',
     iconType: 'material-icons-two-tone',
     expediente: true,
-    icon: 'find_replace',
+    icon: 'dvr',
     class: '',
     groupTitle: false,
     badge: '',
@@ -96,6 +96,109 @@ export const ROUTES: RouteInfo[] = [
     role: ['Administrador'],
     submenu: [],
   },
+
+  {
+    path: '/administrador/anexos',
+    title: 'Anexos',
+    iconType: 'material-icons-two-tone',
+    expediente: true,
+    icon: 'account_balance_wallet',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['Administrador'],
+    submenu: [],
+  },
+
+  {
+    path: '/administrador/garantias',
+    title: 'Garantías',
+    iconType: 'material-icons-two-tone',
+    expediente: true,
+    icon: 'attach_money',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['Administrador'],
+    submenu: [],
+  },
+  {
+    path: '/administrador/multas',
+    title: 'Multas',
+    iconType: 'material-icons-two-tone',
+    expediente: true,
+    icon: 'gavel',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['Administrador'],
+    submenu: [],
+  },
+
+
+
+  {
+    path: '/administrador/transferir',
+    title: 'Transferir',
+    iconType: 'material-icons-two-tone',
+    expediente: true,
+    icon: 'drive_file_move',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['Administrador'],
+    submenu: [],
+  },
+
+
+
+
+  {
+    path: '/administrador/recibirtransfer',
+    title: 'Recibir Transferencia',
+    iconType: 'material-icons-two-tone',
+    expediente: true,
+    icon: 'drive_file_move_rtl',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['Administrador'],
+    submenu: [],
+  },
+
+
+  
+  {
+    path: '',
+    title: 'Reportes',
+    iconType: 'material-icons-two-tone',
+    expediente: true,
+    icon: 'summarize',
+    class: 'menu-toggle',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['Administrador'],
+    submenu: [      
+      {   path: '/admin/reportes/reporteador',
+          title: 'Reporteador',
+          iconType: '',
+          icon: '',
+          class: 'ml-menu',
+          groupTitle: false,
+          badge: '',
+          expediente:true,
+          badgeClass: '',
+          role: [''],
+          submenu: [],
+    }],
+  },
+
 
 
 

@@ -1,0 +1,124 @@
+
+<div class="">
+    <div class="modalHeader">
+      <div class="editRowModal">
+        <div class="modalHeader clearfix">
+            <i class="fas fa-house-user"></i>
+          <div class="modal-about">
+              Domicilios
+          </div>
+  
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-xl-9 col-lg-9 col-md-9 col-sm-3 mb-2">
+          </div>
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mb-2">
+          <div class="example-button-row modal-save-button">
+              <button mat-raised-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="1"
+              (click)="agregar()">Guardar</button>
+          </div>
+          </div>
+      </div>
+      <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div mat-dialog-content>
+      <div class="body">
+
+        <form [formGroup]="form">
+            
+            <div class="row" fxLayoutAlign="space-around" >
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>
+                            Estado
+                        </mat-label>
+                        <input type="text" #estado matInput [matAutocomplete]="autoEstado" formControlName="Estado">
+                        <mat-autocomplete [panelWidth]="'500px'" #autoEstado="matAutocomplete" [displayWith]="getOptionTextEstado">
+                            <mat-option *ngFor="let estado of estadosSync | async; index as i" [value]="estado">
+                                {{estado.Nombre}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Municipio
+                            </mat-label>
+                            <input type="text" #municipio matInput [matAutocomplete]="auto" formControlName="Municipio">
+                            <mat-autocomplete [panelWidth]="'500px'" #auto="matAutocomplete" [displayWith]="getOptionText">
+                                <mat-option *ngFor="let municipio of municipiosSync | async; index as i" [value]="municipio">
+                                    {{municipio.Descripcion}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+            </div>
+
+
+            <div class="row" fxLayoutAlign="space-around">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Calle
+                            </mat-label>
+                            <input  matInput name="Calle"  formControlName="Calle">
+                        </mat-form-field>
+                    </div>   
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field appearance="outline" >
+                            <mat-label>
+                                Colonia
+                            </mat-label>
+                            <input  matInput name="Colonia"  formControlName="Colonia">
+                        </mat-form-field>
+                    </div> 
+     
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field appearance="outline">
+                        <mat-label>
+                            NumeroExterno
+                        </mat-label>
+                        <input  matInput name="NumeroExterno"  formControlName="NumeroExterno">
+                    </mat-form-field>
+                </div> 
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Numero Interno
+                            </mat-label>
+                            <input  matInput name="NumeroInterno"  formControlName="NumeroInterno">
+                        </mat-form-field>
+                    </div> 
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around">
+     
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-checkbox formControlName="Procesal">
+                    Procesal
+                  </mat-checkbox>
+
+                </div> 
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-checkbox formControlName="Comun">
+                        Común
+                      </mat-checkbox>
+                 </div>
+            </div>
+            
+        </form>
+
+            
+         </div>
+  
+  
+  
+    </div>
+  </div>
+  

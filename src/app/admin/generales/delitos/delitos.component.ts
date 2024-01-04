@@ -12,11 +12,11 @@ import { GeneralesService } from 'src/services/sifoa/generales.service';
 import { CatalogoService } from 'src/services/shared/catalogo.service';
 
 @Component({
-  selector: 'app-domicilio',
-  templateUrl: './domicilio.component.html',
-  styleUrls: ['./domicilio.component.scss']
+  selector: 'app-delitos',
+  templateUrl: './delitos.component.html',
+  styleUrls: ['./delitos.component.scss']
 })
-export class DomicilioComponent {
+export class DelitosComponent {
 
   domicilio: DomicilioModel = new DomicilioModel();
   destroy$: Subject<boolean> = new Subject<boolean>();

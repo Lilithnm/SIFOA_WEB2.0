@@ -258,8 +258,11 @@ Buscar(){
       let v_PasoValidacion = true;
       let sistemasPenal=[10,11,14,18];
 
+      console.log(this.expedienteBusquedaTemp)
+    //1P3423-170
+      console.log(this.expedienteBusqueda)
       //Validar el expediente
-      if (sistemasPenal.includes(this.expedienteBusqueda.Sistema.Identificador))
+      if (sistemasPenal.includes(this.expedienteBusqueda.Sistema))
       {
           if (this.expedienteBusqueda.Nomenclatura.includes("-"))
           {
@@ -272,11 +275,16 @@ Buscar(){
               }
               //Validar por el año del expediente
               if (v_PasoValidacion)
-                  if(!( this.expedienteBusqueda.Anio=parseInt(this.expedienteBusqueda.Nomenclatura.split("-")[0].substring(this.expedienteBusqueda.Nomenclatura.split("-")[0].length - 2, 2))))
+                  if(!( this.expedienteBusqueda.Anio=parseInt(this.expedienteBusqueda.Nomenclatura.split("-")[0].slice(-2))))
                   {
                       this.MostrarMensaje("El formato del expediente no es correcto, verificar por favor.");
                       v_PasoValidacion = false;
                   }
+                  //this.expedienteBusqueda.Numero= parseInt(this.expedienteBusqueda.Nomenclatura.split("-")[1]);
+               //   this.expedienteBusqueda.Anio= parseInt(this.expedienteBusqueda.Nomenclatura.split("-")[0].substring(this.expedienteBusqueda.Nomenclatura.split("-")[0].length - 2, 2));
+
+                  this.expedienteBusqueda.Anio +=2000;
+
           }
           else
           {
@@ -288,7 +296,12 @@ Buscar(){
       {
           if (this.expedienteBusqueda.Nomenclatura.includes("/"))
           {
-              //Validar por el número del expediente
+            
+              if (this.expedienteBusqueda.Nomenclatura.split("/")[1].length < 4)
+              {
+                  this.MostrarMensaje("El año del expediente debe incluir 4 dígitos");
+              }
+                    //Validar por el número del expediente
               if (!(this.expedienteBusqueda.Numero= parseInt(this.expedienteBusqueda.Nomenclatura.split("/")[0])))
               {
                   this.MostrarMensaje("El formato del expediente no es correcto, verificar por favor.");
@@ -303,23 +316,15 @@ Buscar(){
                       v_PasoValidacion = false;
                   }
           }
-         /* else
+          else
           {
               this.MostrarMensaje("El formato del expediente no es correcto, verificar por favor.");
               v_PasoValidacion = false;
           }
-          if (txt_GB_Expediente.Text.Split("/")[1].Length < 4)
-          {
-              MostrarMensaje("El año del expediente debe incluir 4 dígitos");
-          }
-          if (cbo_GB_Sistema.SelectedValue.ToString() == "10" || cbo_GB_Sistema.SelectedValue.ToString() == "11" || cbo_GB_Sistema.SelectedValue.ToString() == "14" || cbo_GB_Sistema.SelectedValue.ToString() == "18")
-          {
-              int.TryParse(txt_GB_Expediente.Text.Split("-")[1], out v_Numero);
-              int.TryParse(txt_GB_Expediente.Text.Split("-")[0].Substring(txt_GB_Expediente.Text.Split("-")[0].Length - 2, 2), out v_Anio);
-              v_Anio = v_Anio + 2000;
-          }*/
         }
 
+  
+        this.svcSpinner.hide()
         return v_PasoValidacion
       //Variables para validación
       }
@@ -372,6 +377,7 @@ Buscar(){
                     text: 'No se encontraron coincidencias',
                     icon: 'info'
                   });
+                  this.svcSpinner.hide()
                  }else{
                   this.listaCoincidencias = res
                   this.svcSpinner.hide()

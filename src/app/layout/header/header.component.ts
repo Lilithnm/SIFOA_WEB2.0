@@ -16,6 +16,7 @@ import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroy
 import { InConfiguration } from 'src/app/core/models/config.interface';
 import { AutenticacionService } from 'src/services/shared/autenticacion.service';
 import { Rol } from 'src/models/modelos';
+import { GeneralesModel } from 'src/models/generales';
 
 @Component({
   selector: 'app-header',
@@ -39,6 +40,7 @@ export class HeaderComponent
   isFullScreen = false;
   oficina="";
   
+  modGenerales!: GeneralesModel;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -56,8 +58,9 @@ export class HeaderComponent
 
 
 
+    this.modGenerales = JSON.parse(localStorage.getItem('Generales')|| '{}');
 
-    
+    console.log(this.modGenerales)
   }
 
   formatFecha(fecha:any){
