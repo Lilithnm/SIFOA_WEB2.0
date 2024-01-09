@@ -30,7 +30,7 @@ export const ROUTES: RouteInfo[] = [
   },
 
   {
-    path: '/Administrador/Administrador-materiales',
+    path: '/admin/Administrador-materiales',
     title: 'Herramientas',
     iconType: 'material-icons-two-tone',
      expediente: false,
@@ -43,7 +43,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
-    path: '/Administrador/Administrador-centros',
+    path: '/admin/Administrador-centros',
     title: 'Transferencias',
     iconType: 'material-icons-two-tone',
      expediente: false,
@@ -56,7 +56,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
-    path: '/Administrador/Administrador-solicitudes',
+    path: '/admin/Administrador-solicitudes',
     title: 'Reportes',
     iconType: 'material-icons-two-tone',
      expediente: false,
@@ -69,7 +69,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
-    path: '/Administrador/Administrador-solicitudes',
+    path: '/admin/Administrador-solicitudes',
     title: 'Consulta',
     iconType: 'material-icons-two-tone',
      expediente: false,
@@ -84,7 +84,7 @@ export const ROUTES: RouteInfo[] = [
 
 
   {
-    path: '/administrador/generales',
+    path: '/admin/generales',
     title: 'Generales',
     iconType: 'material-icons-two-tone',
     expediente: true,
@@ -98,7 +98,7 @@ export const ROUTES: RouteInfo[] = [
   },
 
   {
-    path: '/administrador/anexos',
+    path: '/admin/anexos',
     title: 'Anexos',
     iconType: 'material-icons-two-tone',
     expediente: true,
@@ -112,7 +112,7 @@ export const ROUTES: RouteInfo[] = [
   },
 
   {
-    path: '/administrador/garantias',
+    path: '/admin/garantias',
     title: 'Garantías',
     iconType: 'material-icons-two-tone',
     expediente: true,
@@ -125,7 +125,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
-    path: '/administrador/multas',
+    path: '/admin/multas',
     title: 'Multas',
     iconType: 'material-icons-two-tone',
     expediente: true,
@@ -141,7 +141,7 @@ export const ROUTES: RouteInfo[] = [
 
 
   {
-    path: '/administrador/transferir',
+    path: '/admin/transferir',
     title: 'Transferir',
     iconType: 'material-icons-two-tone',
     expediente: true,
@@ -158,7 +158,7 @@ export const ROUTES: RouteInfo[] = [
 
 
   {
-    path: '/administrador/recibirtransfer',
+    path: '/admin/recibirtransfer',
     title: 'Recibir Transferencia',
     iconType: 'material-icons-two-tone',
     expediente: true,

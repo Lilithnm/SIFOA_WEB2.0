@@ -36,6 +36,15 @@ import { GeneralesComponent } from './generales/generales.component';
 import { PersonajesComponent } from './generales/personajes/personajes.component';
 import { DomicilioComponent } from './generales/domicilio/domicilio.component';
 import { ConfirmExpedienteComponent } from '../shared/confirm-expediente/confirm-expediente.component';
+import { AnexosComponent } from './operacion/anexos/anexos.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { FormAnexoComponent } from './operacion/anexos/form-anexo/form-anexo.component';
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { ModalComponent } from '../shared/modal/modal.component';
+import { LiberarConfirmComponent } from '../shared/liberar-confirm/liberar-confirm.component';
+
+
 
 @NgModule({
   declarations: [   
@@ -44,10 +53,15 @@ import { ConfirmExpedienteComponent } from '../shared/confirm-expediente/confirm
     PersonajesComponent,
     DomicilioComponent,
     SpinnerComponent,
-    ConfirmExpedienteComponent
+    ConfirmExpedienteComponent,
+    ModalComponent,
+    AnexosComponent,
+    FormAnexoComponent,
+    LiberarConfirmComponent
 
   ],
   imports: [
+    CurrencyMaskModule,
     MatDialogModule,
     CommonModule, 
     MatCheckboxModule,
@@ -110,7 +124,9 @@ import { ConfirmExpedienteComponent } from '../shared/confirm-expediente/confirm
     MatMenuModule,
     ComponentsModule,
     SharedModule,
-    MatOptionModule
+    MatOptionModule,
+    MatTabsModule,
+    MatProgressSpinnerModule   
   ],     
    providers: [
     {provide: MatDialogRef, useValue: {}},

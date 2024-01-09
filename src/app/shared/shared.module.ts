@@ -13,8 +13,6 @@ import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
-    ModalComponent,
-    LiberarConfirmComponent
   ],
   imports: [
     CommonModule,

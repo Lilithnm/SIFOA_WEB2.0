@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AnexoModel, GarantiaModel, ReporteBusquedaModel } from '../../models/main';
+import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroyAdapter';
 
 const HTTPOPTIONS = {
   headers: new HttpHeaders({
@@ -11,23 +12,47 @@ const HTTPOPTIONS = {
 @Injectable({
   providedIn: 'root'
 })
-export class AnexoService {
+export class AnexoService extends UnsubscribeOnDestroyAdapter {
 
   strApi = '/api/Anexo';
   strOrden ='/api/Orden';
   urlServer:string|null = "";
+    private readonly API_URL = 'assets/data/teachers.json';
+    isTblLoading = true;
+    dataChange: BehaviorSubject<AnexoModel[]> = new BehaviorSubject<AnexoModel[]>([]);
+    // Temporarily stores data from dialogs
+    dialogData!: AnexoModel;
+    constructor(private http: HttpClient) {
+      super();
+      
+    }
 
-  constructor(private http: HttpClient) { 
-  }
+    get data(): AnexoModel[] {
+      return this.dataChange.value;
+    }
+    getDialogData() {
+      return this.dialogData;
+    }
+
 
     ObtenerAnexo(BusquedaAnexo: AnexoModel): Observable<AnexoModel> {
       this.urlServer = localStorage.getItem('Server');
       return this.http.post<AnexoModel>(this.urlServer + this.strApi + '/Obtener', BusquedaAnexo , HTTPOPTIONS);
     }
 
-    ObtenerAnexos(BusquedaAnexo: AnexoModel): Observable<AnexoModel[]> {
+    ObtenerAnexos(BusquedaAnexo: AnexoModel): void {
     this.urlServer = localStorage.getItem('Server');
-    return this.http.post<AnexoModel[]>(this.urlServer + this.strApi + '/ObtenerTodos', BusquedaAnexo , HTTPOPTIONS);
+      this.subs.sink = this.http.post<AnexoModel[]>(this.urlServer + this.strApi + '/ObtenerTodos', BusquedaAnexo ).subscribe({
+        next: (data) => {
+          this.isTblLoading = false;
+          this.dataChange.next(data);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isTblLoading = false;
+          console.log(error.name + ' ' + error.message);
+        },
+      }); 
+
     }
 
     CrearAnexo(Anexo: AnexoModel): Observable<number> {

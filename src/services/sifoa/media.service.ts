@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Server } from '../../../environments/global';
 import { saveAs } from 'file-saver';
 
 const httpOptions = {

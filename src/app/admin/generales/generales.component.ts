@@ -7,7 +7,7 @@ import swal, { SweetAlertResult } from 'sweetalert2';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { ExpedienteBaseModel, ExpedienteModel, GeneralesModel, PersonajeModel } from 'src/models/generales';
+import { DelitosModel, ExpedienteBaseModel, ExpedienteModel, GeneralesModel, PersonajeModel } from 'src/models/generales';
 import { TransferenciaModel } from 'src/models/main';
 import { AccionesModel, InformacionTablaModel } from 'src/models/modelos';
 import { PersonajesService } from 'src/services/sifoa/personajes.service';
@@ -52,6 +52,7 @@ export class GeneralesComponent implements  OnInit, OnChanges {
        this.modEncabezados.Propiedades = [
         'RFC',
         'EditarEliminar']; 
+    this.informacionExpediente()
 
   }
 
@@ -87,10 +88,8 @@ export class GeneralesComponent implements  OnInit, OnChanges {
                         data.RFC = current.Nombre+" "+data.Paterno+" "+data.Materno
                     return data;
                   });
-                  
-                  console.log(this.arrData)
               });
-    this.informacionExpediente();
+   // this.informacionExpediente();
   }
   controlarAcciones(modAccion: AccionesModel): void {
     switch (modAccion.name) {
@@ -112,8 +111,13 @@ export class GeneralesComponent implements  OnInit, OnChanges {
       this.Delitos = (this.modGenerales.Expediente.Sistema !== 12 && this.modGenerales.Expediente.Sistema !== 13)  ? 'Delitos' : 'Acciones procesales';
     }
   }
-
-  ngOnInit(): void {
+  ngOnInit() {
+    if (!localStorage.getItem('foo')) { 
+      localStorage.setItem('foo', 'no reload') 
+      location.reload() 
+    } else {
+      localStorage.removeItem('foo') 
+    }
   }
 
   agregar(){
@@ -263,5 +267,39 @@ export class GeneralesComponent implements  OnInit, OnChanges {
         });
      }
 
-
+     eliminarDelito(delito: DelitosModel){
+      swal.fire({
+        title: 'Eliminar',
+        text:'¿Está seguro de eliminar?',
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText:'Cerrar',
+        showLoaderOnConfirm: true,
+        allowOutsideClick: () => !swal.isLoading()
+        }).then((result) => {
+          if (result.isConfirmed) {
+         /*   this.svcPersonaje.Eliminar(personaje).subscribe(response => {    
+              console.log(response)    
+              if(response){
+                swal.fire({
+                  title: 'Éxito',
+                  text: 'Personaje eliminado.',
+                  icon: 'success'
+                });            
+                //actualizar expedientee en el almacenamiento
+                this.inicializaPers()
+    
+              }  else{
+                swal.fire({
+                  title: 'Error',
+                  text: 'El personaje no se puede eliminar',
+                  icon: 'info'
+                });  
+              }
+              })*/
+          }
+        })
+  
+    }
+  
 }

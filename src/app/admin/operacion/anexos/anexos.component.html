@@ -1,0 +1,156 @@
+<section class="content">
+  <div class="content-block">
+    <div class="row">
+      <div class="col-md-12">
+            <div class="mt-5">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                  <div class="materialTableHeader">
+                    <div class="left">
+                      <ul class="header-buttons-left ms-0">
+                        <li class="tbl-title">
+                          <h2>Anexos</h2>
+                        </li>
+                        <li class="tbl-search-box">
+                          <label for="search-input"><i class="material-icons search-icon">search</i></label>
+                          <input placeholder="Buscar" type="text" #filter class="browser-default search-field"
+                            aria-label="Search box">
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="right">
+                      <ul class="tbl-export-btn">
+                        <li class="tbl-header-btn">
+                          <div class="m-l-10" matTooltip="REGISTRAR NUEVO ANEXO">
+                            <button mat-mini-fab color="primary" (click)="addNew()">
+                              <mat-icon class="col-white">add</mat-icon>
+                            </button>
+                          </div>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="body overflow-auto">
+                    <div class="responsive_table">
+                      <table mat-table #table [dataSource]="dataSource" matSort class="mat-cell">
+                                <!-- ID Column -->
+                        <ng-container matColumnDef="id">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Id
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Folio">
+                          <mat-header-cell mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'"> Folio
+                          </mat-header-cell>
+                          <mat-cell mat-cell *matCellDef="let row" class="table-img tbl-col-width-per-6"><span
+                              class="mobile-label">Folio:</span> {{row.Folio}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Estado">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Estado
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row" ><span
+                              class="mobile-label">Estado:</span> {{obtieneEstadoAnexo(row)}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Tipo">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo    </mat-header-cell>
+                          <mat-cell *matCellDef="let row" >
+                            <span class="mobile-label">Tipo:</span>{{row.Origen.Nombre}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Monto">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header> Monto </mat-header-cell>
+                          <mat-cell mat-cell *matCellDef="let row">                          
+                            <span class="mobile-label">Monto:</span>{{row.Monto | currency}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="FechaEmision">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha emisión
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row" > <span
+                              class="mobile-label">Fecha emisión:</span>{{row.FechaEmision}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="FechaContable">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha contable
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row" > <span
+                              class="mobile-label">Fecha contable::</span>{{row.FechaContable |date}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="FechaRegistro">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Registro
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row" > <span
+                              class="mobile-label">Email:</span>{{row.FechaRegistro}}
+                          </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="Descargar">
+                          <mat-header-cell class="pr-0" *matHeaderCellDef>Acciones
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row; let i=index;" class="pr-0">                            
+                          <div matTooltip="DESCARGAR ANEXO">
+                            <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeAnexo(row)"
+                              class="tbl-action-btn">
+                              <app-feather-icons [icon]="'download-cloud'" [class]="'tbl-fav-dwn'"></app-feather-icons>
+                            </button> 
+                          </div>                                                
+                          <div matTooltip="EDITAR ANEXO">                     
+                            <button mat-icon-button (click)="$event.stopPropagation()" (click)="editCall(row)"
+                              class="tbl-action-btn">
+                              <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                            </button>
+                            </div>                                             
+                          <div matTooltip="ELIMINAR ANEXO">
+                            <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)"
+                              class="tbl-action-btn">
+                              <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                            </button>
+                            </div>
+                          </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns">
+                        </mat-header-row>
+                        <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
+                        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editCall(row)"
+                          [style.cursor]="'pointer'" matRipple>
+                        </mat-row>
+                      </table>
+                      <!-- Loading spinner -->
+                      <div *ngIf="exampleDatabase?.isTblLoading" class="tbl-spinner">
+                        <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
+                        </mat-progress-spinner>
+                      </div>
+           
+                      <div *ngIf="!exampleDatabase?.isTblLoading" class="no-results"  [style.display]="dataSource.renderedData.length === 0 ? '' : 'none'">
+                        Sin registros
+                      </div>
+                      <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                      </mat-paginator>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> 
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<swal #AgregarMovimiento title="Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
+[allowOutsideClick]="false" [allowEscapeKey]="false" 
+[showConfirmButton]="buttonDisabled"   (confirm)="agregaMovimiento()">
+<div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
+ <app-form-anexo [nuevoAnexoForm]="nuevoAnexo"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></app-form-anexo>
+</div>
+</swal>
+
+<swal #EditarAnexo title="Editar Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
+[allowOutsideClick]="false" [allowEscapeKey]="false" 
+[showConfirmButton]="buttonDisabled"   (confirm)="guardaEdita()">
+<div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
+ <app-form-anexo [nuevoAnexoForm]="nuevoAnexo"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></app-form-anexo>
+</div>
+</swal>
