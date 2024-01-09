@@ -156,7 +156,6 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
           'Municipio': this.nuevoAnexoForm.Municipio
         });
       }
-  
 
 
     
