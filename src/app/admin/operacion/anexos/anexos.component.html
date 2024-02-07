@@ -41,9 +41,9 @@
                           <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Folio">
-                          <mat-header-cell mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'"> Folio
+                          <mat-header-cell mat-header-cell *matHeaderCellDef> Folio
                           </mat-header-cell>
-                          <mat-cell mat-cell *matCellDef="let row" class="table-img tbl-col-width-per-6"><span
+                          <mat-cell *matCellDef="let row" ><span
                               class="mobile-label">Folio:</span> {{row.Folio}}
                           </mat-cell>
                         </ng-container>
@@ -68,24 +68,24 @@
                           <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha emisión
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" > <span
-                              class="mobile-label">Fecha emisión:</span>{{row.FechaEmision}}
+                              class="mobile-label">Fecha emisión:</span>{{this.formatFecha(row.FechaEmision)}}
                           </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="FechaContable">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha contable
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" > <span
-                              class="mobile-label">Fecha contable::</span>{{row.FechaContable |date}}
+                              class="mobile-label">Fecha contable::</span>{{this.formatFecha(row.FechaContable)}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="FechaRegistro">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Registro
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" > <span
-                              class="mobile-label">Email:</span>{{row.FechaRegistro}}
+                              class="mobile-label">Email:</span>{{this.formatFecha(row.FechaRegistro)}}
                           </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="Descargar">
+                        <ng-container matColumnDef="Acciones">
                           <mat-header-cell class="pr-0" *matHeaderCellDef>Acciones
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row; let i=index;" class="pr-0">                            
@@ -106,13 +106,19 @@
                               class="tbl-action-btn">
                               <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                             </button>
-                            </div>
+                            </div>    <br>    
+                              <div matTooltip="CANJEAR ANEXO">
+                              <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)"
+                                class="tbl-action-btn">
+                                <app-feather-icons [icon]="'repeat'" [class]="'tbl-fav-extra'"></app-feather-icons>
+                              </button>
+                              </div>
                           </mat-cell>
                         </ng-container>
                         <mat-header-row *matHeaderRowDef="displayedColumns">
                         </mat-header-row>
                         <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
-                        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editCall(row)"
+                        <mat-row *matRowDef="let row; columns: displayedColumns;" 
                           [style.cursor]="'pointer'" matRipple>
                         </mat-row>
                       </table>

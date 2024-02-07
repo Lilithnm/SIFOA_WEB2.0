@@ -17,7 +17,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { SelectionModel } from '@angular/cdk/collections';
 import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroyAdapter';
 import { Direction } from '@angular/cdk/bidi';
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { AnexoModel } from 'src/models/main';
 import { AnexoService } from 'src/services/sifoa/anexo.service';
 import { GeneralesModel } from 'src/models/generales';
@@ -42,7 +42,7 @@ export class AnexosComponent
     'FechaEmision',
     'FechaContable',
     'FechaRegistro',
-    'Descargar'
+    'Acciones'
   ];
   
   generales!: GeneralesModel;
@@ -68,7 +68,7 @@ export class AnexosComponent
   ];
   constructor(
     public httpClient: HttpClient,
-    public dialog: MatDialog,
+    public dialog: MatDialog, private datePipe: DatePipe,
     public teachersService: AnexoService,
     private snackBar: MatSnackBar,
     private svcSpinner: NgxSpinnerService,
@@ -92,16 +92,13 @@ export class AnexosComponent
       this.loadData();
     }
     agregaMovimiento(){
-     console.log(this.nuevoAnexo)
-   //  this.modAnexo = this.nuevoAnexo
-    // this.GuardarAnexo()
+     this.modAnexo = this.nuevoAnexo
+     this.GuardarAnexo()
   }
 
   guardaEdita(){
-    console.log('edita')
-    console.log(this.nuevoAnexo)
-  //  this.modAnexo = this.nuevoAnexo
-   // this.GuardarAnexo()
+    this.modAnexo = this.nuevoAnexo
+    this.Actualizar()
  }
 
 
@@ -116,6 +113,27 @@ export class AnexosComponent
    }
   }
 
+  CanjearAnexo():void{
+    this.modAnexo.FechaCaptura = new Date().toISOString().split('T')[0];
+
+    this.svcSpinner.show();
+    this.exampleDatabase?.CanjearAnexo(this.modAnexo).pipe(takeUntil(this.destroy$)).subscribe(AnexoId => {           
+      swal.fire({
+        title: 'Éxito',
+        text: 'Se eliminó el anexo correctamente.',
+        icon: 'success'
+      });  
+      this.svcSpinner.hide()
+      this.refresh()
+    }, errResponse => {
+      this.svcSpinner.hide();
+    }, () => {
+      this.svcSpinner.hide();
+    });
+
+
+  }
+
 
   GuardarAnexo():void{
     this.svcSpinner.show();
@@ -125,10 +143,11 @@ export class AnexosComponent
     this.exampleDatabase?.CrearAnexo(this.modAnexo).subscribe({
       next: (res) => {
         if (res) {            
+          this.refresh()
            this.refreshTable();
            swal.fire({
             title: 'Éxito',
-            text: 'Personaje actualizado.',
+            text: 'Anexo creado exitosamente.',
             icon: 'success'
           });     
         } else {
@@ -152,6 +171,40 @@ export class AnexosComponent
       },
     });
   }
+  Actualizar():void{
+    this.svcSpinner.show();
+  
+    this.exampleDatabase?.ActualizarAnexo(this.modAnexo).subscribe({
+      next: (res) => {
+        if (res) {            
+           this.refreshTable();
+           swal.fire({
+            title: 'Éxito',
+            text: 'Se editó el anexo.',
+            icon: 'success'
+          });     
+        } else {
+          this.svcSpinner.hide()
+          this.showNotification(
+            'snackbar-error',
+            'Error',
+            'bottom',
+            'center'
+          );
+        }
+      },
+      error: (error) => {
+        this.svcSpinner.hide()         
+         this.showNotification(
+          'snackbar-error',
+          'Error',
+          'bottom',
+          'center'
+        );
+      },
+    });
+  }
+
   eliminarAnexo(anexo: AnexoModel): void {
       if(anexo.Estado != 1){
         swal.fire({
@@ -173,19 +226,36 @@ export class AnexosComponent
                
             anexo.Estatus = 0 ;
             this.svcSpinner.show();
-            this.exampleDatabase?.ActualizarAnexo(anexo).pipe(takeUntil(this.destroy$)).subscribe(AnexoId => {           
-              swal.fire({
-                title: 'Éxito',
-                text: 'Se eliminó el anexo correctamente.',
-                icon: 'success'
-              });  
-              this.refresh()
-            }, errResponse => {
-              this.svcSpinner.hide();
-            }, () => {
-              this.svcSpinner.hide();
-            });
-        
+            this.exampleDatabase?.ActualizarAnexo(anexo).subscribe({
+                next: (res) => {
+                  if (res) {            
+                     this.refreshTable();
+                     swal.fire({
+                      title: 'Éxito',
+                      text: 'Se eliminó el anexo.',
+                      icon: 'success'
+                    });     
+                    this.svcSpinner.hide()
+                  } else {
+                    this.svcSpinner.hide()
+                    this.showNotification(
+                      'snackbar-error',
+                      'Error',
+                      'bottom',
+                      'center'
+                    );
+                  }
+                },
+                error: (error) => {
+                  this.svcSpinner.hide()         
+                   this.showNotification(
+                    'snackbar-error',
+                    'Error',
+                    'bottom',
+                    'center'
+                  );
+                },
+              });
           }
         })
       
@@ -340,6 +410,13 @@ export class AnexosComponent
       this.contextMenu.openMenu();
     }
   }
+
+  formatFecha(fecha:string){
+    // console.log(fecha)
+     return this.datePipe.transform(fecha, 'dd/MM/yyyy');
+   }
+  
+
 }
 
 

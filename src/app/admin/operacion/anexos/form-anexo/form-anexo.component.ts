@@ -98,7 +98,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
                   Monto: [null, [Validators.required]],  
                   Oficina: [null, []],
                   Banco: this.fb.group({
-                    Identificador: [null, [Validators.required]]
+                    Identificador: [1, [Validators.required]]
                   }),
                   Concepto: this.fb.group({
                     Identificador: [null, [Validators.required]]
