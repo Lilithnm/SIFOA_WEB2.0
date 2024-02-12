@@ -88,31 +88,44 @@
                         <ng-container matColumnDef="Acciones">
                           <mat-header-cell class="pr-0" *matHeaderCellDef>Acciones
                           </mat-header-cell>
-                          <mat-cell *matCellDef="let row; let i=index;" class="pr-0">                            
-                          <div matTooltip="DESCARGAR ANEXO">
-                            <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeAnexo(row)"
-                              class="tbl-action-btn">
-                              <app-feather-icons [icon]="'download-cloud'" [class]="'tbl-fav-dwn'"></app-feather-icons>
-                            </button> 
-                          </div>                                                
-                          <div matTooltip="EDITAR ANEXO">                     
-                            <button mat-icon-button (click)="$event.stopPropagation()" (click)="editCall(row)"
-                              class="tbl-action-btn">
-                              <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                            </button>
-                            </div>                                             
-                          <div matTooltip="ELIMINAR ANEXO">
-                            <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)"
-                              class="tbl-action-btn">
-                              <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                            </button>
-                            </div>    <br>    
-                              <div matTooltip="CANJEAR ANEXO">
-                              <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)"
-                                class="tbl-action-btn">
-                                <app-feather-icons [icon]="'repeat'" [class]="'tbl-fav-extra'"></app-feather-icons>
-                              </button>
+                          <mat-cell *matCellDef="let row; let i=index;" class="pr-0">     <span
+                            class="mobile-label">Acciones:</span>            
+                              <div>
+                                <div class="example-button-container">
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeAnexo(row)" matTooltip="DESCARGAR ANEXO"
+                                  class="tbl-action-btn">
+                                  <app-feather-icons [icon]="'download-cloud'" [class]="'tbl-fav-dwn'"></app-feather-icons>
+                                </button> 
+                                </div>
+                                <div class="example-button-container">
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)" matTooltip="ELIMINAR ANEXO"
+                                  class="tbl-action-btn">
+                                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                </button>
+                                </div>
                               </div>
+                              
+                              <div >
+                                <div class="example-button-container" *ngIf="row.Estatus ==1">
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="editCall(row)" matTooltip="EDITAR ANEXO"
+                                  class="tbl-action-btn">
+                                  <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                                </button>
+                                </div>
+                                <div class="example-button-container" *ngIf="row.Estatus ==1">
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)" matTooltip="CANJEAR ANEXO"
+                                  class="tbl-action-btn">
+                                  <app-feather-icons [icon]="'repeat'" [class]="'tbl-fav-extra'"></app-feather-icons>
+                                </button>
+                                </div>
+                                <div class="example-button-container" *ngIf="row.Estatus ==2">
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)" matTooltip="ANULAR CANJE"
+                                  class="tbl-action-btn">
+                                  <i class="fas fa-undo-alt"  [class]="'tbl-fav-delete'"></i>
+                                </button>
+                                </div>
+                              </div>
+                              
                           </mat-cell>
                         </ng-container>
                         <mat-header-row *matHeaderRowDef="displayedColumns">

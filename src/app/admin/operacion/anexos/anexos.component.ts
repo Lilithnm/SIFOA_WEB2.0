@@ -115,22 +115,36 @@ export class AnexosComponent
 
   CanjearAnexo():void{
     this.modAnexo.FechaCaptura = new Date().toISOString().split('T')[0];
-
     this.svcSpinner.show();
-    this.exampleDatabase?.CanjearAnexo(this.modAnexo).pipe(takeUntil(this.destroy$)).subscribe(AnexoId => {           
-      swal.fire({
-        title: 'Éxito',
-        text: 'Se eliminó el anexo correctamente.',
-        icon: 'success'
-      });  
-      this.svcSpinner.hide()
-      this.refresh()
-    }, errResponse => {
-      this.svcSpinner.hide();
-    }, () => {
-      this.svcSpinner.hide();
+    this.exampleDatabase?.CanjearAnexo(this.modAnexo).subscribe({
+      next: (res) => {
+        if (res) {            
+           this.refreshTable();
+           swal.fire({
+            title: 'Éxito',
+            text: 'Anexo canjeado, se generó la garantía: '+res,
+            icon: 'success'
+          });     
+        } else {
+          this.svcSpinner.hide()
+          this.showNotification(
+            'snackbar-error',
+            'Error',
+            'bottom',
+            'center'
+          );
+        }
+      },
+      error: (error) => {
+        this.svcSpinner.hide()         
+         this.showNotification(
+          'snackbar-error',
+          'Error',
+          'bottom',
+          'center'
+        );
+      },
     });
-
 
   }
 
@@ -174,6 +188,7 @@ export class AnexosComponent
   Actualizar():void{
     this.svcSpinner.show();
   
+    this.modAnexo.FechaCaptura = new Date().toISOString().split('T')[0];
     this.exampleDatabase?.ActualizarAnexo(this.modAnexo).subscribe({
       next: (res) => {
         if (res) {            

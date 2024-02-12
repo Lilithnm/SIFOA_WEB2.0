@@ -106,6 +106,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
                   FechaEmision: [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
                   FechaRegistro: [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
                   FechaContable: [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
+                  FechaCaptura: ['', [Validators.required]],
                   FechaDeposito: [null, []],
                   Origen: this.fb.group({
                     Identificador: [null, [Validators.required]]

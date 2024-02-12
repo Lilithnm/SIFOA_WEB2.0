@@ -82,9 +82,9 @@
     cursor: pointer;
   }
   .tbl-action-btn {
-    height: 40px;
-    width: 40px;
-    display: inline-flex;
+    height: 30px;
+    width: 30px;
+    display: block;
     align-items: center;
   }
 }
@@ -214,7 +214,7 @@
 
 .tbl-fav-edit {
   color: #6777ef;
-  display: inline !important;
+  display: block !important;
   .feather {
     height: 20px !important;
     width: 20px !important;
@@ -222,7 +222,7 @@
 }
 .tbl-fav-dwn {
   color: #4396e3;
-  display: inline !important;
+  display: block !important;
   .feather {
     height: 20px !important;
     width: 20px !important;
@@ -230,7 +230,7 @@
 }
 .tbl-fav-delete {
   color: #ff5200;
-  display: inline !important;
+  display: block !important;
   .feather {
     height: 20px !important;
     width: 20px !important;
@@ -238,7 +238,7 @@
 }
 .tbl-fav-extra {
   color: #4bce16;
-  display: inline !important;
+  display: block !important;
   .feather {
     height: 20px !important;
     width: 20px !important;
