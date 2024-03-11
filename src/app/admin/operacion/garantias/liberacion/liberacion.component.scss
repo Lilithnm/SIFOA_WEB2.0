@@ -1,0 +1,76 @@
+.swal2-header {
+    margin: 0 1.7em;
+    background: #2d4e66 !important;
+    border-radius: 10px 11px 0px 0px ;
+}
+.swal2-title {
+    color: white !important;
+}
+
+.cdk-overlay-container
+{
+    z-index: 10000 !important;
+}
+
+.mat-table {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 450px;
+  }
+  table {
+    width: 100%;
+  }
+.cardRow{
+    &.plus-card{
+        cursor: pointer;
+        transition: .5s;
+        &:hover{
+          background-color: #92c3e7;
+            transform: scale(1.005);
+        }
+        .plus{
+            font-size: 100px;
+            color: rgb(255, 255, 255);
+        }
+    }
+}
+ 
+.mat-table {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 450px;
+  }
+  
+.buscar{
+  place-content: stretch flex-start !important;
+}
+
+.mat-form-field-wrapper .ng-tns-c191-5{
+  width:280px !important;
+}
+.notrans{
+    color: red;
+    font-weight: 500;
+}
+.seleccionar{
+    color: black;
+    font-weight: 500;
+}
+.seleccionado{
+    color: #5DBC29;
+    font-weight: 500;
+}
+.transbtn{
+    float: right;
+}
+.plus-card{
+    margin-top: 20px!important;
+}
+
+.cdk-overlay-pane{
+    width: 800px !important;
+}
+
+.reactivada{
+    background-color: #e0ffde;
+  }

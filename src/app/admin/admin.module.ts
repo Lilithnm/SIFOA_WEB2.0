@@ -26,7 +26,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SpinnerComponent } from 'src/app/shared/spinner.component';
-import { MatOption, MatOptionModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatOption, MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import {  MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -43,6 +43,8 @@ import { FormAnexoComponent } from './operacion/anexos/form-anexo/form-anexo.com
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { ModalComponent } from '../shared/modal/modal.component';
 import { LiberarConfirmComponent } from '../shared/liberar-confirm/liberar-confirm.component';
+import { EditarAnexoComponent } from './operacion/anexos/editar-anexo/editar-anexo.component';
+import { CanjearAnexo } from './operacion/anexos/canjear-anexo/canjear-anexo.component';
 
 
 
@@ -57,6 +59,8 @@ import { LiberarConfirmComponent } from '../shared/liberar-confirm/liberar-confi
     ModalComponent,
     AnexosComponent,
     FormAnexoComponent,
+    EditarAnexoComponent,
+    CanjearAnexo,
     LiberarConfirmComponent
 
   ],
@@ -131,6 +135,9 @@ import { LiberarConfirmComponent } from '../shared/liberar-confirm/liberar-confi
    providers: [
     {provide: MatDialogRef, useValue: {}},
     {provide: MAT_DIALOG_DATA, useValue: []},
+    { provide: MAT_DATE_LOCALE, useValue: 'es-MX' }
 ]
 })
 export class AdminModule {}
+
+

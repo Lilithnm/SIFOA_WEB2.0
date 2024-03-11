@@ -5,20 +5,25 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DataSource } from '@angular/cdk/collections';
 import swal from 'sweetalert2';
-import {  MatSnackBar,  MatSnackBarHorizontalPosition,  MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
+import { FormAnexoComponent } from './form-anexo/form-anexo.component';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { SelectionModel } from '@angular/cdk/collections';
 import { UnsubscribeOnDestroyAdapter } from 'src/app/shared/UnsubscribeOnDestroyAdapter';
-import { DatePipe } from '@angular/common';
+import { Direction } from '@angular/cdk/bidi';
+import { DatePipe, formatDate } from '@angular/common';
 import { AnexoModel } from 'src/models/main';
 import { AnexoService } from 'src/services/sifoa/anexo.service';
 import { GeneralesModel } from 'src/models/generales';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MediaService } from 'src/services/sifoa/media.service';
-import { HistorialService } from 'src/services/sifoa/historial.service';
 
 @Component({
   selector: 'app-anexos',
@@ -43,14 +48,13 @@ export class AnexosComponent
   generales!: GeneralesModel;
   @ViewChild('AgregarMovimiento') public AgregarAnexo!: SwalComponent;
   @ViewChild('EditarAnexo') public EditarAnexo!: SwalComponent;
-  @ViewChild('CanjeAnexo') public CanjeAnexo!: SwalComponent;
   
   destroy$: Subject<boolean> = new Subject<boolean>();
   buttonDisabled = false;
   nuevoAnexo: AnexoModel = new AnexoModel()
   modAnexo: AnexoModel = new AnexoModel()
 
-  servicioAnexos?: AnexoService;
+  exampleDatabase?: AnexoService;
   dataSource!: ExampleDataSource;
   selection = new SelectionModel<AnexoModel>(true, []);
   id?: number;
@@ -69,7 +73,6 @@ export class AnexosComponent
     private snackBar: MatSnackBar,
     private svcSpinner: NgxSpinnerService,
     private svcMedia: MediaService,
-    private svcHistorial: HistorialService
   ) {
     
     super();
@@ -111,54 +114,47 @@ export class AnexosComponent
   }
 
   CanjearAnexo():void{
-
-    this.modAnexo = this.nuevoAnexo
-    this.modAnexo.Estado = 2;
+    this.modAnexo.FechaCaptura = new Date().toISOString().split('T')[0];
     this.svcSpinner.show();
+    this.exampleDatabase?.CanjearAnexo(this.modAnexo).subscribe({
+      next: (res) => {
+        if (res) {            
+           this.refreshTable();
+           swal.fire({
+            title: 'Éxito',
+            text: 'Anexo canjeado, se generó la garantía: '+res,
+            icon: 'success'
+          });     
+        } else {
+          this.svcSpinner.hide()
+          this.showNotification(
+            'snackbar-error',
+            'Error',
+            'bottom',
+            'center'
+          );
+        }
+      },
+      error: (error) => {
+        this.svcSpinner.hide()         
+         this.showNotification(
+          'snackbar-error',
+          'Error',
+          'bottom',
+          'center'
+        );
+      },
+    });
 
-          this.servicioAnexos?.CanjearAnexo(this.modAnexo).subscribe({
-            next: (res) => {
-              if (res) {            
-                this.refresh()
-                 this.refreshTable();
-                 swal.fire({
-                  title: 'Éxito',
-                  text: 'Anexo canjeado, se generó la garantía: '+res.Folio,
-                  icon: 'success'
-                });     
-              } else {
-                this.svcSpinner.hide()
-                this.showNotification(
-                  'snackbar-error',
-                  'Error',
-                  'bottom',
-                  'center'
-                );
-              }
-            },
-            error: (error) => {
-              this.svcSpinner.hide()         
-               this.showNotification(
-                'snackbar-error',
-                'Error',
-                'bottom',
-                'center'
-              );
-            },
-          });
-        
-    
   }
 
 
   GuardarAnexo():void{
     this.svcSpinner.show();
     this.modAnexo.FechaCaptura = new Date().toISOString().split('T')[0];
-    
-    this.nuevoAnexo.Estatus = 1;
-    this.nuevoAnexo.Estado = 1;
+    this.modAnexo.Estado =1;  
   
-    this.servicioAnexos?.CrearAnexo(this.modAnexo).subscribe({
+    this.exampleDatabase?.CrearAnexo(this.modAnexo).subscribe({
       next: (res) => {
         if (res) {            
           this.refresh()
@@ -193,17 +189,15 @@ export class AnexosComponent
     this.svcSpinner.show();
   
     this.modAnexo.FechaCaptura = new Date().toISOString().split('T')[0];
-    this.servicioAnexos?.ActualizarAnexo(this.modAnexo).subscribe({
+    this.exampleDatabase?.ActualizarAnexo(this.modAnexo).subscribe({
       next: (res) => {
         if (res) {            
+           this.refreshTable();
            swal.fire({
             title: 'Éxito',
             text: 'Se editó el anexo.',
             icon: 'success'
           });     
-          
-          this.refresh()
-           this.refreshTable();
         } else {
           this.svcSpinner.hide()
           this.showNotification(
@@ -247,16 +241,15 @@ export class AnexosComponent
                
             anexo.Estatus = 0 ;
             this.svcSpinner.show();
-            this.servicioAnexos?.ActualizarAnexo(anexo).subscribe({
+            this.exampleDatabase?.ActualizarAnexo(anexo).subscribe({
                 next: (res) => {
                   if (res) {            
+                     this.refreshTable();
                      swal.fire({
                       title: 'Éxito',
                       text: 'Se eliminó el anexo.',
                       icon: 'success'
                     });     
-                    this.refresh()
-                     this.refreshTable();
                     this.svcSpinner.hide()
                   } else {
                     this.svcSpinner.hide()
@@ -283,100 +276,16 @@ export class AnexosComponent
       
       }
     }
-
-  anularCanjeAnexo(anexo: AnexoModel): void {
-
-        swal.fire({
-          title: "Anular",
-            icon: 'question',
-           text:"¿Desea anular el canje del anexo?",
-          showCancelButton: true,
-          confirmButtonText: 'Anular',
-          cancelButtonText: 'Cancelar'
-        }).then((result) => {
-          if (result.isConfirmed) {
-          
-          //  anexo.Estatus = 0 ;
-            this.svcSpinner.show();
-            this.servicioAnexos?.AnularCanje(anexo).subscribe({
-                next: (res) => {
-                  if (res) {            
-                     swal.fire({
-                      title: 'Éxito',
-                      text: 'Canje Anulado',
-                      icon: 'success'
-                    });     
-                    this.refresh()
-                     this.refreshTable();
-                    this.svcSpinner.hide()
-                  } else {
-                    this.svcSpinner.hide()
-                    this.showNotification(
-                      'snackbar-error',
-                      'Error',
-                      'bottom',
-                      'center'
-                    );
-                  }
-                },
-                error: (error) => {
-                  this.svcSpinner.hide()         
-                   this.showNotification(
-                    'snackbar-error',
-                    'Error',
-                    'bottom',
-                    'center'
-                  );
-                },
-              });
-          }
-        })
-      
-    }
     
-
   ImprimeAnexo(anexo: AnexoModel):void{
     this.svcSpinner.show()
-    this.servicioAnexos?.ImprimeAnexo(anexo).subscribe({
-      next: (data) => {
+    this.exampleDatabase?.ImprimeAnexo(anexo).subscribe((data) => {
       this.svcMedia.openFile(data);
       this.svcMedia.downloadFile(data, 'CertificadoRenta'+anexo.Folio+'.pdf');
       this.svcSpinner.hide();
-      },
-      error: (error) => {
-        this.svcSpinner.hide()         
-         this.showNotification(
-          'snackbar-error',
-          'Error',
-          'bottom',
-          'center'
-        );
-      },
-    });
-       
-  }
-
-  ImprimeHistorial(anexo: AnexoModel):void{
-    this.svcSpinner.show()
-
-    this.svcHistorial.HistorialAnexo(anexo).subscribe({
-      next: (data) => {
-        this.svcMedia.openFile(data);
-        this.svcMedia.downloadFile(data, 'HistorialAnexo'+anexo.Folio+'.pdf');
-        this.svcSpinner.hide();
-      },
-      error: (error) => {
-        this.svcSpinner.hide()         
-         this.showNotification(
-          'snackbar-error',
-          'Error',
-          'bottom',
-          'center'
-        );
-      },
-    });
-    
-       
+      }, error => console.log('Error downloading the file.'),
+      () => {
+    });       
   }
 
 
@@ -391,6 +300,8 @@ export class AnexosComponent
     this.nuevoAnexo.CP = '';
     this.nuevoAnexo.Telefono = '';
     this.nuevoAnexo.Observaciones = '';
+    this.nuevoAnexo.Estatus = 1;
+    this.nuevoAnexo.Estado = 1;
     this.AgregarAnexo.fire()
   }
   asignaObjeto(event:AnexoModel){
@@ -401,15 +312,38 @@ export class AnexosComponent
     this.nuevoAnexo = row
     this.EditarAnexo.fire()
 
-  } 
-  
-  canjeForm(row: AnexoModel) {
-    this.nuevoAnexo = row
-    this.CanjeAnexo.fire()
-
   }
-
-
+  deleteItem(row: AnexoModel) {
+  /*  this.id = row.id;
+    let tempDirection: Direction;
+    if (localStorage.getItem('isRtl') === 'true') {
+      tempDirection = 'rtl';
+    } else {
+      tempDirection = 'ltr';
+    }
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: row,
+      direction: tempDirection,
+    });
+    this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
+      if (result === 1) {
+        const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
+          (x) => x.id === this.id
+        );
+        // for delete we use splice in order to remove single object from DataService
+        if (foundIndex != null && this.exampleDatabase) {
+          this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
+          this.refreshTable();
+          this.showNotification(
+            'snackbar-danger',
+            'Delete Record Successfully...!!!',
+            'bottom',
+            'center'
+          );
+        }
+      }
+    });*/
+  }
   private refreshTable() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
@@ -439,7 +373,7 @@ export class AnexosComponent
         (d) => d === item
       );
       // console.log(this.dataSource.renderedData.findIndex((d) => d === item));
-      this.servicioAnexos?.dataChange.value.splice(index, 1);
+      this.exampleDatabase?.dataChange.value.splice(index, 1);
       this.refreshTable();
       this.selection = new SelectionModel<AnexoModel>(true, []);
     });
@@ -451,9 +385,9 @@ export class AnexosComponent
     );
   }
   public loadData() {
-    this.servicioAnexos = new AnexoService(this.httpClient);
+    this.exampleDatabase = new AnexoService(this.httpClient);
     this.dataSource = new ExampleDataSource(
-      this.servicioAnexos,
+      this.exampleDatabase,
       this.paginator,
       this.sort
     );
@@ -515,7 +449,7 @@ export class ExampleDataSource extends DataSource<AnexoModel> {
   
   generales!: GeneralesModel;
   constructor(
-    public servicioAnexos: AnexoService,
+    public exampleDatabase: AnexoService,
     public paginator: MatPaginator,
     public _sort: MatSort
   ) {
@@ -539,17 +473,17 @@ export class ExampleDataSource extends DataSource<AnexoModel> {
   connect(): Observable<AnexoModel[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
-      this.servicioAnexos.dataChange,
+      this.exampleDatabase.dataChange,
       this._sort.sortChange,
       this.filterChange,
       this.paginator.page,
     ];
-    this.servicioAnexos.ObtenerAnexos(this.construirAnexo());
+    this.exampleDatabase.ObtenerAnexos(this.construirAnexo());
     return merge(...displayDataChanges).pipe(
       map(() => {
         // Filter data
-        if(this.servicioAnexos.data){
-          this.filteredData = this.servicioAnexos.data
+        if(this.exampleDatabase.data){
+          this.filteredData = this.exampleDatabase.data
           .slice()
           .filter((teachers: AnexoModel) => {
             const searchStr = (

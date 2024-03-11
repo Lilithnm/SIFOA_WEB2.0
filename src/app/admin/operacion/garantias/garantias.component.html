@@ -97,13 +97,6 @@
                                   <app-feather-icons [icon]="'download-cloud'" [class]="'tbl-fav-dwn'"></app-feather-icons>
                                 </button> 
                                 </div>
-                                      
-                                <div class="example-button-container" *ngIf="row.Estado ==1">
-                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeHistorial(row)" matTooltip="HISTORIAL"
-                                  class="tbl-action-btn">
-                                  <i class="fas fa-history"   [class]="'tbl-fav-black'"></i>
-                                </button>
-                                </div>
                                 <div class="example-button-container">
                                   <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)" matTooltip="ELIMINAR ANEXO"
                                   class="tbl-action-btn">
@@ -112,21 +105,21 @@
                                 </div>
                               </div>
                               
-                              <div > 
-                                <div class="example-button-container" *ngIf="row.Estado ==1">
+                              <div >
+                                <div class="example-button-container" *ngIf="row.Estatus ==1">
                                   <button mat-icon-button (click)="$event.stopPropagation()" (click)="editCall(row)" matTooltip="EDITAR ANEXO"
                                   class="tbl-action-btn">
                                   <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                                 </button>
                                 </div>
-                                <div class="example-button-container" *ngIf="row.Estado ==1">
-                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="canjeForm(row)" matTooltip="CANJEAR ANEXO"
+                                <div class="example-button-container" *ngIf="row.Estatus ==1">
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)" matTooltip="CANJEAR ANEXO"
                                   class="tbl-action-btn">
                                   <app-feather-icons [icon]="'repeat'" [class]="'tbl-fav-extra'"></app-feather-icons>
                                 </button>
                                 </div>
-                                <div class="example-button-container" *ngIf="row.Estado ==2">
-                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="anularCanjeAnexo(row)" matTooltip="ANULAR CANJE"
+                                <div class="example-button-container" *ngIf="row.Estatus ==2">
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)" matTooltip="ANULAR CANJE"
                                   class="tbl-action-btn">
                                   <i class="fas fa-undo-alt"  [class]="'tbl-fav-delete'"></i>
                                 </button>
@@ -143,12 +136,12 @@
                         </mat-row>
                       </table>
                       <!-- Loading spinner -->
-                      <div *ngIf="servicioAnexos?.isTblLoading" class="tbl-spinner">
+                      <div *ngIf="exampleDatabase?.isTblLoading" class="tbl-spinner">
                         <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
                         </mat-progress-spinner>
                       </div>
            
-                      <div *ngIf="!servicioAnexos?.isTblLoading" class="no-results"  [style.display]="dataSource.renderedData.length === 0 ? '' : 'none'">
+                      <div *ngIf="!exampleDatabase?.isTblLoading" class="no-results"  [style.display]="dataSource.renderedData.length === 0 ? '' : 'none'">
                         Sin registros
                       </div>
                       <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0"
@@ -177,14 +170,6 @@
 [allowOutsideClick]="false" [allowEscapeKey]="false" 
 [showConfirmButton]="buttonDisabled"   (confirm)="guardaEdita()">
 <div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
- <editar-form-anexo [nuevoAnexoForm]="nuevoAnexo"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></editar-form-anexo>
-</div>
-</swal>
-
-<swal #CanjeAnexo title="Canjear Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
-[allowOutsideClick]="false" [allowEscapeKey]="false" 
-[showConfirmButton]="buttonDisabled"   (confirm)="CanjearAnexo()">
-<div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
- <app-canjear-anexo [nuevoAnexoForm]="nuevoAnexo"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></app-canjear-anexo>
+ <app-form-anexo [nuevoAnexoForm]="nuevoAnexo"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></app-form-anexo>
 </div>
 </swal>

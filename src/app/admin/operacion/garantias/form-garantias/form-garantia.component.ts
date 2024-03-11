@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { NgxSpinnerService } from 'ngx-spinner';
+import swal from 'sweetalert2';
+import { Title } from '@angular/platform-browser';
 import { formatDate } from '@angular/common';
 import {NumeroLetra} from 'src/tools/numero-letra'
 import { MatDialog } from '@angular/material/dialog';
@@ -84,19 +86,17 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
 
 
     this.form = this.fb.group({
-                  Identificador: [null, []],
                   Expediente: this.fb.group({
                     Identificador: [null, []]
                   }),
                   Estatus: [null, []],
-                  Estado: [null, []],
                   Municipio: [null, [Validators.required]], 
                   Depositante: this.fb.group({
                     Identificador: [null, [Validators.required]]
                   }),
                   Folio: ["", [Validators.required]],
                   Monto: [null, [Validators.required]],  
-                  Oficina: [null, [Validators.required]],
+                  Oficina: [null, []],
                   Banco: this.fb.group({
                     Identificador: [1, [Validators.required]]
                   }),
@@ -106,7 +106,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
                   FechaEmision: [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
                   FechaRegistro: [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
                   FechaContable: [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
-                  FechaCaptura: ['', []],
+                  FechaCaptura: ['', [Validators.required]],
                   FechaDeposito: [null, []],
                   Origen: this.fb.group({
                     Identificador: [null, [Validators.required]]
@@ -138,9 +138,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
         });
       }
     }
-
-    console.log(this.nuevoAnexoForm)
-    if(this.nuevoAnexoForm.Estado == 1){
+    if(this.nuevoAnexoForm.Estado == 2){
         this.form.controls['Banco'].disable();        
         this.form.controls['Municipio'].disable();
         this.form.controls['Depositante'].disable();
@@ -155,25 +153,6 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
         this.form.controls['Telefono'].disable();
         this.form.controls['CP'].disable();       
         this.form.controls['Domicilio'].disable();  
-        this.form.patchValue({
-          'Municipio': this.nuevoAnexoForm.Municipio
-        });
-      }
-      if(this.nuevoAnexoForm.Estado == 5){
-        this.form.controls['Banco'].disable();        
-        this.form.controls['Municipio'].disable();
-        this.form.controls['Depositante'].disable();
-        this.form.controls['Origen'].disable();
-        this.form.controls['Monto'].disable();
-        this.form.controls['Oficina'].disable();
-        this.form.controls['Concepto'].disable();
-        this.form.controls['FechaEmision'].disable();
-        this.form.controls['FechaRegistro'].disable();
-        this.form.controls['Folio'].disable();
-        this.form.controls['Telefono'].disable();
-        this.form.controls['CP'].disable();       
-        this.form.controls['Domicilio'].disable();  
-        this.form.controls['Observaciones'].disable();  
         this.form.patchValue({
           'Municipio': this.nuevoAnexoForm.Municipio
         });
@@ -271,11 +250,52 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
   }
 
   escuchadoresForm():void{
+    //cuando el form sea valido, mostar boton de agregart
+  /* this.paisesControl.valueChanges.subscribe(x => {
+      this.nuevoEmpleado.datosDomicilio.idPais = this.paisesControl.value?.idPrincipal?this.paisesControl.value?.idPrincipal:0;
+      this.nuevoEmpEvent.emit(this.nuevoEmpleado);
+    })
+    this.estadosControl.valueChanges.subscribe(x => {
+      this.nuevoEmpleado.datosDomicilio.idEstado = this.estadosControl.value?.idPrincipal?this.estadosControl.value?.idPrincipal:0;
+      this.nuevoEmpEvent.emit(this.nuevoEmpleado);
+    })
+    this.municipiosControl.valueChanges.subscribe(x => {
+      this.nuevoEmpleado.datosDomicilio.idMunicipio = this.municipiosControl.value?.idPrincipal?this.municipiosControl.value?.idPrincipal:0;
+      this.nuevoEmpEvent.emit(this.nuevoEmpleado);
+    })
+    this.coloniasDomControl.valueChanges.subscribe(x => {
+      this.nuevoEmpleado.datosDomicilio.idColonia = this.coloniasDomControl.value?.idColonia?this.coloniasDomControl.value?.idColonia:0;
+      this.nuevoEmpEvent.emit(this.nuevoEmpleado);
+    })
+    this.plazasControl.valueChanges.subscribe(x => {
+      this.nuevoEmpleado.datosPuesto.idPlazaConsec = this.plazasControl.value?.idPrincipal?this.plazasControl.value?.idPrincipal:0;
+      this.nuevoEmpEvent.emit(this.nuevoEmpleado);
+    })
+*/
+
     this.form.valueChanges.subscribe(x => {
 
             this.buttonAneDisabledEvent.emit(this.form.valid);
     
             this.nuevoAnexoForm = <AnexoModel>this.form.getRawValue();   
+            /////los mat auto complete vinculan el objeto completo por lo que es necesario re asignar solo con los id's
+                 /*   //cuando cambie asignar a los objetos
+            this.nuevoEmpleado.datosDomicilio.idPais = this.paisesControl.value?.idPrincipal?this.paisesControl.value?.idPrincipal:0;
+            this.nuevoEmpleado.datosDomicilio.idEstado = this.estadosControl.value?.idPrincipal?this.estadosControl.value?.idPrincipal:0;
+            this.nuevoEmpleado.datosDomicilio.idMunicipio = this.municipiosControl.value?.idPrincipal?this.municipiosControl.value?.idPrincipal:0;
+            this.nuevoEmpleado.datosDomicilio.idColonia = this.coloniasDomControl.value?.idColonia?this.coloniasDomControl.value?.idColonia:0;
+            this.nuevoEmpleado.datosPuesto.idPlazaConsec = this.plazasControl.value?.idPrincipal?this.plazasControl.value?.idPrincipal:0;
+        
+            this.nuevoMovimiento.IdPlaza = this.plazasControl.value?.idPrincipal?this.plazasControl.value?.idPrincipal:0;
+            this.nuevoMovimiento.FechaInicio =  this.nuevoEmpleado.datosPuesto.inicio;
+            this.nuevoMovimiento.FechaFin = this.nuevoEmpleado.datosPuesto.fin;
+            this.nuevoMovimiento.TipoMovimiento = 1;
+            this.nuevoEmpleado.listaTelefonos = this.telefonos;
+            this.nuevoEmpleado.correosElectronicos = this.correos;
+            this.nuevoEmpleado.datosPuesto.inicio = this.convierteFecha(this.nuevoEmpleado.datosPuesto.inicio)
+            this.nuevoEmpleado.datosPuesto.fin = this.convierteFecha(this.nuevoEmpleado.datosPuesto.fin)
+            this.nuevoEmpleado.datosCandidato.fechaNacimiento = this.convierteFecha(this.nuevoEmpleado.datosCandidato.fechaNacimiento)*/
+            
             this.nuevoRegistroEvent.emit(this.nuevoAnexoForm);
 
       }) 

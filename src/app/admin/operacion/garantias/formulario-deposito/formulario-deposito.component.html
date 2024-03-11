@@ -1,0 +1,70 @@
+<div style="margin-right: 20px;">
+    <br>
+    <form [formGroup]="form">
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Monto
+                    </mat-label>
+                    <input formControlName="Monto" currencyMask matInput name="inputMonto" value="0" [options]="{ prefix: '$ ', thousands: ',', decimal: '.' }">
+                </mat-form-field>
+                <mat-error *ngIf="form.hasError('montoValido')">
+                    <small  class="errorrfc">El monto no debe ser mayor al de la garantía y los depósitos capturados.</small>
+                </mat-error>
+            </div>
+            <div fxFlex.sm="4" fxFlex.lg="4" fxFlex="4"></div>
+            <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Fecha de Depósito
+                    </mat-label>
+                    <input formControlName="FechaDeposito" type="date" matInput name="inputDeposito">
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Fecha de Recepción
+                    </mat-label>
+                    <input formControlName="FechaRecepcion" type="date" matInput name="inputRecepcion">
+                </mat-form-field>
+            </div>
+            <div fxFlex.sm="4" fxFlex.lg="4" fxFlex="4"></div>
+            <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Número de Documento
+                    </mat-label>
+                    <input matInput formControlName="NumeroDocumento" name="inputNumeroDocumento">
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+                <mat-form-field appearance="outline" >
+                    <mat-label>
+                        Banco
+                    </mat-label>
+                    <mat-select name="selectBanco" formControlName="IdentificadorBanco">
+                        <mat-option *ngFor="let banco of bancos" [value]="banco.Identificador">
+                            {{banco.Nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button  cdkFocusInitial color="primary" (click)="guardar()" >Guardar</button>
+    <button mat-button mat-dialog-close >Cancelar</button>
+</div>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#26c6da" type="ball-fall" [fullScreen]="false">
+    <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>

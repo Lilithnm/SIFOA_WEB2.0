@@ -1,0 +1,85 @@
+
+
+    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#26c6da" type="ball-fall" [fullScreen]="false">
+        <p style="font-size: 20px; color: white">Cargando...</p>
+    </ngx-spinner>
+
+<div>
+
+    <div style="margin-right: 20px; padding: 25px;" class="card">
+
+        <h3 mat-subheader>Endosos pendientes de liberación</h3>  
+ 
+         <button mat-raised-button (click)="obtenerEndosos()" 
+            color="warn" >
+            <mat-icon>update</mat-icon> Actualizar listado
+        </button>
+        <button mat-raised-button (click)="libera()" 
+            color="success" class="transbtn" 
+           [disabled]="!((!selection.isEmpty())&&permiso)">
+            <mat-icon>check</mat-icon> Liberar
+        </button>
+        <br>
+        <div fxLayout="row" class="plus-card">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"  style="width:100%">
+
+                <ng-container matColumnDef="select">
+
+                  <th mat-header-cell *matHeaderCellDef> Seleccionar </th>
+                  <td mat-cell *matCellDef="let row" >
+                        
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)"
+                                    [disabled]="tipoTransSelect==1">
+                            
+                      <span *ngIf="!(selection.isSelected(row))" class="seleccionar"></span>
+                      <span *ngIf="selection.isSelected(row)" class="seleccionado"></span>
+                    </mat-checkbox>              
+                  </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="folio">
+                  <th mat-header-cell *matHeaderCellDef> Referencia </th>
+                  <td mat-cell *matCellDef="let element"> {{element.ReferenciaDevolucion}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="beneficiario">
+                  <th mat-header-cell *matHeaderCellDef> Beneficiario </th>
+                  <td mat-cell *matCellDef="let element">{{obtieneBeneficiario(element)}}</td>
+                </ng-container>
+              
+                <ng-container matColumnDef="monto">
+                  <th mat-header-cell *matHeaderCellDef> Monto </th>
+                  <td mat-cell *matCellDef="let element"> {{element.Monto| currency}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="identificacion">
+                  <th mat-header-cell *matHeaderCellDef> Identificación </th>
+                  <td mat-cell *matCellDef="let element">{{obtieneIdentificacion(element)}}</td>
+                </ng-container>
+                            
+                <ng-container matColumnDef="vigencia">
+                  <th mat-header-cell *matHeaderCellDef> Vigencia </th>
+                  <td mat-cell *matCellDef="let element">{{obtieneVigencia(element) }}</td>
+                </ng-container>
+              
+                <ng-container matColumnDef="expediente">
+                  <th mat-header-cell *matHeaderCellDef> Expediente </th>
+                  <td mat-cell *matCellDef="let element">{{element.Expediente.Clave}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="fechaendoso">
+                  <th mat-header-cell *matHeaderCellDef> Fecha Endoso </th>
+                  <td mat-cell *matCellDef="let element">{{formatFecha(element.FechaEndosamiento)}}</td>
+                </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"  
+                    [ngClass]="{'reactivada': reactivada(row) }"
+                    [matTooltip]="getTooltip(row)"                    >
+                </tr>
+              </table>
+        </div>
+    </div>
+</div>

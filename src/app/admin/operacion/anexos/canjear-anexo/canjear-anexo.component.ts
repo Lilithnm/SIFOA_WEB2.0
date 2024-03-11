@@ -15,11 +15,11 @@ import { CatalogoService } from 'src/services/shared/catalogo.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
-  selector: 'app-form-anexo',
-  templateUrl: './form-anexo.component.html',
-  styleUrls: ['./form-anexo.component.scss']
+  selector: 'app-canjear-anexo',
+  templateUrl: './canjear-anexo.component.html',
+  styleUrls: ['./canjear-anexo.component.scss']
 })
-export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
+export class CanjearAnexo implements OnInit, AfterViewInit,OnChanges {
   
   @Output() buttonAneDisabledEvent = new EventEmitter<boolean>();
 
@@ -96,18 +96,18 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
                   }),
                   Folio: ["", [Validators.required]],
                   Monto: [null, [Validators.required]],  
-                  Oficina: [null, [Validators.required]],
+                  Oficina: [null, []],
                   Banco: this.fb.group({
                     Identificador: [1, [Validators.required]]
                   }),
                   Concepto: this.fb.group({
                     Identificador: [null, [Validators.required]]
                   }),
-                  FechaEmision: [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
-                  FechaRegistro: [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
-                  FechaContable: [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
+                  FechaEmision: [new Date(), [Validators.required]],
+                  FechaRegistro: [new Date(), [Validators.required]],
+                  FechaContable: [new Date(), [Validators.required]],
                   FechaCaptura: ['', []],
-                  FechaDeposito: [null, []],
+                  FechaDeposito: [new Date(), [Validators.required]],
                   Origen: this.fb.group({
                     Identificador: [null, [Validators.required]]
                   }),
@@ -119,6 +119,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
                   Telefono: [null, []],
                 });
 
+    this.nuevoAnexoForm.FechaDeposito = new Date().toISOString()
     this.form.patchValue( this.nuevoAnexoForm)
 
     this.form.statusChanges.subscribe((Estatus)=>{
@@ -139,27 +140,6 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
       }
     }
 
-    console.log(this.nuevoAnexoForm)
-    if(this.nuevoAnexoForm.Estado == 1){
-        this.form.controls['Banco'].disable();        
-        this.form.controls['Municipio'].disable();
-        this.form.controls['Depositante'].disable();
-        this.form.controls['Origen'].disable();
-        this.form.controls['Monto'].disable();
-        this.form.controls['Oficina'].disable();
-        this.form.controls['Concepto'].disable();
-        this.form.controls['FechaEmision'].disable();
-        this.form.controls['FechaRegistro'].disable();
-      //  this.form.controlsFechaContable.disable();
-        this.form.controls['FechaDeposito'].disable();
-        this.form.controls['Telefono'].disable();
-        this.form.controls['CP'].disable();       
-        this.form.controls['Domicilio'].disable();  
-        this.form.patchValue({
-          'Municipio': this.nuevoAnexoForm.Municipio
-        });
-      }
-      if(this.nuevoAnexoForm.Estado == 5){
         this.form.controls['Banco'].disable();        
         this.form.controls['Municipio'].disable();
         this.form.controls['Depositante'].disable();
@@ -177,10 +157,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
         this.form.patchValue({
           'Municipio': this.nuevoAnexoForm.Municipio
         });
-      }
-
-
-    
+     
     this.escuchadoresForm();
 
   }

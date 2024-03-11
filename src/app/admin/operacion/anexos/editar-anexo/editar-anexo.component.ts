@@ -15,11 +15,11 @@ import { CatalogoService } from 'src/services/shared/catalogo.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
-  selector: 'app-form-anexo',
-  templateUrl: './form-anexo.component.html',
-  styleUrls: ['./form-anexo.component.scss']
+  selector: 'editar-form-anexo',
+  templateUrl: './editar-anexo.component.html',
+  styleUrls: ['./editar-anexo.component.scss']
 })
-export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
+export class EditarAnexoComponent implements OnInit, AfterViewInit,OnChanges {
   
   @Output() buttonAneDisabledEvent = new EventEmitter<boolean>();
 
@@ -96,7 +96,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
                   }),
                   Folio: ["", [Validators.required]],
                   Monto: [null, [Validators.required]],  
-                  Oficina: [null, [Validators.required]],
+                  Oficina: [null, []],
                   Banco: this.fb.group({
                     Identificador: [1, [Validators.required]]
                   }),
@@ -143,7 +143,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
     if(this.nuevoAnexoForm.Estado == 1){
         this.form.controls['Banco'].disable();        
         this.form.controls['Municipio'].disable();
-        this.form.controls['Depositante'].disable();
+        //this.form.controls['Depositante'].disable();
         this.form.controls['Origen'].disable();
         this.form.controls['Monto'].disable();
         this.form.controls['Oficina'].disable();
@@ -154,7 +154,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
         this.form.controls['FechaDeposito'].disable();
         this.form.controls['Telefono'].disable();
         this.form.controls['CP'].disable();       
-        this.form.controls['Domicilio'].disable();  
+        //this.form.controls['Domicilio'].disable();  
         this.form.patchValue({
           'Municipio': this.nuevoAnexoForm.Municipio
         });
