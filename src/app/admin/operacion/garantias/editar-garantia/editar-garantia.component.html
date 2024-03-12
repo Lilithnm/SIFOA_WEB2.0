@@ -144,24 +144,21 @@
     </mat-form-field>
     </div>
       <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-
-        <mat-form-field class="example-full-width"  appearance="outline" >
-            <mat-label>Fecha de emisión</mat-label>
-          <input matInput [matDatepicker]="FechaEmision" formControlName="FechaEmision">
-          <mat-datepicker-toggle matIconSuffix [for]="FechaEmision"></mat-datepicker-toggle>
-          <mat-datepicker #FechaEmision></mat-datepicker>
-        </mat-form-field>
+        <mat-form-field class="example-full-width "  appearance="outline"  class="example-full-width " >
+          <mat-label>
+              Fecha de emisión
+          </mat-label>
+          <input formControlName="FechaEmision" type="date" matInput name="inputEmision">
+      </mat-form-field>
       </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-
-        <mat-form-field class="example-full-width"  appearance="outline" >
-            <mat-label>Fecha de registro</mat-label>
-          <input matInput [matDatepicker]="FechaRegistro" formControlName="FechaRegistro">
-          <mat-datepicker-toggle matIconSuffix [for]="FechaRegistro"></mat-datepicker-toggle>
-          <mat-datepicker #FechaRegistro></mat-datepicker>
-        </mat-form-field>
-
-        </div>
+  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+       <mat-form-field class="example-full-width "  appearance="outline"  class="example-full-width " >
+        <mat-label>
+            Fecha de registro
+        </mat-label>
+        <input formControlName="FechaRegistro" type="date" matInput name="inputRegistro">
+    </mat-form-field>
+    </div>
     </div>
 
     <div class="row">
@@ -174,8 +171,6 @@
         <!-- <input type="checkbox" matInput name=""> -->
     </mat-form-field>
     </div>  
-
-
 
     </div>
 

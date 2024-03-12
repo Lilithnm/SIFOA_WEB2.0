@@ -170,8 +170,21 @@
         <textarea matInput placeholder="..." formControlName="Observaciones"></textarea>
         <!-- <input type="checkbox" matInput name=""> -->
     </mat-form-field>
-    </div>
- 
+    </div>  
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+     <mat-form-field class="example-full-width"  appearance="outline" >
+        <mat-label> Fecha de depósito</mat-label>
+      <input matInput [matDatepicker]="pickerDeposito" formControlName="FechaDeposito">
+      <mat-datepicker-toggle matIconSuffix [for]="pickerDeposito"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDeposito></mat-datepicker>
+    </mat-form-field>
+
+
+
+     </div>
+     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+        <strong>*Al guardar el canje afirma que los datos presentados son correctos.</strong>
+     </div>
 
 
     </div>

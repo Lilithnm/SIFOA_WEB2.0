@@ -98,13 +98,13 @@
                                 </button> 
                                 </div>
                                       
-                                <div class="example-button-container" *ngIf="row.Estado ==1">
+                                <div class="example-button-container">
                                   <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeHistorial(row)" matTooltip="HISTORIAL"
                                   class="tbl-action-btn">
                                   <i class="fas fa-history"   [class]="'tbl-fav-black'"></i>
                                 </button>
                                 </div>
-                                <div class="example-button-container">
+                                <div class="example-button-container"  *ngIf="row.Estado ==1">
                                   <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)" matTooltip="ELIMINAR ANEXO"
                                   class="tbl-action-btn">
                                   <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>

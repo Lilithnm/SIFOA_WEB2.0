@@ -122,11 +122,6 @@ export class CanjearAnexo implements OnInit, AfterViewInit,OnChanges {
     this.nuevoAnexoForm.FechaDeposito = new Date().toISOString()
     this.form.patchValue( this.nuevoAnexoForm)
 
-    this.form.statusChanges.subscribe((Estatus)=>{
-      console.log(this.form)
-       //this.returnCall(Estatus);
-    });
-    /////////////////////////
 
     if (this.nuevoAnexoForm.Depositante.Identificador)
     {
@@ -189,7 +184,6 @@ export class CanjearAnexo implements OnInit, AfterViewInit,OnChanges {
           startWith(null),
           map((search: any) => {
             if (search) {
-              console.log(search)
               if (search.Descripcion) {
                 return this.ciudades.filter(e => this.normalizar(e.Descripcion).includes(search.Descripcion.toLocaleLowerCase())).slice(0, 10);
               } else {
@@ -221,7 +215,6 @@ export class CanjearAnexo implements OnInit, AfterViewInit,OnChanges {
   }
 
   getOptionText(dataItem: BaseModel): string {
-    console.log()
     return dataItem ? dataItem.Descripcion : '';
   }
 

@@ -45,6 +45,7 @@ import { ModalComponent } from '../shared/modal/modal.component';
 import { LiberarConfirmComponent } from '../shared/liberar-confirm/liberar-confirm.component';
 import { EditarAnexoComponent } from './operacion/anexos/editar-anexo/editar-anexo.component';
 import { CanjearAnexo } from './operacion/anexos/canjear-anexo/canjear-anexo.component';
+import { GarantiasComponent } from './operacion/garantias/garantias.component';
 
 
 
@@ -61,7 +62,8 @@ import { CanjearAnexo } from './operacion/anexos/canjear-anexo/canjear-anexo.com
     FormAnexoComponent,
     EditarAnexoComponent,
     CanjearAnexo,
-    LiberarConfirmComponent
+    LiberarConfirmComponent,
+    GarantiasComponent
 
   ],
   imports: [

@@ -17,7 +17,6 @@ export class AnexoService extends UnsubscribeOnDestroyAdapter {
   strApi = '/api/Anexo';
   strOrden ='/api/Orden';
   urlServer:string|null = "";
-    private readonly API_URL = 'assets/data/teachers.json';
     isTblLoading = true;
     dataChange: BehaviorSubject<AnexoModel[]> = new BehaviorSubject<AnexoModel[]>([]);
     // Temporarily stores data from dialogs

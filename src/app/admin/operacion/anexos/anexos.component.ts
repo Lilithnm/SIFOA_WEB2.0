@@ -429,7 +429,6 @@ export class AnexosComponent
         );
   }
   onButtonDisabled(buttonDisabled:boolean) {
-    console.log(buttonDisabled)
     this.buttonDisabled = buttonDisabled;
   }
   removeSelectedRows() {
@@ -438,7 +437,6 @@ export class AnexosComponent
       const index: number = this.dataSource.renderedData.findIndex(
         (d) => d === item
       );
-      // console.log(this.dataSource.renderedData.findIndex((d) => d === item));
       this.servicioAnexos?.dataChange.value.splice(index, 1);
       this.refreshTable();
       this.selection = new SelectionModel<AnexoModel>(true, []);
@@ -493,7 +491,6 @@ export class AnexosComponent
   }
 
   formatFecha(fecha:string){
-    // console.log(fecha)
      return this.datePipe.transform(fecha, 'dd/MM/yyyy');
    }
   
