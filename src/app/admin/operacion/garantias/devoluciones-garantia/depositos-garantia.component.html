@@ -21,23 +21,9 @@
             <input matInput name="Clave" disabled [(ngModel)]="generales.Expediente.Nomenclatura" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
         </div>
-        <ng-container  *ngIf='generales.Expediente.Centro.FolioMAAT == 1; then capturaFolio; '> </ng-container>
-        <ng-template #capturaFolio>
-            <div fxLayout="row" fxLayoutAlign="space-around baseline">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <mat-form-field appearance="outline">
-                        <mat-label>
-                            Folio MAAT 
-                        </mat-label>
-                        <input formControlName="Folio" matInput name="inputFolio">
-                    </mat-form-field>
-                </div>
-            </div>  
-        </ng-template>
-        
         
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-          <mat-form-field  class="example-full-width " formGroupName="Personaje">
+          <mat-form-field  class="example-full-width " formGroupName="Depositante">
             <mat-label>
                 Nombre del depositante
             </mat-label>
@@ -91,53 +77,15 @@
               <input matInput name="" formControlName="Telefono">
           </mat-form-field>
           </div>
-            
-          
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-
-            <mat-form-field class="example-full-width"  appearance="outline" >
-                <mat-label>Fecha de captura</mat-label>
-              <input matInput [matDatepicker]="Fecha" formControlName="Fecha">
-              <mat-datepicker-toggle matIconSuffix [for]="Fecha"></mat-datepicker-toggle>
-              <mat-datepicker #Fecha></mat-datepicker>
-            </mat-form-field>
-          </div>
+                
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-    
-            <mat-form-field class="example-full-width"  appearance="outline" >
-                <mat-label>Fecha de vigencia</mat-label>
-              <input matInput [matDatepicker]="FechaVigencia" formControlName="FechaVigencia">
-              <mat-datepicker-toggle matIconSuffix [for]="FechaVigencia"></mat-datepicker-toggle>
-              <mat-datepicker #FechaVigencia></mat-datepicker>
+            <mat-form-field class="example-full-width "  appearance="outline"  >
+                <mat-label>
+                    Oficina
+                </mat-label>
+                <input matInput name="" formControlName="Oficina">
             </mat-form-field>
-    
-            </div>
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-            <mat-form-field appearance="outline" formGroupName="Banco"  class="example-full-width ">
-              <mat-label>
-                  Banco
-              </mat-label>
-              <mat-select name="selectBanco" formControlName="Identificador"  (selectionChange)="cambiaConvenio($event)">
-                  <mat-option *ngFor="let banco of bancos" [value]="banco.Identificador">
-                      {{banco.Nombre}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-          </div>
-
-
-         
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-            <mat-form-field appearance="outline" class="example-full-width ">
-            <mat-label>
-                Convenio No.*
-            </mat-label>
-            <input matInput formControlName="Convenio" name="inputConvenio">
-        </mat-form-field>
-        </div>
-
-        
-
+              </div>
         
          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
             <mat-form-field appearance="outline" formGroupName="Concepto"  class="example-full-width ">
@@ -151,18 +99,67 @@
               </mat-select>
           </mat-form-field>
           </div>
- 
-
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+            <mat-form-field appearance="outline" formGroupName="Banco"  class="example-full-width ">
+              <mat-label>
+                  Banco
+              </mat-label>
+              <mat-select name="selectBanco" formControlName="Identificador">
+                  <mat-option *ngFor="let banco of bancos" [value]="banco.Identificador">
+                      {{banco.Nombre}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+          </div>
+        
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+           <mat-form-field class="example-full-width "  appearance="outline"  >
+            <mat-label>
+                Folio
+            </mat-label>
+            <input matInput formControlName="Folio" autocomplete="off" name="inputFolio" value="7000001">
+        </mat-form-field>
+       </div>
+      
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+        <mat-form-field appearance="outline" formGroupName="Origen"  class="example-full-width ">
+          <mat-label>
+              Origen del certificado
+          </mat-label>
+          <mat-select formControlName="Identificador" name="selectOrigen">
+              <mat-option *ngFor="let origen of origenes" [value]="origen.Identificador">
+                  {{origen.Nombre}}
+              </mat-option>
+          </mat-select>
+          <!-- <input type="checkbox" matInput name=""> -->
+      </mat-form-field>
+      </div>
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
          <mat-form-field class="example-full-width "  appearance="outline"  >
         <mat-label>
-            ESTA ORDEN AMPARA LA CANTIDAD DE:*
+            Monto
         </mat-label>
-        <input formControlName="Importe" autocomplete="off" currencyMask matInput name="inputMonto" [options]="{ prefix: '$ ', thousands: ',', decimal: '.' }">
+        <input formControlName="Monto" autocomplete="off" currencyMask matInput name="inputMonto" [options]="{ prefix: '$ ', thousands: ',', decimal: '.' }">
         <small> {{numeroLetras()}}</small>
     </mat-form-field>
     </div>
-
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+        <mat-form-field class="example-full-width "  appearance="outline"  class="example-full-width " >
+          <mat-label>
+              Fecha de emisión
+          </mat-label>
+          <input formControlName="FechaEmision" type="date" matInput name="inputEmision">
+      </mat-form-field>
+      </div>
+  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+       <mat-form-field class="example-full-width "  appearance="outline"  class="example-full-width " >
+        <mat-label>
+            Fecha de registro
+        </mat-label>
+        <input formControlName="FechaRegistro" type="date" matInput name="inputRegistro">
+    </mat-form-field>
+    </div>
+    </div>
 
     <div class="row">
       
@@ -174,12 +171,25 @@
         <!-- <input type="checkbox" matInput name=""> -->
     </mat-form-field>
     </div>  
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+     <mat-form-field class="example-full-width"  appearance="outline" >
+        <mat-label> Fecha de depósito</mat-label>
+      <input matInput [matDatepicker]="pickerDeposito" formControlName="FechaDeposito">
+      <mat-datepicker-toggle matIconSuffix [for]="pickerDeposito"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDeposito></mat-datepicker>
+    </mat-form-field>
 
+
+
+     </div>
+     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+        <strong>*Al guardar el canje afirma que los datos presentados son correctos.</strong>
+     </div>
 
 
     </div>
 
-</div>
+
 
   </form>
 

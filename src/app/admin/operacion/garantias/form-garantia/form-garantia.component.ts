@@ -8,43 +8,51 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MatInput } from '@angular/material/input';
-import { AnexoModel } from 'src/models/main';
+import { GarantiaModel } from 'src/models/main';
 import { DomicilioModel, GeneralesModel, PersonajeModel } from 'src/models/generales';
 import { BancoModel, BaseModel } from 'src/models/catalogos';
 import { CatalogoService } from 'src/services/shared/catalogo.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
-  selector: 'app-form-anexo',
-  templateUrl: './form-anexo.component.html',
-  styleUrls: ['./form-anexo.component.scss']
+  selector: 'app-form-garantia',
+  templateUrl: './form-garantia.component.html',
+  styleUrls: ['./form-garantia.component.scss']
 })
-export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
+export class FormGarantiaComponent implements OnInit, AfterViewInit,OnChanges {
   
   @Output() buttonAneDisabledEvent = new EventEmitter<boolean>();
 
-  @Output() nuevoRegistroEvent = new EventEmitter<AnexoModel>();
+  @Output() nuevoRegistroEvent = new EventEmitter<GarantiaModel>();
 
   @Output() formValido = new EventEmitter<any>(true);
-  @Input() VaGuardar = false;
   @Output() Datosform = new EventEmitter<any>(true);
 
-  @ViewChild('ciudad', {static: false}) ciudadInput!: MatInput;
 
   
-  @Input() nuevoAnexoForm : AnexoModel = new AnexoModel();
+  @Input() nuevaGaraForm : GarantiaModel = new GarantiaModel();
+
+  @Input() isMode = 1;
+  @Output() formularioValido = new EventEmitter<any>(true);
+  @Input() VaGuardar = false;
+  @Output() DatosFormulario = new EventEmitter<any>(true);
+
+  @ViewChild('ciudad', {static: false}) ciudadInput!: MatInput;
 
   personajes: PersonajeModel[] = [];
   domicilios: DomicilioModel[] = [];
   origenes: BaseModel[] = [];
-  bancos: BancoModel[] = [];
-  ciudades: BaseModel[] = [];
   conceptos: BaseModel[] = [];
+  ciudades: BaseModel[] = [];
   ciudadesSync!: Observable<BaseModel[]>;
+  bancos: BancoModel[] = [];
   generales!: GeneralesModel;
   esLibre = false;
+  diasVigencia :number = 2592000000; // formula dias(30) *24*60*60*1000
+  convertir: any;
+    public form: FormGroup = Object.create(null);
+    
 
-  public form: FormGroup = Object.create(null);
   constructor(
     private fb: FormBuilder,
     private svcSpinner: NgxSpinnerService,
@@ -75,56 +83,58 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
 
   ngAfterViewInit(): void {
   }
+
   numeroLetras(){
-    return this.numeroLetra.NumerosALetras(this.form.controls['Monto'].value)
+    return this.numeroLetra.NumerosALetras(this.form.controls['Importe'].value)
   }
+
 
   ngOnInit(): void {
     
-
-
     this.form = this.fb.group({
-                  Identificador: [null, []],
-                  Expediente: this.fb.group({
-                    Identificador: [null, []]
-                  }),
-                  Estatus: [null, []],
-                  Estado: [null, []],
-                  Municipio: [null, [Validators.required]], 
-                  Depositante: this.fb.group({
-                    Identificador: [null, [Validators.required]]
-                  }),
-                  Folio: ["", [Validators.required]],
-                  Monto: [null, [Validators.required]],  
-                  Oficina: [null, [Validators.required]],
-                  Banco: this.fb.group({
-                    Identificador: [1, [Validators.required]]
-                  }),
-                  Concepto: this.fb.group({
-                    Identificador: [null, [Validators.required]]
-                  }),
-                  FechaEmision: [new Date(), [Validators.required]],
-                  FechaRegistro: [new Date(), [Validators.required]],
-                  FechaContable: [new Date(), [Validators.required]],
-                  FechaCaptura: ['', []],
-                  FechaDeposito: [null, []],
-                  Origen: this.fb.group({
-                    Identificador: [null, [Validators.required]]
-                  }),
-                  Domicilio: this.fb.group({
-                    Identificador: [null, [Validators.required]]
-                  }), 
-                  Observaciones: [null, []],
-                  CP: [null, []],
-                  Telefono: [null, []],
-                });
+      Expediente: this.fb.group({
+        Identificador: [null, []]
+      }),
+      Personaje: this.fb.group({
+        Identificador: [null, [Validators.required]]
+      }),
+      Estatus: [null, []],      
+      Municipio: [null, [Validators.required]],
+      Banco: this.fb.group({
+        Identificador: [1, [Validators.required]]
+      }),
+      Domicilio: this.fb.group({
+        Identificador: [null, [Validators.required]]
+      }), 
+      Concepto: this.fb.group({
+        Identificador: [null, [Validators.required]]
+      }),    
+      Fecha : [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
+      FechaVigencia: [formatDate(new Date().getTime() + this.diasVigencia,'yyyy-MM-dd',"en-US"), [Validators.required]],
+      Folio: [""],
+     // FolioAnterior: [null, []],
+      Convenio: [null, [Validators.required]],        
+      Importe: [0, [Validators.required, Validators.min(.01)]],
+      Observaciones: [null, []],
+      CP: [null, []],
+      Telefono: [null, []]
+    });
+    
+      
+    this.form.patchValue( this.nuevaGaraForm)
 
-    this.form.patchValue( this.nuevoAnexoForm)
+    
+    this.form.controls['Fecha'].disable();
+    this.form.controls['FechaVigencia'].disable();
+    this.form.controls['Convenio'].disable();
+    this.form.statusChanges.subscribe((Estatus)=>{
+      this.returnCall(Estatus);
+    });
 
 
-    if (this.nuevoAnexoForm.Depositante.Identificador)
+    if (this.nuevaGaraForm.Personaje.Identificador)
     {
-      this.domicilios = this.personajes.find(x => x.Identificador === this.nuevoAnexoForm.Depositante.Identificador)!.Domicilios;
+      this.domicilios = this.personajes.find(x => x.Identificador === this.nuevaGaraForm.Personaje.Identificador)!.Domicilios;
 
       if (!this.domicilios) {
         this.dialog.open(ModalComponent, {
@@ -143,7 +153,11 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
     this.svcCatalogos.ObtenerCatalogo(body, 9).subscribe(response => {
       if (response) {
         this.bancos = response;
-        this.bancos = this.bancos.filter(ban =>ban.Identificador==1);
+        this.bancos = this.bancos.filter(ban =>ban.Identificador!=2);
+              
+        ///filtrar bancos
+        
+         this.cambiaConvenioProg()
       }
     });
   }
@@ -206,7 +220,7 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
   returnCall(data: string): void {
       this.formValido.emit(data);
   }
-  returnform(form: AnexoModel):void{
+  returnform(form: GarantiaModel):void{
     this.Datosform.emit(form);
   }
   selectDomicilio(modSelect: MatSelectChange): void {
@@ -226,10 +240,37 @@ export class FormAnexoComponent implements OnInit, AfterViewInit,OnChanges {
 
             this.buttonAneDisabledEvent.emit(this.form.valid);
     
-            this.nuevoAnexoForm = <AnexoModel>this.form.getRawValue();   
-            this.nuevoRegistroEvent.emit(this.nuevoAnexoForm);
+            this.nuevaGaraForm = <GarantiaModel>this.form.getRawValue();   
+            this.nuevoRegistroEvent.emit(this.nuevaGaraForm);
 
       }) 
+  }
+  cambiaConvenio(modSelect: MatSelectChange): void 
+  {
+    let convenio;
+
+    this.bancos.map(function(banco) {
+          if(banco.Identificador == modSelect.value)
+            convenio = banco.Convenio
+   });
+
+    this.form.patchValue({
+      'Convenio': convenio
+   });
+  }  
+
+  cambiaConvenioProg(): void 
+  {
+    let convenio;
+    
+        this.bancos.map(function(banco) {
+              if(banco.Identificador == 1)
+                convenio = banco.Convenio
+      });
+
+        this.form.patchValue({
+          'Convenio': convenio
+      });
   }
 
 }

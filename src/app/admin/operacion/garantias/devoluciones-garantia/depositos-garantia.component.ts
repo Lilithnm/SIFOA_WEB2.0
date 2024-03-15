@@ -15,44 +15,36 @@ import { CatalogoService } from 'src/services/shared/catalogo.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
-  selector: 'editar-form-garantia',
-  templateUrl: './editar-garantia.component.html',
-  styleUrls: ['./editar-garantia.component.scss']
+  selector: 'app-depositos-garantia',
+  templateUrl: './depositos-garantia.component.html',
+  styleUrls: ['./depositos-garantia.component.scss']
 })
-export class EditarGarantiaComponent  implements OnInit, AfterViewInit,OnChanges {
+export class DepositosGarantiaComponent implements OnInit, AfterViewInit,OnChanges {
   
   @Output() buttonAneDisabledEvent = new EventEmitter<boolean>();
 
   @Output() nuevoRegistroEvent = new EventEmitter<GarantiaModel>();
 
   @Output() formValido = new EventEmitter<any>(true);
+  @Input() VaGuardar = false;
   @Output() Datosform = new EventEmitter<any>(true);
 
+  @ViewChild('ciudad', {static: false}) ciudadInput!: MatInput;
 
   
   @Input() nuevaGaraForm : GarantiaModel = new GarantiaModel();
 
-  @Input() isMode = 1;
-  @Output() formularioValido = new EventEmitter<any>(true);
-  @Input() VaGuardar = false;
-  @Output() DatosFormulario = new EventEmitter<any>(true);
-
-  @ViewChild('ciudad', {static: false}) ciudadInput!: MatInput;
-
   personajes: PersonajeModel[] = [];
   domicilios: DomicilioModel[] = [];
   origenes: BaseModel[] = [];
-  conceptos: BaseModel[] = [];
-  ciudades: BaseModel[] = [];
-  ciudadesSync!: Observable<BaseModel[]>;
   bancos: BancoModel[] = [];
+  ciudades: BaseModel[] = [];
+  conceptos: BaseModel[] = [];
+  ciudadesSync!: Observable<BaseModel[]>;
   generales!: GeneralesModel;
   esLibre = false;
-  diasVigencia :number = 2592000000; // formula dias(30) *24*60*60*1000
-  convertir: any;
-    public form: FormGroup = Object.create(null);
-    
 
+  public form: FormGroup = Object.create(null);
   constructor(
     private fb: FormBuilder,
     private svcSpinner: NgxSpinnerService,
@@ -83,58 +75,57 @@ export class EditarGarantiaComponent  implements OnInit, AfterViewInit,OnChanges
 
   ngAfterViewInit(): void {
   }
-
   numeroLetras(){
-    return this.numeroLetra.NumerosALetras(this.form.controls['Importe'].value)
+    return this.numeroLetra.NumerosALetras(this.form.controls['Monto'].value)
   }
-
 
   ngOnInit(): void {
     
-    this.form = this.fb.group({   
-      Identificador: [0, []],   
-      Expediente: this.fb.group({
-        Identificador: [null, []]
-      }),
-      Personaje: this.fb.group({
-        Identificador: [null, [Validators.required]]
-      }),
-      Estatus: [null, []],      
-      Municipio: [null, [Validators.required]],
-      Banco: this.fb.group({
-        Identificador: [1, [Validators.required]]
-      }),
-      Domicilio: this.fb.group({
-        Identificador: [null, [Validators.required]]
-      }), 
-      Concepto: this.fb.group({
-        Identificador: [null, [Validators.required]]
-      }),    
-      Fecha : [formatDate(new Date(),'yyyy-MM-dd',"en-US"), [Validators.required]],
-      FechaVigencia: [formatDate(new Date().getTime() + this.diasVigencia,'yyyy-MM-dd',"en-US"), [Validators.required]],
-      Folio: [""],
-     // FolioAnterior: [null, []],
-      Convenio: [null, [Validators.required]],        
-      Importe: [0, [Validators.required, Validators.min(.01)]],
-      Observaciones: [null, []],
-      CP: [null, []],
-      Telefono: [null, []]
-    });
-    
-    console.log(this.nuevaGaraForm)
+
+
+    this.form = this.fb.group({
+                  Identificador: [null, []],
+                  Expediente: this.fb.group({
+                    Identificador: [null, []]
+                  }),
+                  Estatus: [null, []],
+                  Estado: [null, []],
+                  Municipio: [null, [Validators.required]], 
+                  Depositante: this.fb.group({
+                    Identificador: [null, [Validators.required]]
+                  }),
+                  Folio: ["", [Validators.required]],
+                  Monto: [null, [Validators.required]],  
+                  Oficina: [null, []],
+                  Banco: this.fb.group({
+                    Identificador: [1, [Validators.required]]
+                  }),
+                  Concepto: this.fb.group({
+                    Identificador: [null, [Validators.required]]
+                  }),
+                  FechaEmision: [new Date(), [Validators.required]],
+                  FechaRegistro: [new Date(), [Validators.required]],
+                  FechaContable: [new Date(), [Validators.required]],
+                  FechaCaptura: ['', []],
+                  FechaDeposito: [new Date(), [Validators.required]],
+                  Origen: this.fb.group({
+                    Identificador: [null, [Validators.required]]
+                  }),
+                  Domicilio: this.fb.group({
+                    Identificador: [null, [Validators.required]]
+                  }), 
+                  Observaciones: [null, []],
+                  CP: [null, []],
+                  Telefono: [null, []],
+                });
+
+    this.nuevaGaraForm.FechaDeposito = new Date().toISOString()
     this.form.patchValue( this.nuevaGaraForm)
 
-    this.form.controls['Fecha'].disable();
-    this.form.controls['FechaVigencia'].disable();
-    this.form.controls['Convenio'].disable();
-    this.form.statusChanges.subscribe((Estatus)=>{
-      this.returnCall(Estatus);
-    });
 
-
-    if (this.nuevaGaraForm.Personaje.Identificador)
+    if (this.nuevaGaraForm.Depositante.Identificador)
     {
-      this.domicilios = this.personajes.find(x => x.Identificador === this.nuevaGaraForm.Personaje.Identificador)!.Domicilios;
+      this.domicilios = this.personajes.find(x => x.Identificador === this.nuevaGaraForm.Depositante.Identificador)!.Domicilios;
 
       if (!this.domicilios) {
         this.dialog.open(ModalComponent, {
@@ -143,7 +134,25 @@ export class EditarGarantiaComponent  implements OnInit, AfterViewInit,OnChanges
         });
       }
     }
-    
+
+        this.form.controls['Banco'].disable();        
+        this.form.controls['Municipio'].disable();
+        this.form.controls['Depositante'].disable();
+        this.form.controls['Origen'].disable();
+        this.form.controls['Monto'].disable();
+        this.form.controls['Oficina'].disable();
+        this.form.controls['Concepto'].disable();
+        this.form.controls['FechaEmision'].disable();
+        this.form.controls['FechaRegistro'].disable();
+        this.form.controls['Folio'].disable();
+        this.form.controls['Telefono'].disable();
+        this.form.controls['CP'].disable();       
+        this.form.controls['Domicilio'].disable();  
+        this.form.controls['Observaciones'].disable();  
+        this.form.patchValue({
+          'Municipio': this.nuevaGaraForm.Municipio
+        });
+     
     this.escuchadoresForm();
 
   }
@@ -153,10 +162,7 @@ export class EditarGarantiaComponent  implements OnInit, AfterViewInit,OnChanges
     this.svcCatalogos.ObtenerCatalogo(body, 9).subscribe(response => {
       if (response) {
         this.bancos = response;
-        this.bancos = this.bancos.filter(ban =>ban.Identificador!=2);
-         
-        this.cambiaConvenioProg(this.nuevaGaraForm.Banco.Identificador)     
-        ///filtrar bancos
+        this.bancos = this.bancos.filter(ban =>ban.Identificador==1);
       }
     });
   }
@@ -243,32 +249,6 @@ export class EditarGarantiaComponent  implements OnInit, AfterViewInit,OnChanges
             this.nuevoRegistroEvent.emit(this.nuevaGaraForm);
 
       }) 
-  }
-  cambiaConvenio(modSelect: MatSelectChange): void 
-  {
-    let convenio;
-
-    this.bancos.map(function(banco) {
-          if(banco.Identificador == modSelect.value)
-            convenio = banco.Convenio
-   });
-
-    this.form.patchValue({
-      'Convenio': convenio
-   });
-  }  
-  cambiaConvenioProg(valueBanco: number): void 
-  {
-    let convenio;
-
-    this.bancos.map(function(banco) {
-          if(banco.Identificador == valueBanco)
-            convenio = banco.Convenio
-   });
-
-    this.form.patchValue({
-      'Convenio': convenio
-   });
   }
 
 }

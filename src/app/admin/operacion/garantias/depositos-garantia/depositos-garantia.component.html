@@ -1,199 +1,74 @@
-<div class="addContainer">
-  <div mat-dialog-content>
-  <form [formGroup]="form">
-    <br><br>
-    <div class="row">
-      <div class="row" >
-        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
-         <mat-form-field class="example-full-width "  appearance="outline"  >
-            <mat-label>
-                Juzgado
-            </mat-label>
-            <input matInput name="Juzgado" disabled [(ngModel)]="generales.Expediente.Centro.Descripcion" [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#26c6da" type="ball-fall" [fullScreen]="false">
+    <p style="font-size: 20px; color: white">Cargando...</p>
+</ngx-spinner>
 
-        </div>       
-        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
-           <mat-form-field class="example-full-width "  appearance="outline"  >
-            <mat-label>
-                Número de expediente
-            </mat-label>
-            <input matInput name="Clave" disabled [(ngModel)]="generales.Expediente.Nomenclatura" [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
-        </div>
-        
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-          <mat-form-field  class="example-full-width " formGroupName="Depositante">
-            <mat-label>
-                Nombre del depositante
-            </mat-label>
-            <mat-select formControlName="Identificador" name="selectDepositante" (selectionChange)="filtrarDomicilios($event)">
-                <mat-option *ngFor="let personaje of personajes" [value]="personaje.Identificador">
-                    {{personaje.Nombre}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        </div>              
-        
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-            <mat-form-field *ngIf="domicilios"  class="example-full-width " appearance="outline" formGroupName="Domicilio">
-              <mat-label>
-                  Domicilio
-                </mat-label>
-                <mat-select name="selectDomicilio" formControlName="Identificador" (selectionChange)="selectDomicilio($event)">
-                    <mat-option *ngFor="let domicilio of domicilios" [value]="domicilio.Identificador">
-                        {{domicilio.Calle}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+
+<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="plus-card">
+
+  <mat-card>
+      <mat-card-content>
+          <div fxLayout="row wrap" style="align-items:center">
+       <!--       <div fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex="100">
+                  <button   (click)="crearDeposito()" style="float: right; margin: 5px;" mat-raised-button color="accent">
+                      <i style="font-size:x-large; margin-right: 15px;" class="fa fa-plus"></i>
+                      Depósito
+                  </button>
+                  </div>  -->
           </div>
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-            <mat-form-field *ngIf="domicilios" appearance="outline"  class="example-full-width " >
-              <mat-label>
-                  Ciudad
-              </mat-label>
-              <input type="text" #ciudad matInput [matAutocomplete]="auto" formControlName="Municipio" [disabled]="true">
-              <mat-autocomplete [panelWidth]="'500px'" #auto="matAutocomplete" [displayWith]="getOptionText" disabled>
-                  <mat-option *ngFor="let ciudad of ciudadesSync | async; index as i" [value]="ciudad">
-                      {{ciudad.Descripcion}}
-                  </mat-option>
-              </mat-autocomplete>
-          </mat-form-field>
-            </div>
-          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 ">                    
-              <mat-form-field class="example-full-width "  appearance="outline"  class="example-full-width " >
-                  <mat-label>
-                      Código postal
-                  </mat-label>
-                  <input matInput name="" formControlName="CP">
-              </mat-form-field>
-          </div>
-          
-          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 ">                  
-            <mat-form-field class="example-full-width "  appearance="outline"  >
-              <mat-label>
-                  Teléfono
-              </mat-label>
-              <input matInput name="" formControlName="Telefono">
-          </mat-form-field>
-          </div>
-                
-        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-            <mat-form-field class="example-full-width "  appearance="outline"  >
-                <mat-label>
-                    Oficina
-                </mat-label>
-                <input matInput name="" formControlName="Oficina">
-            </mat-form-field>
+          <div class="row" >
+              <div class="col-sm-12">     
+                <div class="">
+                  <mat-nav-list>
+                    <mat-list-item >
+                      <div class="etiqueta" >
+                        Monto
+                      </div>
+                      <div class="etiqueta">
+                        Fecha Depósito
+                       </div>
+                      <div class="etiqueta">
+                          Fecha de Recepción
+                         </div>
+                      <!--  <div class="eliminabtn">
+                         Anular
+                       </div> -->
+                    </mat-list-item>
+                  </mat-nav-list>
+                </div>
               </div>
-        
-         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-            <mat-form-field appearance="outline" formGroupName="Concepto"  class="example-full-width ">
-              <mat-label>
-                  Concepto
-              </mat-label>
-              <mat-select name="selectConcepto" formControlName="Identificador">
-                  <mat-option *ngFor="let concepto of conceptos" [value]="concepto.Identificador">
-                      {{concepto.Nombre}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-          </div>
-          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-            <mat-form-field appearance="outline" formGroupName="Banco"  class="example-full-width ">
-              <mat-label>
-                  Banco
-              </mat-label>
-              <mat-select name="selectBanco" formControlName="Identificador">
-                  <mat-option *ngFor="let banco of bancos" [value]="banco.Identificador">
-                      {{banco.Nombre}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-          </div>
-        
-      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-           <mat-form-field class="example-full-width "  appearance="outline"  >
-            <mat-label>
-                Folio
-            </mat-label>
-            <input matInput formControlName="Folio" autocomplete="off" name="inputFolio" value="7000001">
-        </mat-form-field>
-       </div>
-      
-      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-        <mat-form-field appearance="outline" formGroupName="Origen"  class="example-full-width ">
-          <mat-label>
-              Origen del certificado
-          </mat-label>
-          <mat-select formControlName="Identificador" name="selectOrigen">
-              <mat-option *ngFor="let origen of origenes" [value]="origen.Identificador">
-                  {{origen.Nombre}}
-              </mat-option>
-          </mat-select>
-          <!-- <input type="checkbox" matInput name=""> -->
-      </mat-form-field>
-      </div>
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-         <mat-form-field class="example-full-width "  appearance="outline"  >
-        <mat-label>
-            Monto
-        </mat-label>
-        <input formControlName="Monto" autocomplete="off" currencyMask matInput name="inputMonto" [options]="{ prefix: '$ ', thousands: ',', decimal: '.' }">
-        <small> {{numeroLetras()}}</small>
-    </mat-form-field>
-    </div>
-      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-        <mat-form-field class="example-full-width "  appearance="outline"  class="example-full-width " >
-          <mat-label>
-              Fecha de emisión
-          </mat-label>
-          <input formControlName="FechaEmision" type="date" matInput name="inputEmision">
-      </mat-form-field>
-      </div>
-  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-       <mat-form-field class="example-full-width "  appearance="outline"  class="example-full-width " >
-        <mat-label>
-            Fecha de registro
-        </mat-label>
-        <input formControlName="FechaRegistro" type="date" matInput name="inputRegistro">
-    </mat-form-field>
-    </div>
-    </div>
-
-    <div class="row">
-      
-            <mat-form-field class="example-full-width "  appearance="outline"  class="example-full-width " >
-        <mat-label>
-            Observaciones
-        </mat-label>
-        <textarea matInput placeholder="..." formControlName="Observaciones"></textarea>
-        <!-- <input type="checkbox" matInput name=""> -->
-    </mat-form-field>
-    </div>  
-    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-     <mat-form-field class="example-full-width"  appearance="outline" >
-        <mat-label> Fecha de depósito</mat-label>
-      <input matInput [matDatepicker]="pickerDeposito" formControlName="FechaDeposito">
-      <mat-datepicker-toggle matIconSuffix [for]="pickerDeposito"></mat-datepicker-toggle>
-      <mat-datepicker #pickerDeposito></mat-datepicker>
-    </mat-form-field>
-
-
-
-     </div>
-     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-        <strong>*Al guardar el canje afirma que los datos presentados son correctos.</strong>
-     </div>
-
-
-    </div>
-
-
-
-  </form>
-
-  </div>
-
+            </div>
+            <div class="row" >
+              <div class="col-sm-12">
+                <div class="example-container scrollpr">
+                  <mat-nav-list class="gradient-list">
+                    <mat-list-item *ngFor="let deposito of depositosLista">
+                      
+                      <div class="etiqueta">
+                        {{ deposito.Monto | currency }}
+                      </div>
+                      <div class="etiqueta">
+                        {{ formatFecha(deposito.FechaDeposito) }}
+                       </div>
+                       <div class="etiqueta">
+                         {{ formatFecha(deposito.FechaRecepcion)}}
+                        </div>
+                       <!-- <div class="eliminabtn">
+                        <button mat-icon-button (click)="anularDeposito(deposito)" [disabled]="permiso">
+                          <mat-icon>indeterminate_check_box</mat-icon>
+                        </button>
+                       </div> -->
+                    </mat-list-item>
+                  </mat-nav-list>
+                </div>
+              </div>
+            </div>
+      </mat-card-content>
+  </mat-card>
 </div>
- 
+
+
+<swal #deposito title="Nuevo" width="70vw">
+  <div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined"  class="alert alert-info">
+      <app-formulario-deposito  (handleClick)="childEvent($event)"></app-formulario-deposito>
+  </div>
+</swal>

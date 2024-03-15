@@ -9,7 +9,7 @@
                     <div class="left">
                       <ul class="header-buttons-left ms-0">
                         <li class="tbl-title">
-                          <h2>Anexos</h2>
+                          <h2>Garantías</h2>
                         </li>
                         <li class="tbl-search-box">
                           <label for="search-input"><i class="material-icons search-icon">search</i></label>
@@ -21,7 +21,7 @@
                     <div class="right">
                       <ul class="tbl-export-btn">
                         <li class="tbl-header-btn">
-                          <div class="m-l-10" matTooltip="REGISTRAR NUEVO ANEXO">
+                          <div class="m-l-10" matTooltip="REGISTRAR NUEVA GARANTÍA">
                             <button mat-mini-fab color="primary" (click)="addNew()">
                               <mat-icon class="col-white">add</mat-icon>
                             </button>
@@ -46,45 +46,47 @@
                           <mat-cell *matCellDef="let row" ><span
                               class="mobile-label">Folio:</span> {{row.Folio}}
                           </mat-cell>
+                        </ng-container>          
+                        
+                        <ng-container matColumnDef="FolioRenta">
+                          <mat-header-cell mat-header-cell *matHeaderCellDef> Folio Renta
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row" ><span
+                              class="mobile-label">Folio Renta:</span> {{row.Anexo.Descripcion}}
+                          </mat-cell>
                         </ng-container>
+
                         <ng-container matColumnDef="Estado">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>Estado
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" ><span
-                              class="mobile-label">Estado:</span> {{obtieneEstadoAnexo(row)}}
+                              class="mobile-label">Estado:</span> {{obtieneEstado(row)}}
                           </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="Tipo">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo    </mat-header-cell>
-                          <mat-cell *matCellDef="let row" >
-                            <span class="mobile-label">Tipo:</span>{{row.Origen.Nombre}}</mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="Monto">
                           <mat-header-cell *matHeaderCellDef mat-sort-header> Monto </mat-header-cell>
                           <mat-cell mat-cell *matCellDef="let row">                          
-                            <span class="mobile-label">Monto:</span>{{row.Monto | currency}}</mat-cell>
+                            <span class="mobile-label">Monto:</span>{{row.Importe | currency}}</mat-cell>
+                        </ng-container>          
+                        <ng-container matColumnDef="Depositado">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header> Depositado </mat-header-cell>
+                          <mat-cell mat-cell *matCellDef="let row">                          
+                            <span class="mobile-label">Depositado:</span>{{row.MontoDepositos | currency}}</mat-cell>
                         </ng-container>
+                        <ng-container matColumnDef="Devuelto">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header> Devuelto </mat-header-cell>
+                          <mat-cell mat-cell *matCellDef="let row">                          
+                            <span class="mobile-label">Devuelto:</span>{{row.MontoDevoluciones | currency}}</mat-cell>
+                        </ng-container>
+                        
                         <ng-container matColumnDef="FechaEmision">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha emisión
                           </mat-header-cell>
                           <mat-cell *matCellDef="let row" > <span
-                              class="mobile-label">Fecha emisión:</span>{{this.formatFecha(row.FechaEmision)}}
+                              class="mobile-label">Fecha emisión:</span>{{this.formatFecha(row.Fecha)}}
                           </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="FechaContable">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha contable
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row" > <span
-                              class="mobile-label">Fecha contable::</span>{{this.formatFecha(row.FechaContable)}}
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="FechaRegistro">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha de Registro
-                          </mat-header-cell>
-                          <mat-cell *matCellDef="let row" > <span
-                              class="mobile-label">Email:</span>{{this.formatFecha(row.FechaRegistro)}}
-                          </mat-cell>
-                        </ng-container>
+                      
                         <ng-container matColumnDef="Acciones">
                           <mat-header-cell class="pr-0" *matHeaderCellDef>Acciones
                           </mat-header-cell>
@@ -92,45 +94,56 @@
                             class="mobile-label">Acciones:</span>            
                               <div>
                                 <div class="example-button-container">
-                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeAnexo(row)" matTooltip="DESCARGAR ANEXO"
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeGarantia(row)" matTooltip="DESCARGAR"
                                   class="tbl-action-btn">
                                   <app-feather-icons [icon]="'download-cloud'" [class]="'tbl-fav-dwn'"></app-feather-icons>
                                 </button> 
+                                </div> 
+                                <div class="example-button-container"  *ngIf="row.Estado ==1">
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarGarantia(row)" matTooltip="ELIMINAR"
+                                  class="tbl-action-btn">
+                                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                </button>
                                 </div>
-                                      
+
+
+
+                              
+                                <div class="example-button-container">
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeHistorial(row)" matTooltip="DEPÓSITOS"
+                                  class="tbl-action-btn">
+                                  <i class="fas fa-hand-holding-usd" [class]="'tbl-fav-black'"></i>
+                                </button>
+                                </div>
+
+                           
+                              </div>
+                              
+                              <div > 
+                                              
                                 <div class="example-button-container">
                                   <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeHistorial(row)" matTooltip="HISTORIAL"
                                   class="tbl-action-btn">
                                   <i class="fas fa-history"   [class]="'tbl-fav-black'"></i>
                                 </button>
-                                </div>
-                                <div class="example-button-container"  *ngIf="row.Estado ==1">
-                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="eliminarAnexo(row)" matTooltip="ELIMINAR ANEXO"
-                                  class="tbl-action-btn">
-                                  <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                </button>
-                                </div>
-                              </div>
-                              
-                              <div > 
+                                </div>   
                                 <div class="example-button-container" *ngIf="row.Estado ==1">
                                   <button mat-icon-button (click)="$event.stopPropagation()" (click)="editCall(row)" matTooltip="EDITAR ANEXO"
                                   class="tbl-action-btn">
                                   <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                                 </button>
-                                </div>
-                                <div class="example-button-container" *ngIf="row.Estado ==1">
-                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="canjeForm(row)" matTooltip="CANJEAR ANEXO"
-                                  class="tbl-action-btn">
-                                  <app-feather-icons [icon]="'repeat'" [class]="'tbl-fav-extra'"></app-feather-icons>
-                                </button>
-                                </div>
+                                </div>    
+                   
+
+  
                                 <div class="example-button-container" *ngIf="row.Estado ==2">
-                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="anularCanjeAnexo(row)" matTooltip="ANULAR CANJE"
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="muestraDepositos(row)" matTooltip="DEVOLUCIONES"
                                   class="tbl-action-btn">
-                                  <i class="fas fa-undo-alt"  [class]="'tbl-fav-delete'"></i>
+
+                                  <i class="fas fa-arrow-left"  [class]="'tbl-fav-extra'"></i>
                                 </button>
                                 </div>
+
                               </div>
                               
                           </mat-cell>
@@ -143,12 +156,12 @@
                         </mat-row>
                       </table>
                       <!-- Loading spinner -->
-                      <div *ngIf="servicioAnexos?.isTblLoading" class="tbl-spinner">
+                      <div *ngIf="garantiasSvc?.isTblLoading" class="tbl-spinner">
                         <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
                         </mat-progress-spinner>
                       </div>
            
-                      <div *ngIf="!servicioAnexos?.isTblLoading" class="no-results"  [style.display]="dataSource.renderedData.length === 0 ? '' : 'none'">
+                      <div *ngIf="!garantiasSvc?.isTblLoading" class="no-results"  [style.display]="dataSource.renderedData.length === 0 ? '' : 'none'">
                         Sin registros
                       </div>
                       <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0"
@@ -165,26 +178,26 @@
 </section>
 
 
-<swal #AgregarMovimiento title="Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
+<swal #Agregar title="Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
 [allowOutsideClick]="false" [allowEscapeKey]="false" 
 [showConfirmButton]="buttonDisabled"   (confirm)="agregaMovimiento()">
 <div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
- <app-form-anexo [nuevoAnexoForm]="nuevoAnexo"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></app-form-anexo>
+ <app-form-garantia [nuevaGaraForm]="nuevaGara"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></app-form-garantia>
 </div>
 </swal>
 
-<swal #EditarAnexo title="Editar Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
+<swal #Editar title="Editar Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
 [allowOutsideClick]="false" [allowEscapeKey]="false" 
 [showConfirmButton]="buttonDisabled"   (confirm)="guardaEdita()">
 <div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
- <editar-form-anexo [nuevoAnexoForm]="nuevoAnexo"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></editar-form-anexo>
+ <editar-form-garantia [nuevaGaraForm]="nuevaGara"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></editar-form-garantia>
 </div>
 </swal>
 
-<swal #CanjeAnexo title="Canjear Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
+<!--  <swal #Depositos title="Canjear Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
 [allowOutsideClick]="false" [allowEscapeKey]="false" 
-[showConfirmButton]="buttonDisabled"   (confirm)="CanjearAnexo()">
+[showConfirmButton]="buttonDisabled"  >
 <div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
- <app-canjear-anexo [nuevoAnexoForm]="nuevoAnexo"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></app-canjear-anexo>
+ <app-depositos-garantia [nuevaGaraForm]="nuevaGara"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></app-depositos-garantia>
 </div>
-</swal>
+</swal> -->

@@ -1,254 +1,157 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { Component, OnInit,ViewChild, Input, Output, EventEmitter, AfterViewInit, OnChanges, } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { DepositoService } from 'src/services/sifoa/deposito.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { formatDate } from '@angular/common';
-import {NumeroLetra} from 'src/tools/numero-letra'
+import swal, { SweetAlertResult } from 'sweetalert2';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { Subject } from 'rxjs';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+
 import { MatDialog } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { MatInput } from '@angular/material/input';
-import { AnexoModel } from 'src/models/main';
-import { DomicilioModel, GeneralesModel, PersonajeModel } from 'src/models/generales';
-import { BancoModel, BaseModel } from 'src/models/catalogos';
-import { CatalogoService } from 'src/services/shared/catalogo.service';
-import { ModalComponent } from 'src/app/shared/modal/modal.component';
+import { DatePipe } from '@angular/common';
+import { InformacionTablaModel } from 'src/models/modelos';
+import { DepositoModel, DevolucionModel, GarantiaModel } from 'src/models/main';
+import { DevolucionService } from 'src/services/sifoa/devolucion.service';
+import { Functions } from 'src/tools/functions';
 
 @Component({
-  selector: 'app-canjear-anexo',
-  templateUrl: './canjear-anexo.component.html',
-  styleUrls: ['./canjear-anexo.component.scss']
+  selector: 'app-depositos-garantia',
+  templateUrl: './depositos-garantia.component.html',
+  styleUrls: ['./depositos-garantia.component.scss']
 })
-export class CanjearAnexo implements OnInit, AfterViewInit,OnChanges {
+export class DepositosGarantiaComponent implements OnInit {
   
-  @Output() buttonAneDisabledEvent = new EventEmitter<boolean>();
-
-  @Output() nuevoRegistroEvent = new EventEmitter<AnexoModel>();
-
-  @Output() formValido = new EventEmitter<any>(true);
-  @Input() VaGuardar = false;
-  @Output() Datosform = new EventEmitter<any>(true);
-
-  @ViewChild('ciudad', {static: false}) ciudadInput!: MatInput;
-
   
-  @Input() nuevoAnexoForm : AnexoModel = new AnexoModel();
+  @ViewChild('deposito') private depositoSw!: SwalComponent;
 
-  personajes: PersonajeModel[] = [];
-  domicilios: DomicilioModel[] = [];
-  origenes: BaseModel[] = [];
-  bancos: BancoModel[] = [];
-  ciudades: BaseModel[] = [];
-  conceptos: BaseModel[] = [];
-  ciudadesSync!: Observable<BaseModel[]>;
-  generales!: GeneralesModel;
-  esLibre = false;
+  @Input() displayedColumns: InformacionTablaModel = new InformacionTablaModel();
 
-  public form: FormGroup = Object.create(null);
-  constructor(
-    private fb: FormBuilder,
-    private svcSpinner: NgxSpinnerService,
-    private svcCatalogos: CatalogoService,
-    private dialog: MatDialog,
-    private numeroLetra: NumeroLetra
-  ) {
-    const origen1 = new BaseModel();
-    origen1.Identificador = 1;
-    origen1.Nombre = 'Renta';
-    const origen2 = new BaseModel();
-    origen2.Identificador = 2;
-    origen2.Nombre = 'BANSEFI';
+  @Input() modGarantia: GarantiaModel = new GarantiaModel();
 
-    this.origenes.push(origen1, origen2);
+  destroy$: Subject<boolean> = new Subject<boolean>();
+  dataSource = new MatTableDataSource<any>();
+  depositoObt: DepositoModel = new DepositoModel();
+  depositosLista:  DepositoModel[]=[];
+  depositoCapt: DepositoModel= new DepositoModel();
+  
+  devolucionObt: DevolucionModel = new DevolucionModel();
+  
+  @Output() notifyGrandParent= new EventEmitter();
 
-    this.inicializarBancos();
-    this.inicializarConceptos()
-    this.inicializarCiudades();
-    if (localStorage.getItem('Generales')) {
-      this.generales = JSON.parse(localStorage['Generales']);
-      this.personajes = this.generales.Personajes;
-    }
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-   
-  }
-
-  ngAfterViewInit(): void {
-  }
-  numeroLetras(){
-    return this.numeroLetra.NumerosALetras(this.form.controls['Monto'].value)
-  }
-
-  ngOnInit(): void {
-    
-
-
-    this.form = this.fb.group({
-                  Identificador: [null, []],
-                  Expediente: this.fb.group({
-                    Identificador: [null, []]
-                  }),
-                  Estatus: [null, []],
-                  Estado: [null, []],
-                  Municipio: [null, [Validators.required]], 
-                  Depositante: this.fb.group({
-                    Identificador: [null, [Validators.required]]
-                  }),
-                  Folio: ["", [Validators.required]],
-                  Monto: [null, [Validators.required]],  
-                  Oficina: [null, []],
-                  Banco: this.fb.group({
-                    Identificador: [1, [Validators.required]]
-                  }),
-                  Concepto: this.fb.group({
-                    Identificador: [null, [Validators.required]]
-                  }),
-                  FechaEmision: [new Date(), [Validators.required]],
-                  FechaRegistro: [new Date(), [Validators.required]],
-                  FechaContable: [new Date(), [Validators.required]],
-                  FechaCaptura: ['', []],
-                  FechaDeposito: [new Date(), [Validators.required]],
-                  Origen: this.fb.group({
-                    Identificador: [null, [Validators.required]]
-                  }),
-                  Domicilio: this.fb.group({
-                    Identificador: [null, [Validators.required]]
-                  }), 
-                  Observaciones: [null, []],
-                  CP: [null, []],
-                  Telefono: [null, []],
-                });
-
-    this.nuevoAnexoForm.FechaDeposito = new Date().toISOString()
-    this.form.patchValue( this.nuevoAnexoForm)
-
-
-    if (this.nuevoAnexoForm.Depositante.Identificador)
-    {
-      this.domicilios = this.personajes.find(x => x.Identificador === this.nuevoAnexoForm.Depositante.Identificador)!.Domicilios;
-
-      if (!this.domicilios) {
-        this.dialog.open(ModalComponent, {
-          width: '500px',
-          data: {Title: 'Atención', Text: 'El personaje no tiene domicilios registrados, para continuar registre al menos un domicilio'}
-        });
-      }
-    }
-
-        this.form.controls['Banco'].disable();        
-        this.form.controls['Municipio'].disable();
-        this.form.controls['Depositante'].disable();
-        this.form.controls['Origen'].disable();
-        this.form.controls['Monto'].disable();
-        this.form.controls['Oficina'].disable();
-        this.form.controls['Concepto'].disable();
-        this.form.controls['FechaEmision'].disable();
-        this.form.controls['FechaRegistro'].disable();
-        this.form.controls['Folio'].disable();
-        this.form.controls['Telefono'].disable();
-        this.form.controls['CP'].disable();       
-        this.form.controls['Domicilio'].disable();  
-        this.form.controls['Observaciones'].disable();  
-        this.form.patchValue({
-          'Municipio': this.nuevoAnexoForm.Municipio
-        });
-     
-    this.escuchadoresForm();
-
-  }
-
-  inicializarBancos(): void {
-    const body = '{"Identificador": 0}';
-    this.svcCatalogos.ObtenerCatalogo(body, 9).subscribe(response => {
-      if (response) {
-        this.bancos = response;
-        this.bancos = this.bancos.filter(ban =>ban.Identificador==1);
-      }
-    });
-  }
-  inicializarConceptos(): void {
-    const body = '{"Identificador": 0}';
-    this.svcCatalogos.ObtenerCatalogo(body, 18).subscribe(response => {
-      if (response) {
-        this.conceptos = response;
-      }
-    });
-  }
-
-  inicializarCiudades(): void {    
-    const body = '{"Identificador": 0}';
-    this.svcCatalogos.ObtenerCatalogo(body, 3).subscribe(response => {
-      if (response) {
-        this.ciudades = response;
-        this.ciudadesSync =  this.form.controls['Municipio'].valueChanges.pipe(
-          startWith(null),
-          map((search: any) => {
-            if (search) {
-              if (search.Descripcion) {
-                return this.ciudades.filter(e => this.normalizar(e.Descripcion).includes(search.Descripcion.toLocaleLowerCase())).slice(0, 10);
-              } else {
-                return this.ciudades.filter(e => this.normalizar(e.Descripcion).includes(search.toLocaleLowerCase())).slice(0, 10);
+  devolucionesLst: DevolucionModel[] = [];
+  sumaMontos: number = 0;
+  constructor( private svcDevoluciones: DevolucionService,
+              private svcDepositos: DepositoService,private svcDevolucion: DevolucionService, private svcSpinner: NgxSpinnerService, public dialog: MatDialog,
+              private toolFunctions: Functions,
+              private datePipe: DatePipe) {
+            
               }
-            } else {
-              return this.ciudades.slice(0, 1000);
-            }
-          })
-        );
-        this.ciudadInput.value = '';
-        
-      }
-    });
+    
+  ngOnInit(): void { 
+    //objeto para obtener todos los correspondientes a la garantia
+    this.depositoObt.IdGarantia=this.modGarantia.Identificador;
+    this.devolucionObt.IdGarantia=this.modGarantia.Identificador;
+    this.obtenerDepositos()
+    this.obtenerDevoluciones()
+  }
   
+  childEvent(event: any) {
+    this.notifyGrandParent.emit('event')
   }
 
-  filtrarDomicilios(modSelect: MatSelectChange): void {
 
-    // tslint:disable-next-line: no-non-null-assertion
-    this.domicilios = this.personajes.find(x => x.Identificador === modSelect.value)!.Domicilios;
+  obtenerDepositos(){
+    this.svcSpinner.show();
+    this.svcDepositos.ObtenerDepositos(this.depositoObt).pipe(takeUntil(this.destroy$)).subscribe(response => {
+      if(response){
+        this.depositosLista = response
+        let v = this;
+        response.map(function(deposito) {
+          v.sumaMontos += deposito.Monto;
+       });
+      }
+    }, errResponse => {
+      this.svcSpinner.hide();      
+    }, () => {
+      this.svcSpinner.hide();      
+    });
+    
+}
 
-    if (!this.domicilios) {
-      this.dialog.open(ModalComponent, {
-        width: '500px',
-        data: {Title: 'Atención', Text: 'El personaje no tiene domicilios registrados, para continuar registre al menos un domicilio.'}
+
+  anularDeposito(deposito:DepositoModel){
+    if(this.devolucionesLst.length>0){//ya hay devoluciones, no se puede anular
+      swal.fire({
+        title: 'Anular',
+        text: 'El depósito no puede ser anulado, ya existen devoluciones.',
+        icon: 'info'
       });
+    }else{  
+
+      if(this.modGarantia.Anexo.Identificador>0){//si viene de un anexo, no se puede anular
+        swal.fire({
+          title: 'Anular',
+          text: 'El depósito no puede ser anulado ya que viene de un anexo.',
+          icon: 'info'
+        });
+      }else{
+        swal.fire({
+          title: 'Anular',
+          text: "¿Desea anular el depósito?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Anular',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.svcSpinner.show();
+            this.svcDepositos.Anular(deposito).pipe(takeUntil(this.destroy$)).subscribe(response => {
+              swal.fire({
+                title: 'Éxito',
+                text: 'Deposito anulado',
+                icon: 'success'
+              });
+            }, errResponse => {
+              this.svcSpinner.hide();      
+            }, () => {
+              this.svcSpinner.hide();      
+            });
+          }
+        });
+      }
     }
   }
 
-  getOptionText(dataItem: BaseModel): string {
-    return dataItem ? dataItem.Descripcion : '';
+  crearDeposito(){/*
+    const dialogRef = this.dialog.open(FormularioDepositoComponent, 
+      {width: '80vw',
+      maxWidth: '100vw',
+      disableClose: true, 
+      data: {
+        gara: this.modGarantia,
+        montos: this.sumaMontos
+      }
+    });*/
   }
 
-  normalizar(str: string): string{
-    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-  }
-
-  returnCall(data: string): void {
-      this.formValido.emit(data);
-  }
-  returnform(form: AnexoModel):void{
-    this.Datosform.emit(form);
-  }
-  selectDomicilio(modSelect: MatSelectChange): void {
-    let dom;
-
-    this.domicilios.map(function(domicilio) {
-          if(domicilio.Identificador == modSelect.value)
-            dom = domicilio.Municipio
-  });
-    this.form.patchValue({
-      'Municipio': dom
-  });
-  }
-
-  escuchadoresForm():void{
-    this.form.valueChanges.subscribe(x => {
-
-            this.buttonAneDisabledEvent.emit(this.form.valid);
-    
-            this.nuevoAnexoForm = <AnexoModel>this.form.getRawValue();   
-            this.nuevoRegistroEvent.emit(this.nuevoAnexoForm);
-
-      }) 
-  }
-
+  
+  obtenerDevoluciones(){
+    this.svcSpinner.show();
+    this.svcDevoluciones.ObtenerDevoluciones(this.devolucionObt).pipe(takeUntil(this.destroy$)).subscribe(response => {
+      if(response){
+        this.devolucionesLst = response
+      }
+    }, errResponse => {
+      this.svcSpinner.hide();      
+    }, () => {
+      this.svcSpinner.hide();      
+    });
+}
+formatFecha(fecha:string){
+  // console.log(fecha)
+   return this.datePipe.transform(fecha, 'dd/MM/yyyy');
+ }
 }

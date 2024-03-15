@@ -54,7 +54,7 @@ export class AnexosComponent
   dataSource!: ExampleDataSource;
   selection = new SelectionModel<AnexoModel>(true, []);
   id?: number;
-  teachers?: AnexoModel;
+  anexos?: AnexoModel;
   breadscrums = [
     {
       title: 'All Teacher',
@@ -65,7 +65,7 @@ export class AnexosComponent
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog, private datePipe: DatePipe,
-    public teachersService: AnexoService,
+    public anexosService: AnexoService,
     private snackBar: MatSnackBar,
     private svcSpinner: NgxSpinnerService,
     private svcMedia: MediaService,
@@ -548,13 +548,13 @@ export class ExampleDataSource extends DataSource<AnexoModel> {
         if(this.servicioAnexos.data){
           this.filteredData = this.servicioAnexos.data
           .slice()
-          .filter((teachers: AnexoModel) => {
+          .filter((anexos: AnexoModel) => {
             const searchStr = (
-              teachers.Folio +
-              teachers.Estado +
-              teachers.Monto +
-              teachers.FechaEmision +
-              teachers.FechaContable 
+              anexos.Folio +
+              anexos.Estado +
+              anexos.Monto +
+              anexos.FechaEmision +
+              anexos.FechaContable 
             ).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
           });

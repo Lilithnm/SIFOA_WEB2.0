@@ -46,6 +46,10 @@ import { LiberarConfirmComponent } from '../shared/liberar-confirm/liberar-confi
 import { EditarAnexoComponent } from './operacion/anexos/editar-anexo/editar-anexo.component';
 import { CanjearAnexo } from './operacion/anexos/canjear-anexo/canjear-anexo.component';
 import { GarantiasComponent } from './operacion/garantias/garantias.component';
+import { FormGarantiaComponent } from './operacion/garantias/form-garantia/form-garantia.component';
+import { DepositosGarantiaComponent } from './operacion/garantias/depositos-garantia/depositos-garantia.component';
+import { EditarGarantiaComponent } from './operacion/garantias/editar-garantia/editar-garantia.component';
+import { FormularioDepositoComponent } from './operacion/garantias/depositos-garantia/formulario-deposito/formulario-deposito.component';
 
 
 
@@ -63,7 +67,11 @@ import { GarantiasComponent } from './operacion/garantias/garantias.component';
     EditarAnexoComponent,
     CanjearAnexo,
     LiberarConfirmComponent,
-    GarantiasComponent
+    GarantiasComponent,
+    FormGarantiaComponent,
+    EditarGarantiaComponent,
+    DepositosGarantiaComponent,
+    FormularioDepositoComponent
 
   ],
   imports: [
