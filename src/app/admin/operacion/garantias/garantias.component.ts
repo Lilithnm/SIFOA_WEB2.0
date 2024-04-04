@@ -122,7 +122,7 @@ export class GarantiasComponent
            this.refreshTable();
            swal.fire({
             title: 'Éxito',
-            text: 'garantia creado exitosamente.',
+            text: 'Garantia creada exitosamente.',
             icon: 'success'
           });     
         } else {

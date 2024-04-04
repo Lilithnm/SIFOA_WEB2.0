@@ -1,74 +1,102 @@
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#26c6da" type="ball-fall" [fullScreen]="false">
-    <p style="font-size: 20px; color: white">Cargando...</p>
-</ngx-spinner>
 
+      <mat-card>
+        <mat-card-header>
+            <div class="row">
+              <span class="head">
+              Depósitos: {{modGarantia.MontoDepositos|currency}} de {{modGarantia.Importe | currency}}
 
-<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="plus-card">
-
-  <mat-card>
-      <mat-card-content>
-          <div fxLayout="row wrap" style="align-items:center">
-       <!--       <div fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex="100">
-                  <button   (click)="crearDeposito()" style="float: right; margin: 5px;" mat-raised-button color="accent">
-                      <i style="font-size:x-large; margin-right: 15px;" class="fa fa-plus"></i>
-                      Depósito
-                  </button>
-                  </div>  -->
-          </div>
-          <div class="row" >
-              <div class="col-sm-12">     
-                <div class="">
-                  <mat-nav-list>
-                    <mat-list-item >
-                      <div class="etiqueta" >
-                        Monto
-                      </div>
-                      <div class="etiqueta">
-                        Fecha Depósito
-                       </div>
-                      <div class="etiqueta">
-                          Fecha de Recepción
-                         </div>
-                      <!--  <div class="eliminabtn">
-                         Anular
-                       </div> -->
-                    </mat-list-item>
-                  </mat-nav-list>
-                </div>
-              </div>
+                
+            </span>
             </div>
-            <div class="row" >
-              <div class="col-sm-12">
-                <div class="example-container scrollpr">
-                  <mat-nav-list class="gradient-list">
-                    <mat-list-item *ngFor="let deposito of depositosLista">
-                      
-                      <div class="etiqueta">
-                        {{ deposito.Monto | currency }}
-                      </div>
-                      <div class="etiqueta">
-                        {{ formatFecha(deposito.FechaDeposito) }}
-                       </div>
-                       <div class="etiqueta">
-                         {{ formatFecha(deposito.FechaRecepcion)}}
-                        </div>
-                       <!-- <div class="eliminabtn">
-                        <button mat-icon-button (click)="anularDeposito(deposito)" [disabled]="permiso">
-                          <mat-icon>indeterminate_check_box</mat-icon>
-                        </button>
-                       </div> -->
-                    </mat-list-item>
-                  </mat-nav-list>
-                </div>
+
+          
+        </mat-card-header>
+          <mat-card-content >
+            <form [formGroup]="form"  *ngIf="modGarantia.MontoDepositos<modGarantia.Importe">
+              <br> <br>
+            <div class="row">
+
+              <div class="col-xl-5 col-lg-5 col-md-5 col-sm-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>
+                      Monto
+                  </mat-label>
+                    <input formControlName="Monto" currencyMask matInput name="inputMonto" value="0" [options]="{ prefix: '$ ', thousands: ',', decimal: '.' }">
+                </mat-form-field>
+                <mat-error *ngIf="form.hasError('montoValido')">
+                    <small  class="errorrfc">El monto no puede ser mayor al de la garantía y los depósitos capturados.</small>
+                </mat-error>
+                
               </div>
+              <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+
+
+              <mat-form-field class="example-full-width"  appearance="outline" >
+                  <mat-label>
+                    Fecha de Depósito</mat-label>
+                <input matInput [matDatepicker]="FechaDeposito" formControlName="FechaDeposito">
+                <mat-datepicker-toggle matIconSuffix [for]="FechaDeposito"></mat-datepicker-toggle>
+                <mat-datepicker #FechaDeposito></mat-datepicker>
+              </mat-form-field>
+      
+
+
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6"> 
+                <button mat-flat-button color="accent" (click)="guardar()" >
+                <i  class="fa fa-plus"></i>Guardar Depósito
+              </button>
+              </div>
+                  
             </div>
-      </mat-card-content>
-  </mat-card>
-</div>
+          </form>
+            <br>
+            <br>
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                  <ng-container matColumnDef="monto">
+                    <th mat-header-cell *matHeaderCellDef> Monto </th>
+                    <td mat-cell *matCellDef="let row">   {{row.Monto | currency}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="fechaDeposito">
+                    <th  mat-header-cell  *matHeaderCellDef >Fecha Depósito    </th>
+                    <td mat-cell *matCellDef="let row">  {{ formatFecha(row.FechaDeposito) }} </td>                   
+                  </ng-container>
+                  <ng-container matColumnDef="fechaRecepcion">
+                    <th  mat-header-cell  *matHeaderCellDef >Fecha Recepción
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                      {{ formatFecha(row.FechaRecepcion)}}</td>
+                  </ng-container>
+                  
+                  <ng-container matColumnDef="anular">
+                    <th  mat-header-cell *matHeaderCellDef >Anular
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                      <div class="example-button-container"  *ngIf="row.Estado ==1">
+                        <button mat-icon-button (click)="$event.stopPropagation()" (click)="anularDeposito(row)" matTooltip="ANULAR"
+                        class="tbl-action-btn">
+                        <mat-icon [class]="'tbl-fav-delete'">indeterminate_check_box</mat-icon>
+                      </button>
+                      </div>
+
+                    
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                  [ngClass]="{'aplicada': row.EstatusDescuento=='FALTA APLICADA'}"  
+                  
+                  ></tr>
 
 
-<swal #deposito title="Nuevo" width="70vw">
-  <div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined"  class="alert alert-info">
-      <app-formulario-deposito  (handleClick)="childEvent($event)"></app-formulario-deposito>
-  </div>
-</swal>
+
+
+
+                </table>       
+          </mat-card-content>
+
+
+
+
+

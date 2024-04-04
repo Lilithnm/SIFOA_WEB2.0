@@ -110,7 +110,7 @@
 
                               
                                 <div class="example-button-container">
-                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="ImprimeHistorial(row)" matTooltip="DEPÓSITOS"
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="abreDepositos(row)" matTooltip="DEPÓSITOS"
                                   class="tbl-action-btn">
                                   <i class="fas fa-hand-holding-usd" [class]="'tbl-fav-black'"></i>
                                 </button>
@@ -194,10 +194,10 @@
 </div>
 </swal>
 
-<!--  <swal #Depositos title="Canjear Anexo" width="60vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
+ <swal #Depositos title="Depósitos" width="70vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
 [allowOutsideClick]="false" [allowEscapeKey]="false" 
-[showConfirmButton]="buttonDisabled"  >
+[showConfirmButton]="buttonDisabled"  (confirm)="loadData()" >
 <div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
- <app-depositos-garantia [nuevaGaraForm]="nuevaGara"   (buttonAneDisabledEvent)="onButtonDisabled($event)" (nuevoRegistroEvent)="asignaObjeto($event)"  ></app-depositos-garantia>
+ <app-depositos-garantia [modGarantia]="nuevaGara"   ></app-depositos-garantia>
 </div>
-</swal> -->
+</swal> 

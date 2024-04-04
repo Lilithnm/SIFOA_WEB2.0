@@ -14,6 +14,8 @@ import { InformacionTablaModel } from 'src/models/modelos';
 import { DepositoModel, DevolucionModel, GarantiaModel } from 'src/models/main';
 import { DevolucionService } from 'src/services/sifoa/devolucion.service';
 import { Functions } from 'src/tools/functions';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { BaseModel } from 'src/models/catalogos';
 
 @Component({
   selector: 'app-depositos-garantia',
@@ -25,14 +27,11 @@ export class DepositosGarantiaComponent implements OnInit {
   
   @ViewChild('deposito') private depositoSw!: SwalComponent;
 
-  @Input() displayedColumns: InformacionTablaModel = new InformacionTablaModel();
 
   @Input() modGarantia: GarantiaModel = new GarantiaModel();
 
   destroy$: Subject<boolean> = new Subject<boolean>();
-  dataSource = new MatTableDataSource<any>();
   depositoObt: DepositoModel = new DepositoModel();
-  depositosLista:  DepositoModel[]=[];
   depositoCapt: DepositoModel= new DepositoModel();
   
   devolucionObt: DevolucionModel = new DevolucionModel();
@@ -41,19 +40,43 @@ export class DepositosGarantiaComponent implements OnInit {
 
   devolucionesLst: DevolucionModel[] = [];
   sumaMontos: number = 0;
-  constructor( private svcDevoluciones: DevolucionService,
+
+  displayedColumns = [
+    'monto',
+    'fechaDeposito',
+    'fechaRecepcion',
+    'anular'
+
+  ];
+  dataSource: MatTableDataSource<DepositoModel> = new MatTableDataSource<DepositoModel>;
+
+  public form: FormGroup = Object.create(null);
+  @Output() guardaRefresca = new EventEmitter<any>(true);
+
+  montoRestante: number =0;
+
+  constructor( private svcDevoluciones: DevolucionService,    private fb: FormBuilder,
               private svcDepositos: DepositoService,private svcDevolucion: DevolucionService, private svcSpinner: NgxSpinnerService, public dialog: MatDialog,
               private toolFunctions: Functions,
               private datePipe: DatePipe) {
-            
+
+
               }
     
   ngOnInit(): void { 
-    //objeto para obtener todos los correspondientes a la garantia
+    //objeto para obte ner todos los correspondientes a la garantia
+    this.montoRestante= this.modGarantia.Importe
     this.depositoObt.IdGarantia=this.modGarantia.Identificador;
     this.devolucionObt.IdGarantia=this.modGarantia.Identificador;
     this.obtenerDepositos()
     this.obtenerDevoluciones()
+
+    this.form = this.fb.group({
+      FechaDeposito: [new Date(), [Validators.required]],
+      Monto: [this.montoRestante,  [Validators.required]],
+    }, { validators: this.validaMontos });
+
+
   }
   
   childEvent(event: any) {
@@ -65,11 +88,15 @@ export class DepositosGarantiaComponent implements OnInit {
     this.svcSpinner.show();
     this.svcDepositos.ObtenerDepositos(this.depositoObt).pipe(takeUntil(this.destroy$)).subscribe(response => {
       if(response){
-        this.depositosLista = response
+        this.dataSource.data = response
         let v = this;
         response.map(function(deposito) {
           v.sumaMontos += deposito.Monto;
        });
+
+       this.montoRestante = this.modGarantia.Importe - this.sumaMontos;
+
+       this.form.patchValue({'Monto':this.montoRestante})
       }
     }, errResponse => {
       this.svcSpinner.hide();      
@@ -113,7 +140,7 @@ export class DepositosGarantiaComponent implements OnInit {
                 title: 'Éxito',
                 text: 'Deposito anulado',
                 icon: 'success'
-              });
+              }).then(()=>{location.reload()});
             }, errResponse => {
               this.svcSpinner.hide();      
             }, () => {
@@ -125,19 +152,7 @@ export class DepositosGarantiaComponent implements OnInit {
     }
   }
 
-  crearDeposito(){/*
-    const dialogRef = this.dialog.open(FormularioDepositoComponent, 
-      {width: '80vw',
-      maxWidth: '100vw',
-      disableClose: true, 
-      data: {
-        gara: this.modGarantia,
-        montos: this.sumaMontos
-      }
-    });*/
-  }
 
-  
   obtenerDevoluciones(){
     this.svcSpinner.show();
     this.svcDevoluciones.ObtenerDevoluciones(this.devolucionObt).pipe(takeUntil(this.destroy$)).subscribe(response => {
@@ -154,4 +169,53 @@ formatFecha(fecha:string){
   // console.log(fecha)
    return this.datePipe.transform(fecha, 'dd/MM/yyyy');
  }
+
+ construirFormulario() {
+  this.form = this.fb.group({
+    FechaDeposito: [null, [Validators.required]],
+    Monto: [this.montoRestante,  [Validators.required]],
+  }, { validators: this.validaMontos });
+}
+
+validaMontos: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => { 
+  let monto = group.get('Monto')?.value? group.get('Monto')?.value : '';
+  let validado =( monto <=(this.modGarantia.Importe-this.sumaMontos));
+  return validado ? null : { montoValido: true }
+}
+
+guardar(){
+  if (this.form.invalid){
+    Object.values( this.form.controls ).forEach( control => {
+      control.markAllAsTouched();
+    });
+  } else {
+
+      let  nuevoDeposito: DepositoModel = new DepositoModel();
+      nuevoDeposito.Expediente.Identificador = this.modGarantia.Expediente.Identificador
+      nuevoDeposito.Banco = new BaseModel()
+      nuevoDeposito.Banco.Identificador = this.modGarantia.Banco.Identificador
+      nuevoDeposito.Estado =  1
+      nuevoDeposito.Estatus = 1
+      nuevoDeposito.IdGarantia = this.modGarantia.Identificador;
+      nuevoDeposito.FechaDeposito = this.form.get('FechaDeposito')?.value;
+      nuevoDeposito.FechaRecepcion = nuevoDeposito.FechaDeposito
+      nuevoDeposito.Monto = this.form.get('Monto')?.value;
+      console.log(nuevoDeposito)
+  
+      this.svcSpinner.show();
+      this.svcDepositos.CrearDeposito(nuevoDeposito).subscribe(response => {
+
+        swal.fire({
+          title: 'Éxito',
+          text: 'Se guardo el depósito correctamente.',
+          icon: 'success'
+        }).then(()=>{location.reload()});;
+
+    });
+    
+  }
+
+  }
+
+
 }

@@ -1,0 +1,84 @@
+
+
+mat-form-field{
+    width: 100% !important;
+   }
+   
+   hr {
+       margin-top: 1rem;
+       margin-bottom: 1rem;
+       border: 0;
+       border-top: 1px solid rgba(0, 0, 0, 0.1);
+     }
+   
+     .error-hint {
+       color: red;
+     }
+   
+     .scrollpr{
+       height:250px !important; 
+       overflow-y:auto !important;
+     }
+   
+     .eliminabtn{
+       float: right;
+       width: 20% ;
+     }
+   
+     .etiqueta{
+       width: 80% !important;
+       text-align: left;
+     }
+   
+   /*** FONTS ***/
+   @import url(https://fonts.googleapis.com/css?family=Montserrat:900|Raleway:400,400i,700,700i);
+   
+   
+   
+   /*** VARIABLES ***/
+   /* Colors */
+   $black: #1d1f20;
+   $blue: #2f323e;
+   $green: #a2ed56;
+   $yellow: #e3aa25;
+   $white: #fafafa;
+   
+   
+   
+   /*** EXTEND ***/
+   /* box-shadow */
+   %boxshadow {
+     box-shadow: 0.25rem 0.25rem 0.6rem rgba(0,0,0,0.05), 0 0.5rem 1.125rem rgba(75,0,0,0.05);
+   }
+   
+   
+   
+   /*** STYLE ***/
+   *,
+   *:before,
+   *:after {
+     box-sizing: border-box;
+   }
+   
+   html,
+   body {
+     margin: 0;
+     padding: 0;
+   }
+   
+   body {
+     background-color: $white;
+     color: $black;
+     font-family: 'Raleway', sans-serif;
+   }
+   
+   main {
+     display: block;
+     margin: 0 auto;
+     max-width: 40rem;
+     padding: 1rem;
+   }
+  .head{
+    font-size: 1.2em;
+    font-weight: bold;
+    }

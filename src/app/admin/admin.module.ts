@@ -49,7 +49,7 @@ import { GarantiasComponent } from './operacion/garantias/garantias.component';
 import { FormGarantiaComponent } from './operacion/garantias/form-garantia/form-garantia.component';
 import { DepositosGarantiaComponent } from './operacion/garantias/depositos-garantia/depositos-garantia.component';
 import { EditarGarantiaComponent } from './operacion/garantias/editar-garantia/editar-garantia.component';
-import { FormularioDepositoComponent } from './operacion/garantias/depositos-garantia/formulario-deposito/formulario-deposito.component';
+import { EventService } from 'src/services/shared/event.service';
 
 
 
@@ -70,8 +70,7 @@ import { FormularioDepositoComponent } from './operacion/garantias/depositos-gar
     GarantiasComponent,
     FormGarantiaComponent,
     EditarGarantiaComponent,
-    DepositosGarantiaComponent,
-    FormularioDepositoComponent
+    DepositosGarantiaComponent
 
   ],
   imports: [
@@ -145,7 +144,8 @@ import { FormularioDepositoComponent } from './operacion/garantias/depositos-gar
    providers: [
     {provide: MatDialogRef, useValue: {}},
     {provide: MAT_DIALOG_DATA, useValue: []},
-    { provide: MAT_DATE_LOCALE, useValue: 'es-MX' }
+    { provide: MAT_DATE_LOCALE, useValue: 'es-MX' },
+    EventService
 ]
 })
 export class AdminModule {}
