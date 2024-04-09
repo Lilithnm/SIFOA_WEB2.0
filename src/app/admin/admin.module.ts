@@ -3,7 +3,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
+import { MatCardModule, MatCardTitle } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -50,6 +50,9 @@ import { FormGarantiaComponent } from './operacion/garantias/form-garantia/form-
 import { DepositosGarantiaComponent } from './operacion/garantias/depositos-garantia/depositos-garantia.component';
 import { EditarGarantiaComponent } from './operacion/garantias/editar-garantia/editar-garantia.component';
 import { EventService } from 'src/services/shared/event.service';
+import { DevolucionComponent } from './operacion/garantias/devoluciones-garantia/devolucion.component';
+import { FormularioDevolucionComponent } from './operacion/garantias/devoluciones-garantia/form-devolucion/formulario-devolucion.component';
+import { BeneficiariosComponent } from './operacion/garantias/devoluciones-garantia/beneficiarios/beneficiarios.component';
 
 
 
@@ -70,7 +73,10 @@ import { EventService } from 'src/services/shared/event.service';
     GarantiasComponent,
     FormGarantiaComponent,
     EditarGarantiaComponent,
-    DepositosGarantiaComponent
+    DepositosGarantiaComponent,
+    DevolucionComponent,
+    FormularioDevolucionComponent,
+    BeneficiariosComponent
 
   ],
   imports: [

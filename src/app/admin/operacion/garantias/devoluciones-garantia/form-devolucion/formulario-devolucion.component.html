@@ -1,0 +1,322 @@
+<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="plus-card" mat-dialog-content>
+    <mat-card>
+
+    <mat-card-title>Garantia: <strong>{{garntiaP.Folio}}</strong> </mat-card-title>
+    <br>
+    <div>
+        <form [formGroup]="form">
+            <div fxLayout="row" fxLayoutAlign="space-around baseline">
+              <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100" *ngIf="form.get('Tipo')?.value == 3">
+                <mat-form-field appearance="outline" >
+                    <mat-label>
+                        TIPO:
+                    </mat-label>
+                    <mat-select formControlName="Tipo" name="selectTipoId"  (selectionChange)="cambiaTipo()" >
+                        <mat-option  value="1">
+                            A BENEFICIARIOS
+                        </mat-option>
+                        <mat-option  value="2">
+                            A FAVOR DEL PODER JUDICIAL
+                        </mat-option>
+                        <mat-option  value="3">
+                            COMO MULTA ORDINARIA
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+                <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48" *ngIf="form.get('Tipo')?.value != 3">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>
+                            TIPO:
+                        </mat-label>
+                        <mat-select formControlName="Tipo" name="selectTipoId"  (selectionChange)="cambiaTipo()"  >
+                            <mat-option  value="1">
+                                A BENEFICIARIOS
+                            </mat-option>
+                            <mat-option  value="2">
+                                A FAVOR DEL PODER JUDICIAL
+                            </mat-option>
+                            <mat-option  value="3">
+                                COMO MULTA ORDINARIA
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.sm="4" fxFlex.lg="4" fxFlex="4" *ngIf="form.get('Tipo')?.value != 3">
+                </div>
+                <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48" *ngIf="form.get('Tipo')?.value != 3">
+                    <mat-form-field appearance="outline">
+                      <mat-label>
+                          MONTO
+                      </mat-label>
+                      <input formControlName="Monto" currencyMask matInput name="inputMonto" value="0" [options]="{ prefix: '$ ', thousands: ',', decimal: '.' }">
+                      <small> {{numeroLetras()}}</small>
+                  </mat-form-field> 
+                  <mat-error *ngIf="form.hasError('montoValido')">
+                    <small  class="errorrfc">Solo puede devolver{{restante |currency}}.</small>
+                </mat-error>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around baseline" *ngIf="form.get('Tipo')?.value == 2">
+                <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+                  <mat-form-field appearance="outline" >
+                      <mat-label>
+                          CONCEPTO DEL INGRESO:
+                      </mat-label>
+                      <mat-select formControlName="Concepto" name="selectTipoId" >
+                          <mat-option  value="4178006105">
+                            INGRESOS CERTIFICADOS A FAVOR DEL PJ LIBERTAD
+                          </mat-option>
+                          <mat-option  value="4178006106">
+                            INGRESOS CERTIFICADOS A FAVOR DEL PJ REP DEL DAÑO
+                          </mat-option>
+                          <mat-option  value="4178006107">
+                            ING CERTIFICADOS A FAVOR OTROS CONCEPTOS
+                          </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+  
+          <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="form.get('Tipo')?.value != 3">
+              <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+                  <mat-form-field appearance="outline">
+                      <mat-label>
+                          Observaciones
+                      </mat-label>
+                      <textarea matInput placeholder="..." formControlName="Observaciones"></textarea>
+                  </mat-form-field>
+              </div>
+          </div>
+      </form>
+      <form [formGroup]="formMulta" *ngIf="form.get('Tipo')?.value == 3">
+        <div fxLayout="row" fxLayoutAlign="space-around baseline">
+                <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+                    <mat-form-field appearance="outline" formGroupName="Personaje">
+                        <mat-label>
+                            Persona Sancionada
+                        </mat-label>
+                        <mat-select formControlName="Identificador" name="selecPersonaje" (selectionChange)="filtrarDomicilios($event)">
+                            <mat-option *ngFor="let personaje of personajes" [value]="personaje.Identificador">
+                                {{personaje.Nombre}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            
+            <div fxFlex.sm="65" fxFlex.lg="65" fxFlex="65">
+                <mat-form-field *ngIf="domicilios" appearance="outline" formGroupName="Domicilio">
+                    <mat-label>
+                        Domicilio
+                    </mat-label>
+                    <mat-select name="selectDomicilio" formControlName="Identificador"  (selectionChange)="selectDomicilio($event)" >
+                        <mat-option *ngFor="let domicilio of domicilios" [value]="domicilio.Identificador">
+                            {{domicilio.Calle}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxFlex.sm="4" fxFlex.lg="4" fxFlex="4"></div>
+            <div fxFlex.sm="31" fxFlex.lg="31" fxFlex="31">
+                <mat-form-field *ngIf="domicilios" appearance="outline">
+                    <mat-label>
+                        Ciudad
+                    </mat-label>
+                    <input type="text" #ciudad matInput [matAutocomplete]="auto" formControlName="Municipio">
+                    <mat-autocomplete [panelWidth]="'500px'" #auto="matAutocomplete" [displayWith]="getOptionText">
+                        <mat-option *ngFor="let ciudad of ciudadesSync | async; index as i" [value]="ciudad">
+                            {{ciudad.Descripcion}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+
+           
+            <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Codigo postal
+                    </mat-label>
+                    <input matInput name="inputCP" formControlName="CP">
+                </mat-form-field>
+            </div>
+            <div fxFlex.sm="4" fxFlex.lg="4" fxFlex="4"></div>
+            <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Teléfono
+                    </mat-label>
+                    <input matInput name="inputTelefono" formControlName="Telefono">
+                </mat-form-field>
+            </div>
+
+        </div>
+        <mat-divider></mat-divider>
+        <br>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+
+            <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Fecha
+                    </mat-label>
+                    <input formControlName="Fecha" type="date" matInput name="inputCaptura">
+                </mat-form-field>
+            </div>
+            
+
+            <div fxFlex.sm="4" fxFlex.lg="4" fxFlex="4"></div>
+
+            <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Vigencia
+                    </mat-label>
+                    <input formControlName="FechaVigencia" type="date" matInput name="inputVigencia">
+                </mat-form-field>
+            </div>
+
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around none">
+            <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+                <mat-form-field appearance="outline" formGroupName="Concepto">
+                    <mat-label>
+                        Concepto
+                    </mat-label>
+                    <mat-select name="selectConcepto" formControlName="Identificador">
+                        <mat-option *ngFor="let concepto of conceptos" [value]="concepto.Identificador">
+                            {{concepto.Nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- <div fxLayout="row" fxLayoutAlign="space-around none">
+            <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+                <mat-form-field appearance="outline" formGroupName="Banco">
+                    <mat-label>
+                        Banco
+                    </mat-label>
+                    <mat-select (selectionChange)="cambiaConvenio($event)" formControlName="Identificador">
+                        <mat-option *ngFor="let banco of bancos" [value]="banco.Identificador"  >
+                            {{banco.Nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div> -->
+        <br>
+        <div fxLayout="row" fxLayoutAlign="space-around none">
+         <!--    <div fxFlex.sm="40" fxFlex.lg="40" fxFlex="40">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Convenio No.
+                    </mat-label>
+                    <input  matInput name="inputConvenio" disabled formControlName="Convenio">
+                </mat-form-field>
+            </div> -->
+        <!--  <div fxFlex.sm="4" fxFlex.lg="4" fxFlex="4"></div>
+            <div fxFlex.sm="56" fxFlex.lg="56" fxFlex="56"> -->
+            <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+               <mat-form-field appearance="outline">
+                    <mat-label>
+                        ESTA ORDEN AMPARA LA CANTIDAD DE:*
+                    </mat-label>
+                    <input autocomplete="off"  formControlName="Importe" currencyMask matInput name="inputMonto" value="0" [options]="{ prefix: '$ ', thousands: ',', decimal: '.' }"> 
+                    <small> {{this.convertir.NumerosALetras(formMulta.controls['Importe'].value,this.garntiaP.Banco )}}</small>
+                </mat-form-field>
+                <mat-error *ngIf="formMulta.hasError('montoValido')">
+                    <small  class="errorrfc">No debe ser mayor a los depósitos y devoluciones capturados.</small>
+                </mat-error>
+                
+            </div> 
+
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+            <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+                <mat-form-field appearance="outline">
+                    <mat-label>
+                        Observaciones
+                    </mat-label>
+                    <textarea formControlName="Observaciones" matInput placeholder="..."></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+
+
+        <div class="example-button-container agregarbtn" *ngIf="form.get('Tipo')?.value == 1">
+            <button mat-raised-button color="accent" aria-label="Agregar Beneficiario" (click)="agregar()" *ngIf="beneficiariosLst2.length==0">
+              <mat-icon>person_add</mat-icon> Agregar Beneficiario
+            </button>
+          </div>
+      </div>
+    
+            <mat-card *ngIf="form.get('Tipo')?.value == 1">
+                <mat-card-content>
+                    <div class="row" >
+                        <div class="col-sm-12">    
+                          <div class="">
+                            <mat-nav-list>
+                              <mat-list-item >
+                                <div class="etiqueta" >
+                                  Nombre
+                                </div>
+                                <div class="etiqueta">
+                                  Identificación
+                                 </div>
+                                <div class="etiqueta">
+                                   Número
+                                   </div>
+                            <!--      <div class="eliminabtn">
+                                   Anular
+                                 </div> -->
+                              </mat-list-item>
+                            </mat-nav-list>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" >
+                        <div class="col-sm-12">
+                          <div class="example-container scrollpr">
+                            <mat-nav-list class="gradient-list">
+                              <mat-list-item *ngFor="let benef of beneficiariosLst" >
+ 
+                                    <div class="etiqueta"  *ngIf="benef.Estatus==1">
+                                        {{ benef.Personaje.Nombre+" "+benef.Personaje.Paterno+" "+ benef.Personaje.Materno }}
+                                    </div>
+                                    <div class="etiqueta"  *ngIf="benef.Estatus==1">
+                                      {{ benef.TipoIdentificacion}}
+                                     </div>
+                                     <div class="etiqueta"  *ngIf="benef.Estatus==1">
+                                       {{ benef.NumeroIdentificacion}}
+                                      </div>
+                                    <div class="eliminabtn"  *ngIf="benef.Estatus==1">
+                                      <button mat-icon-button (click)="eliminaBeneficiario(benef)" >
+                                        <mat-icon>delete</mat-icon>
+                                      </button>
+                                     </div> 
+                               
+                               
+                              </mat-list-item>
+                            </mat-nav-list>
+                          </div>
+                        </div>
+                      </div>
+                </mat-card-content>
+            </mat-card>
+  <div mat-dialog-actions align="end">
+    <button mat-button  cdkFocusInitial color="primary" (click)="guardar()" >Guardar</button>
+    <button mat-button mat-dialog-close >Cancelar</button>
+</div>
+
+  
+  
+  
+  
+        
+</mat-card>

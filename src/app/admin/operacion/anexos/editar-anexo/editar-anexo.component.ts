@@ -76,7 +76,7 @@ export class EditarAnexoComponent implements OnInit, AfterViewInit,OnChanges {
   ngAfterViewInit(): void {
   }
   numeroLetras(){
-    return this.numeroLetra.NumerosALetras(this.form.controls['Monto'].value)
+    return this.numeroLetra.NumerosALetras(this.form.controls['Monto'].value,this.form.controls['Banco'].value)
   }
 
   ngOnInit(): void {

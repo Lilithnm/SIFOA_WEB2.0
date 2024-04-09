@@ -44,6 +44,7 @@ export class GarantiasComponent
   @ViewChild('Agregar') public Agregar!: SwalComponent;
   @ViewChild('Editar') public Editar!: SwalComponent;
   @ViewChild('Depositos') public Depositos!: SwalComponent;
+  @ViewChild('Devoluciones') public Devoluciones!: SwalComponent;
   
   destroy$: Subject<boolean> = new Subject<boolean>();
   buttonDisabled = false;
@@ -290,6 +291,13 @@ export class GarantiasComponent
     this.Depositos.fire();
   }
   
+
+abreDevoluciones(garantia: GarantiaModel){
+  console.log(garantia)
+  this.modgarantia = garantia;
+  this.Devoluciones.fire();
+}
+
 
 
   refresh() {

@@ -1,0 +1,140 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#26c6da" type="ball-fall" [fullScreen]="false">
+    <p style="font-size: 20px; color: white">Buscando...</p>
+  </ngx-spinner>
+  
+<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="plus-card">
+    <br>
+    <div>
+        <form [formGroup]="form">
+            <!-- <div fxLayout="row" fxLayoutAlign="space-around baseline">
+                    <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+                        <mat-form-field appearance="outline" formGroupName="Personaje">
+                            <mat-label>
+                                Beneficiario
+                            </mat-label>
+                            <mat-select formControlName="Identificador" name="selecPersonaje" >
+                                <mat-option *ngFor="let personaje of personajes" [value]="personaje.Identificador">
+                                    {{personaje.Nombre}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+            </div> -->
+            <div fxLayout="row" fxLayoutAlign="space-around " *ngIf="empleados.length>0">
+                        <div fxFlex.sm="100" fxFlex.lg="100" fxFlex="100">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Se encontraron coincidencias, seleccione si alguna corresponde
+                            </mat-label>
+                            <mat-select formControlName="NombreEmpleado" name="NombreEmpleado" >
+                                <mat-option *ngFor="let emp of empleados" [value]="emp.NombreCompleto"  (click)="empleadoSel(emp)">
+                                  {{emp.NombreCompleto}}
+                                </mat-option>
+                                <mat-option [value]="'otro'" (click)="noEmpleado()">
+                                    Otro (No es empleado)                     
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> 
+
+                    </div>
+                    
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around" *ngIf="empleados.length==0" formGroupName="Personaje">
+                    <div fxFlex.sm="30" fxFlex.lg="30" fxFlex="30">
+                        <mat-form-field appearance="outline">
+                            <mat-label>
+                                Nombre
+                            </mat-label>
+                            <input  matInput name="Nombre"  formControlName="Nombre">
+                        </mat-form-field>
+                    </div>   
+                <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                <div fxFlex.sm="30" fxFlex.lg="30" fxFlex="30">
+                    <mat-form-field appearance="outline" *ngIf="empleados.length==0">
+                        <mat-label>
+                            Paterno
+                        </mat-label>
+                        <input  matInput name="Paterno"  formControlName="Paterno">
+                    </mat-form-field>
+                </div> 
+                <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5"></div>
+                <div fxFlex.sm="30" fxFlex.lg="30" fxFlex="30">
+                <mat-form-field appearance="outline" *ngIf="empleados.length==0">
+                    <mat-label>
+                        Materno
+                    </mat-label>
+                    <input  matInput name="Materno"  formControlName="Materno">
+                </mat-form-field>
+            </div> 
+            <div fxFlex.sm="5" fxFlex.lg="5" fxFlex="5" style="margin-top: 10px;">
+                <button mat-mini-fab color="primary" aria-label="Buscar" (click)="buscaEmpleado()" matTooltip="Busque si el beneficiario es o fue empleado">
+                <mat-icon>search</mat-icon>
+                </button>
+            </div>
+
+            </div>
+            <h4>DATOS DE IDENTIFICACIÓN</h4>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                    <mat-form-field appearance="outline" >
+                        <mat-label>
+                            Tipo de Identificación
+                        </mat-label>
+                        <mat-select formControlName="TipoIdentificacion" name="selectTipoId" >
+                            <mat-option  value="LICENCIA DE CONDUCIR">
+                                LICENCIA DE CONDUCIR
+                            </mat-option>
+                            <mat-option  value="CREDENCIAL DE ELECTOR">
+                                CREDENCIAL DE ELECTOR
+                            </mat-option>
+                            <mat-option  value="PASAPORTE">
+                                PASAPORTE
+                            </mat-option>
+                            <mat-option  value="CREDENCIAL DEL IMSS">
+                                CREDENCIAL DEL IMSS
+                            </mat-option>
+                            <mat-option  value="CREDENCIAL ISSSTE">
+                                CREDENCIAL ISSSTE
+                            </mat-option>
+                            <mat-option  value="CEDULA PROFESIONAL">
+                                CEDULA PROFESIONAL
+                            </mat-option>
+                            <mat-option  value="OTROS">
+                                OTROS
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                
+                <div fxFlex.sm="4" fxFlex.lg="4" fxFlex="4"></div>
+                <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                    <mat-form-field appearance="outline">
+                        <mat-label>
+                            Fecha
+                        </mat-label>
+                        <input formControlName="Vigencia" type="date" matInput name="inputVigencia">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around center">
+                <div fxFlex.sm="48" fxFlex.lg="48" fxFlex="48">
+                    <mat-form-field appearance="outline">
+                        <mat-label>
+                            Número
+                        </mat-label>
+                        <input  matInput name="inputNumeroIdentificacion"  formControlName="NumeroIdentificacion">
+                    </mat-form-field>
+                </div>
+                <div fxFlex.sm="52" fxFlex.lg="52" fxFlex="52"></div>
+            </div>
+            </form>
+    </div>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button  cdkFocusInitial color="primary" (click)="agregar()" >Guardar</button>
+    <button mat-button mat-dialog-close (click)="cancelar()" >Cancelar</button>
+</div>
+
+
+
+

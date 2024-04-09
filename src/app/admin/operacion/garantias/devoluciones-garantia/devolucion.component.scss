@@ -1,0 +1,110 @@
+
+
+mat-form-field{
+  width: 100% !important;
+ }
+ 
+ hr {
+     margin-top: 1rem;
+     margin-bottom: 1rem;
+     border: 0;
+     border-top: 1px solid rgba(0, 0, 0, 0.1);
+   }
+ 
+   .error-hint {
+     color: red;
+   }
+ 
+   .scrollpr{
+     height:250px !important; 
+     overflow-y:auto !important;
+   }
+ 
+   .eliminabtn{
+     float: center;
+     width: 35% ;
+   }
+ 
+   .etiqueta{
+     width: 25% !important;
+     text-align: left;
+   }
+   .etiquetagde{
+    width: 45% !important;
+    text-align: left;
+  }
+
+   .etiquetapeque{
+    width: 20% !important;
+    text-align: left;
+  }
+ 
+ /*** FONTS ***/
+ @import url(https://fonts.googleapis.com/css?family=Montserrat:900|Raleway:400,400i,700,700i);
+ 
+ 
+ mat-list-item{
+  height: 30px!important;
+ }
+ /*** VARIABLES ***/
+ /* Colors */
+ $black: #1d1f20;
+ $blue: #2f323e;
+ $green: #a2ed56;
+ $yellow: #e3aa25;
+ $white: #fafafa;
+ 
+ 
+ 
+ /*** EXTEND ***/
+ /* box-shadow */
+ %boxshadow {
+   box-shadow: 0.25rem 0.25rem 0.6rem rgba(0,0,0,0.05), 0 0.5rem 1.125rem rgba(75,0,0,0.05);
+ }
+ 
+ 
+ 
+ /*** STYLE ***/
+ *,
+ *:before,
+ *:after {
+   box-sizing: border-box;
+ }
+ 
+ html,
+ body {
+   margin: 0;
+   padding: 0;
+ }
+ 
+ body {
+   background-color: $white;
+   color: $black;
+   font-family: 'Raleway', sans-serif;
+ }
+ 
+ main {
+   display: block;
+   margin: 0 auto;
+   max-width: 40rem;
+   padding: 1rem;
+ }
+ .format-pre pre {
+  background: #49483e;
+  color: #f7f7f7;
+  padding: 10px;
+  font-size: 10px;
+  font-family: "Poppins", sans-serif !important;
+}
+
+
+.caducada{
+background-color: #fffbde;
+}
+.reactivada{
+background-color: #e0ffde;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option{
+height: 58px !important;
+}

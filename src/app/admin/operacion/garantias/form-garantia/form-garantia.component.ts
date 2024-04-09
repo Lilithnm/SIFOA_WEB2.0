@@ -85,7 +85,7 @@ export class FormGarantiaComponent implements OnInit, AfterViewInit,OnChanges {
   }
 
   numeroLetras(){
-    return this.numeroLetra.NumerosALetras(this.form.controls['Importe'].value)
+    return this.numeroLetra.NumerosALetras(this.form.controls['Importe'].value,this.form.controls['Banco'].value)
   }
 
 

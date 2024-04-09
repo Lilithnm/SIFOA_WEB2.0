@@ -137,7 +137,7 @@
 
   
                                 <div class="example-button-container" *ngIf="row.Estado ==2">
-                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="muestraDepositos(row)" matTooltip="DEVOLUCIONES"
+                                  <button mat-icon-button (click)="$event.stopPropagation()" (click)="abreDevoluciones(row)" matTooltip="DEVOLUCIONES"
                                   class="tbl-action-btn">
 
                                   <i class="fas fa-arrow-left"  [class]="'tbl-fav-extra'"></i>
@@ -199,5 +199,13 @@
 [showConfirmButton]="buttonDisabled"  (confirm)="loadData()" >
 <div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
  <app-depositos-garantia [modGarantia]="nuevaGara"   ></app-depositos-garantia>
+</div>
+</swal> 
+
+<swal #Devoluciones title="Devoluciones" width="70vw" [confirmButtonText]="'Guardar'" [cancelButtonText]="'Regresar'" [showCancelButton]="true"
+[allowOutsideClick]="false" [allowEscapeKey]="false" 
+[showConfirmButton]="buttonDisabled"  (confirm)="loadData()" >
+<div style="max-height: 70vh; overflow: auto;" *swalPortal="undefined" >
+ <app-devolucion [modGarantiaDevo]="modgarantia"   ></app-devolucion>
 </div>
 </swal> 

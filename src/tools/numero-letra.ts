@@ -1,5 +1,6 @@
 
 import { Injectable } from '@angular/core';
+import { BaseModel } from 'src/models/catalogos';
 @Injectable({
   providedIn: 'root'
 })
@@ -169,16 +170,31 @@ export class NumeroLetra {
     return (strMillones + ' ' + strMiles).trim();
   }
   
-   NumerosALetras(num: number): string {
+
+ NumerosALetras(num: number, banco: BaseModel): string {
+    let letrasMonedaPluralV= 'Pesos';
+    let letrasMonedaSingularV= 'Peso';
+    let letrasMonedaCentavoPluralV= '/100 M.N.';
+    let letrasMonedaCentavoSingularV= '/100 M.N.';
+  
+    if(banco){
+      if(banco.Identificador== 3){
+        letrasMonedaPluralV= 'Dólares';
+        letrasMonedaSingularV= 'Dólar';
+        letrasMonedaCentavoPluralV= '/100 USD';
+        letrasMonedaCentavoSingularV= '/100 USD';
+      }
+    }
+  
     var data = {
       numero: num,
       enteros: Math.floor(num),
       centavos: Math.round(num * 100) - Math.floor(num) * 100,
       letrasCentavos: '',
-      letrasMonedaPlural: 'Pesos',
-      letrasMonedaSingular: 'Peso',
-      letrasMonedaCentavoPlural: '/100 M.N.',
-      letrasMonedaCentavoSingular: '/100 M.N.'
+      letrasMonedaPlural: letrasMonedaPluralV,
+      letrasMonedaSingular: letrasMonedaSingularV,
+      letrasMonedaCentavoPlural: letrasMonedaCentavoPluralV,
+      letrasMonedaCentavoSingular: letrasMonedaCentavoSingularV
     };
   
     if (data.centavos >= 0) {

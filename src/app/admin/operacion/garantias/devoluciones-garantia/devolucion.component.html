@@ -1,0 +1,162 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#26c6da" type="ball-fall" [fullScreen]="false">
+    <p style="font-size: 20px; color: white">Cargando...</p>
+  </ngx-spinner>
+
+  
+  <mat-card>
+    <mat-card-header>
+        <div class="row">
+          <span class="head">
+            <mat-card-title>Garantia: <strong>{{modGarantiaDevo.Folio}}</strong> </mat-card-title>
+        </span>
+        </div>
+
+        
+        <div style="width: 50%;" > Monto depositado: {{modGarantiaDevo.MontoDepositos|currency}}</div>
+        <div style="width: 50%;"  >Monto devuelto: {{modGarantiaDevo.MontoDevoluciones|currency}}</div>      
+        
+
+      
+    </mat-card-header>
+      <mat-card-content >
+        <button [disabled]="!((modGarantiaDevo.MontoDepositos>0 && (modGarantiaDevo.MontoDevoluciones < modGarantiaDevo.MontoDepositos)))" (click)="crearDevolucion()" style="float: right; margin: 5px;" mat-raised-button color="accent">
+          <i style="font-size:x-large; margin-right: 15px;" class="fa fa-plus"></i>
+          Devolución
+      </button>
+
+        <form [formGroup]="form"  *ngIf="modGarantiaDevo.MontoDepositos<modGarantiaDevo.Importe">
+          <br> <br>
+        <div class="row">
+
+          <div class="col-xl-5 col-lg-5 col-md-5 col-sm-6">
+            <mat-form-field appearance="outline">
+              <mat-label>
+                  Monto
+              </mat-label>
+                <input formControlName="Monto" currencyMask matInput name="inputMonto" value="0" [options]="{ prefix: '$ ', thousands: ',', decimal: '.' }">
+            </mat-form-field>
+            <mat-error *ngIf="form.hasError('montoValido')">
+                <small  class="errorrfc">El monto no puede ser mayor al de la garantía y los depósitos capturados.</small>
+            </mat-error>
+            
+          </div>
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+
+
+          <mat-form-field class="example-full-width"  appearance="outline" >
+              <mat-label>
+                Fecha de Depósito</mat-label>
+            <input matInput [matDatepicker]="FechaDeposito" formControlName="FechaDeposito">
+            <mat-datepicker-toggle matIconSuffix [for]="FechaDeposito"></mat-datepicker-toggle>
+            <mat-datepicker #FechaDeposito></mat-datepicker>
+          </mat-form-field>
+  
+
+
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6"> 
+            <button  [disabled]="!((modGarantiaDevo.MontoDepositos>0 && (modGarantiaDevo.MontoDevoluciones < modGarantiaDevo.MontoDepositos)))" (click)="crearDevolucion()" style="float: right; margin: 5px;" mat-raised-button color="accent">
+              <i style="font-size:x-large" class="fa fa-plus"></i>
+              Devolución
+          </button>
+          </div>
+              
+        </div>
+      </form>
+        <br>
+        <br>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          
+
+
+              <ng-container matColumnDef="Referencia">
+                <th mat-header-cell *matHeaderCellDef> Referencia </th>
+                <td mat-cell *matCellDef="let row">  {{row.ReferenciaDevolucion}}  </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="Monto">
+                <th  mat-header-cell  *matHeaderCellDef >Monto  </th>
+                <td mat-cell *matCellDef="let row"> {{ row.Monto | currency:"$" }} </td>                   
+              </ng-container>
+
+
+              <ng-container matColumnDef="Tipo">
+                <th  mat-header-cell  *matHeaderCellDef >Tipo
+                </th>
+                <td mat-cell *matCellDef="let row">  {{ getTipo(row) }}</td>
+              </ng-container>
+              
+              <ng-container matColumnDef="Endosada">
+                <th  mat-header-cell  *matHeaderCellDef >Fecha Endosada
+                </th>
+                <td mat-cell *matCellDef="let row">    {{ obtieneFecha(row.FechaEndosamiento) }}</td>
+              </ng-container>
+                            
+              <ng-container matColumnDef="Liberada">
+                <th  mat-header-cell  *matHeaderCellDef >Fecha Liberada
+                </th>
+                <td mat-cell *matCellDef="let row">   {{ obtieneFecha(row.fecha) }}</td>
+              </ng-container>
+                
+              <ng-container matColumnDef="Finalizada">
+                <th  mat-header-cell  *matHeaderCellDef >Fecha Finalizada
+                </th>
+                <td mat-cell *matCellDef="let row">   {{ obtieneFecha(row.FechaConciliacionSap) }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Conciliada">
+                <th  mat-header-cell  *matHeaderCellDef >Fecha Conciliacion
+                </th>
+                <td mat-cell *matCellDef="let row">   {{ obtieneFecha(row.FechaConciliacionSap) }}</td>
+              </ng-container>
+
+
+
+              <ng-container matColumnDef="Botones">
+                <th  mat-header-cell *matHeaderCellDef >Acciones
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button (click)="liberar(row)" *ngIf="row.Estado == 1 && !(row.Reactivaciones>0&&verificaVigencia(row))"  matTooltip="Liberar"  >
+                    <mat-icon>check_box</mat-icon>
+                  </button>
+                  <!-- finalizar -->
+              <!--     <button mat-icon-button (click)="finalizar(row)"  *ngIf="row.Estado == 2"  matTooltip="Finalizar" >
+                    <mat-icon>collections_bookmark</mat-icon>
+                  </button>  -->
+                  <button mat-icon-button (click)="anular(row)"  *ngIf="row.Estado == 2"  matTooltip="Anular" >
+                    <mat-icon>undo</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="Eliminar(row)" *ngIf="row.Estado == 1 &&row.Tipo!=3&&(row.Reactivaciones==0)"  matTooltip="Eliminar" >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="EliminarMulta(row)" *ngIf="row.Estado == 1 &&row.Tipo==3"  matTooltip="Eliminar" >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="modificarEndoso(row)"  *ngIf="(row.Estado == 1&&(row.Reactivaciones>0))&&row.Tipo!=3"  matTooltip="Modificar Endoso" >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="imprimir(row)"  *ngIf="row.Estado >= 2"  matTooltip="Imprimir"  >
+                    <mat-icon>print</mat-icon>
+                  </button>
+
+                
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+              [ngClass]="{'aplicada': row.EstatusDescuento=='FALTA APLICADA'}"  
+              
+              ></tr>
+
+
+
+
+
+            </table>       
+      </mat-card-content>
+
+
+
+
+
