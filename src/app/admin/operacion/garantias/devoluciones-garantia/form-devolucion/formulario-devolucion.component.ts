@@ -106,10 +106,10 @@ export class FormularioDevolucionComponent {
       
   }
   numeroLetras(){
-    return this.numeroLetra.NumerosALetras(this.form.controls['Importe'].value, this.garntiaP.Banco )
+    return this.numeroLetra.NumerosALetras(this.form.controls['Monto'].value ? this.form.controls['Monto'].value :0, this.garntiaP.Banco )
   }
   numeroLetrasMulta(){
-    return this.numeroLetra.NumerosALetras(this.formMulta.controls['Importe'].value, this.garntiaP.Banco )
+    return this.numeroLetra.NumerosALetras(this.formMulta.controls['Importe'].value ? this.formMulta.controls['Importe'].value :0, this.garntiaP.Banco )
   }
 
   inicializarConceptos(): void {
@@ -242,7 +242,6 @@ export class FormularioDevolucionComponent {
       this.beneficiariosLst = dialogRef.componentInstance.beneficiariosLista;
       this.beneficiariosLst2= this.beneficiariosLst.filter(ben => ben.Estatus==1);
       this.nuevaDevolucion.ListaCoincidencias = dialogRef.componentInstance.listaCoincidencias;
-      console.log(this.nuevaDevolucion)
       
      });  
 
